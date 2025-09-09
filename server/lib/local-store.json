@@ -1,4 +1,103 @@
 {
   "products": [],
-  "categories": []
+  "categories": [
+    {
+      "name": {
+        "en": "coffee and tea",
+        "ar": "القهوة والشاي"
+      },
+      "description": {
+        "en": "",
+        "ar": ""
+      },
+      "slug": "coffee-tea",
+      "id": "c_7ilcbbka",
+      "created_at": "2025-09-09T19:20:55.558Z",
+      "updated_at": "2025-09-09T19:20:55.558Z"
+    },
+    {
+      "name": {
+        "en": "honey",
+        "ar": "عسل"
+      },
+      "description": {
+        "en": "",
+        "ar": ""
+      },
+      "slug": "honey",
+      "id": "c_ztxi0zcv",
+      "created_at": "2025-09-09T19:21:30.244Z",
+      "updated_at": "2025-09-09T19:21:30.244Z"
+    },
+    {
+      "name": {
+        "en": "pickles",
+        "ar": "مخللات"
+      },
+      "description": {
+        "en": "",
+        "ar": ""
+      },
+      "slug": "pickles",
+      "id": "c_3x8h0dls",
+      "created_at": "2025-09-09T19:22:05.113Z",
+      "updated_at": "2025-09-09T19:22:05.113Z"
+    },
+    {
+      "name": {
+        "en": "spices",
+        "ar": "بهارات"
+      },
+      "description": {
+        "en": "",
+        "ar": ""
+      },
+      "slug": "spices",
+      "id": "c_90mlna7l",
+      "created_at": "2025-09-09T19:22:27.341Z",
+      "updated_at": "2025-09-09T19:22:27.341Z"
+    },
+    {
+      "name": {
+        "en": "spices",
+        "ar": "بهارات"
+      },
+      "description": {
+        "en": "",
+        "ar": ""
+      },
+      "slug": "spices",
+      "id": "c_5x3xe9zn",
+      "created_at": "2025-09-09T19:22:33.418Z",
+      "updated_at": "2025-09-09T19:22:33.418Z"
+    },
+    {
+      "name": {
+        "en": "herbs",
+        "ar": "أعشاب"
+      },
+      "description": {
+        "en": "",
+        "ar": ""
+      },
+      "slug": "herbs",
+      "id": "c_8qc5qprx",
+      "created_at": "2025-09-09T19:23:03.365Z",
+      "updated_at": "2025-09-09T19:23:03.365Z"
+    },
+    {
+      "name": {
+        "en": "daily",
+        "ar": "يومي"
+      },
+      "description": {
+        "en": "",
+        "ar": ""
+      },
+      "slug": "daily",
+      "id": "c_tvdh97b4",
+      "created_at": "2025-09-09T19:23:42.289Z",
+      "updated_at": "2025-09-09T19:23:42.289Z"
+    }
+  ]
 }

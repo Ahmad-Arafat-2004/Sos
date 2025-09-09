@@ -1,15 +1,15 @@
-import type { 
-  ApiResponse, 
-  Product, 
-  Category, 
-  User, 
-  Order, 
+import type {
+  ApiResponse,
+  Product,
+  Category,
+  User,
+  Order,
   AuthResponse,
   LoginRequest,
-  RegisterRequest 
-} from '../../shared/types';
+  RegisterRequest,
+} from "../../shared/types";
 
-const API_BASE_URL = '/api';
+const API_BASE_URL = "/api";
 
 // API Client class
 class ApiClient {
@@ -19,27 +19,27 @@ class ApiClient {
   constructor(baseURL: string = API_BASE_URL) {
     this.baseURL = baseURL;
     // Load token from localStorage on initialization
-    this.token = localStorage.getItem('auth_token');
+    this.token = localStorage.getItem("auth_token");
   }
 
   // Set authentication token
   setToken(token: string | null) {
     this.token = token;
     if (token) {
-      localStorage.setItem('auth_token', token);
+      localStorage.setItem("auth_token", token);
     } else {
-      localStorage.removeItem('auth_token');
+      localStorage.removeItem("auth_token");
     }
   }
 
   // Get authentication headers
   private getHeaders(includeAuth: boolean = true): HeadersInit {
     const headers: HeadersInit = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     };
 
     if (includeAuth && this.token) {
-      headers['Authorization'] = `Bearer ${this.token}`;
+      headers["Authorization"] = `Bearer ${this.token}`;
     }
 
     return headers;
@@ -47,8 +47,8 @@ class ApiClient {
 
   // Generic request method
   private async request<T>(
-    endpoint: string, 
-    options: RequestInit = {}
+    endpoint: string,
+    options: RequestInit = {},
   ): Promise<ApiResponse<T>> {
     try {
       const url = `${this.baseURL}${endpoint}`;
@@ -76,10 +76,13 @@ class ApiClient {
       }
 
       if (!response.ok) {
-        const errMsg = data && data.error ? data.error : `HTTP ${response.status}: ${response.statusText}`;
+        const errMsg =
+          data && data.error
+            ? data.error
+            : `HTTP ${response.status}: ${response.statusText}`;
         return {
           success: false,
-          error: errMsg
+          error: errMsg,
         };
       }
 
@@ -87,51 +90,57 @@ class ApiClient {
     } catch (error) {
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Network error'
+        error: error instanceof Error ? error.message : "Network error",
       };
     }
   }
 
   // Auth API methods
   auth = {
-    register: async (userData: RegisterRequest): Promise<ApiResponse<AuthResponse>> => {
-      return this.request<AuthResponse>('/auth/register', {
-        method: 'POST',
+    register: async (
+      userData: RegisterRequest,
+    ): Promise<ApiResponse<AuthResponse>> => {
+      return this.request<AuthResponse>("/auth/register", {
+        method: "POST",
         body: JSON.stringify(userData),
         headers: this.getHeaders(false), // No auth needed for registration
       });
     },
 
-    login: async (credentials: LoginRequest): Promise<ApiResponse<AuthResponse>> => {
-      return this.request<AuthResponse>('/auth/login', {
-        method: 'POST',
+    login: async (
+      credentials: LoginRequest,
+    ): Promise<ApiResponse<AuthResponse>> => {
+      return this.request<AuthResponse>("/auth/login", {
+        method: "POST",
         body: JSON.stringify(credentials),
         headers: this.getHeaders(false), // No auth needed for login
       });
     },
 
     getProfile: async (): Promise<ApiResponse<User>> => {
-      return this.request<User>('/auth/profile');
+      return this.request<User>("/auth/profile");
     },
 
-    updateProfile: async (userData: Partial<User>): Promise<ApiResponse<User>> => {
-      return this.request<User>('/auth/profile', {
-        method: 'PUT',
+    updateProfile: async (
+      userData: Partial<User>,
+    ): Promise<ApiResponse<User>> => {
+      return this.request<User>("/auth/profile", {
+        method: "PUT",
         body: JSON.stringify(userData),
       });
     },
 
     refreshToken: async (): Promise<ApiResponse<AuthResponse>> => {
-      return this.request<AuthResponse>('/auth/refresh', {
-        method: 'POST',
+      return this.request<AuthResponse>("/auth/refresh", {
+        method: "POST",
       });
     },
 
     logout: async (): Promise<ApiResponse<void>> => {
-      const result = await this.request<void>('/auth/logout', {
-        method: 'POST',
+      const result = await this.request<void>("/auth/logout", {
+        method: "POST",
       });
-      
+
       // Clear token on logout
       this.setToken(null);
       return result;
@@ -141,7 +150,7 @@ class ApiClient {
   // Products API methods
   products = {
     getAll: async (store?: string): Promise<ApiResponse<Product[]>> => {
-      const query = store ? `?store=${store}` : '';
+      const query = store ? `?store=${store}` : "";
       return this.request<Product[]>(`/products${query}`);
     },
 
@@ -149,23 +158,28 @@ class ApiClient {
       return this.request<Product>(`/products/${id}`);
     },
 
-    create: async (productData: Omit<Product, 'id' | 'created_at' | 'updated_at'>): Promise<ApiResponse<Product>> => {
-      return this.request<Product>('/products', {
-        method: 'POST',
+    create: async (
+      productData: Omit<Product, "id" | "created_at" | "updated_at">,
+    ): Promise<ApiResponse<Product>> => {
+      return this.request<Product>("/products", {
+        method: "POST",
         body: JSON.stringify(productData),
       });
     },
 
-    update: async (id: string, productData: Partial<Product>): Promise<ApiResponse<Product>> => {
+    update: async (
+      id: string,
+      productData: Partial<Product>,
+    ): Promise<ApiResponse<Product>> => {
       return this.request<Product>(`/products/${id}`, {
-        method: 'PUT',
+        method: "PUT",
         body: JSON.stringify(productData),
       });
     },
 
     delete: async (id: string): Promise<ApiResponse<void>> => {
       return this.request<void>(`/products/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
     },
   };
@@ -173,26 +187,31 @@ class ApiClient {
   // Categories API methods
   categories = {
     getAll: async (): Promise<ApiResponse<Category[]>> => {
-      return this.request<Category[]>('/categories');
+      return this.request<Category[]>("/categories");
     },
 
-    create: async (categoryData: Omit<Category, 'id' | 'created_at' | 'updated_at'>): Promise<ApiResponse<Category>> => {
-      return this.request<Category>('/categories', {
-        method: 'POST',
+    create: async (
+      categoryData: Omit<Category, "id" | "created_at" | "updated_at">,
+    ): Promise<ApiResponse<Category>> => {
+      return this.request<Category>("/categories", {
+        method: "POST",
         body: JSON.stringify(categoryData),
       });
     },
 
-    update: async (id: string, categoryData: Partial<Category>): Promise<ApiResponse<Category>> => {
+    update: async (
+      id: string,
+      categoryData: Partial<Category>,
+    ): Promise<ApiResponse<Category>> => {
       return this.request<Category>(`/categories/${id}`, {
-        method: 'PUT',
+        method: "PUT",
         body: JSON.stringify(categoryData),
       });
     },
 
     delete: async (id: string): Promise<ApiResponse<void>> => {
       return this.request<void>(`/categories/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
     },
   };
@@ -209,14 +228,14 @@ class ApiClient {
         price: number;
       }>;
     }): Promise<ApiResponse<Order>> => {
-      return this.request<Order>('/orders', {
-        method: 'POST',
+      return this.request<Order>("/orders", {
+        method: "POST",
         body: JSON.stringify(orderData),
       });
     },
 
     getUserOrders: async (): Promise<ApiResponse<Order[]>> => {
-      return this.request<Order[]>('/orders');
+      return this.request<Order[]>("/orders");
     },
 
     getById: async (id: string): Promise<ApiResponse<Order>> => {
@@ -227,39 +246,45 @@ class ApiClient {
   // Admin API methods
   admin = {
     getStats: async (): Promise<ApiResponse<any>> => {
-      return this.request<any>('/admin/stats');
+      return this.request<any>("/admin/stats");
     },
 
     getActivity: async (limit?: number): Promise<ApiResponse<any[]>> => {
-      const query = limit ? `?limit=${limit}` : '';
+      const query = limit ? `?limit=${limit}` : "";
       return this.request<any[]>(`/admin/activity${query}`);
     },
 
     getAllOrders: async (): Promise<ApiResponse<Order[]>> => {
-      return this.request<Order[]>('/admin/orders');
+      return this.request<Order[]>("/admin/orders");
     },
 
-    updateOrderStatus: async (id: string, status: string): Promise<ApiResponse<Order>> => {
+    updateOrderStatus: async (
+      id: string,
+      status: string,
+    ): Promise<ApiResponse<Order>> => {
       return this.request<Order>(`/admin/orders/${id}/status`, {
-        method: 'PUT',
+        method: "PUT",
         body: JSON.stringify({ status }),
       });
     },
 
     getAllUsers: async (): Promise<ApiResponse<User[]>> => {
-      return this.request<User[]>('/admin/users');
+      return this.request<User[]>("/admin/users");
     },
 
-    updateUserRole: async (id: string, role: 'user' | 'admin'): Promise<ApiResponse<User>> => {
+    updateUserRole: async (
+      id: string,
+      role: "user" | "admin",
+    ): Promise<ApiResponse<User>> => {
       return this.request<User>(`/admin/users/${id}/role`, {
-        method: 'PUT',
+        method: "PUT",
         body: JSON.stringify({ role }),
       });
     },
 
     deleteUser: async (id: string): Promise<ApiResponse<void>> => {
       return this.request<void>(`/admin/users/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
     },
   };
@@ -278,13 +303,13 @@ class ApiClient {
 export const apiClient = new ApiClient();
 
 // Export types for convenience
-export type { 
-  ApiResponse, 
-  Product, 
-  Category, 
-  User, 
-  Order, 
+export type {
+  ApiResponse,
+  Product,
+  Category,
+  User,
+  Order,
   AuthResponse,
   LoginRequest,
-  RegisterRequest 
+  RegisterRequest,
 };

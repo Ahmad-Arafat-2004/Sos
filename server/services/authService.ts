@@ -160,7 +160,7 @@ export class AuthService {
         }
       } catch (e) {
         // ignore errors while writing local fallback
-        console.warn('Failed to persist user to local JSON fallback:', e);
+        console.warn("Failed to persist user to local JSON fallback:", e);
       }
 
       return {
