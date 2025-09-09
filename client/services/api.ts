@@ -60,12 +60,26 @@ class ApiClient {
         },
       });
 
-      const data = await response.json();
+      // Safely read response body once and parse JSON if possible
+      let text: string | null = null;
+      let data: any = null;
+      try {
+        text = await response.text();
+        try {
+          data = text ? JSON.parse(text) : null;
+        } catch (e) {
+          data = null;
+        }
+      } catch (e) {
+        // If reading the body fails (already read), fallback to null
+        data = null;
+      }
 
       if (!response.ok) {
+        const errMsg = data && data.error ? data.error : `HTTP ${response.status}: ${response.statusText}`;
         return {
           success: false,
-          error: data.error || `HTTP ${response.status}: ${response.statusText}`
+          error: errMsg
         };
       }
 
