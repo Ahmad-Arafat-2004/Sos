@@ -65,7 +65,7 @@ const AdminDashboard: React.FC = () => {
     store: 'irth-biladi' as Product['store']
   });
 
-  // نموذج الفئة الجديدة
+  // نموذج ا��فئة الجديدة
   const [newCategory, setNewCategory] = useState({
     name: { en: '', ar: '' },
     description: { en: '', ar: '' },
@@ -283,6 +283,7 @@ const AdminDashboard: React.FC = () => {
           <Button
             variant={activeTab === 'overview' ? 'default' : 'outline'}
             onClick={() => setActiveTab('overview')}
+            style={{ marginLeft: '14px' }}
           >
             <ShoppingCart className="w-4 h-4 mr-2" />
             {language === 'ar' ? 'نظرة عامة' : 'Overview'}
