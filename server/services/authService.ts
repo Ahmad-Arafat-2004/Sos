@@ -183,15 +183,43 @@ export class AuthService {
         const { localDb } = await import("../lib/local-db");
         const user = localDb.getUserByEmail(credentials.email);
         if (!user) {
+          console.debug("auth.local.login", { email: credentials.email, userFound: false });
           return { success: false, error: "Invalid email or password" };
         }
-        const ok = await bcrypt.compare(
-          credentials.password,
-          user.password_hash,
-        );
+
+        // First try async compare
+        let ok = false;
+        try {
+          ok = await bcrypt.compare(credentials.password, user.password_hash);
+        } catch (cmpErr) {
+          console.debug("auth.local.login.compare.error", { err: cmpErr });
+          ok = false;
+        }
+
+        // Fallback to sync compare if async compare failed for any reason
+        if (!ok) {
+          try {
+            // @ts-ignore: bcryptjs may expose compareSync
+            if (typeof bcrypt.compareSync === "function") {
+              // @ts-ignore
+              ok = bcrypt.compareSync(credentials.password, user.password_hash);
+            }
+          } catch (syncErr) {
+            console.debug("auth.local.login.compareSync.error", { err: syncErr });
+          }
+        }
+
+        console.debug("auth.local.login", {
+          email: credentials.email,
+          userFound: true,
+          compareResult: ok,
+          passwordHashPrefix: user.password_hash ? user.password_hash.substring(0, 7) : null,
+        });
+
         if (!ok) {
           return { success: false, error: "Invalid email or password" };
         }
+
         const token = this.generateToken(user.id);
         return {
           success: true,
@@ -209,6 +237,7 @@ export class AuthService {
           message: "Login successful",
         };
       } catch (e) {
+        console.error("auth.local.login.error", e);
         return { success: false, error: "Failed to login" };
       }
     }
