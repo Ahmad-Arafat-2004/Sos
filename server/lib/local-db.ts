@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import crypto from "crypto";
+import bcrypt from "bcryptjs";
 
 export interface LocalUserRecord {
   id: string;
@@ -20,7 +21,6 @@ const DB_FILE = path.resolve(process.cwd(), "server/lib/local-db.json");
 
 function ensureFile(): void {
   if (!fs.existsSync(DB_FILE)) {
-    const bcrypt = require("bcryptjs") as typeof import("bcryptjs");
     const now = new Date().toISOString();
     const initial: LocalDbSchema = {
       users: [
