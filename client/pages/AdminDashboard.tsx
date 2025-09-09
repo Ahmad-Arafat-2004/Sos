@@ -65,7 +65,7 @@ const AdminDashboard: React.FC = () => {
     store: 'irth-biladi' as Product['store']
   });
 
-  // نموذج ا��فئة الجديدة
+  // نموذج الفئة الجديدة
   const [newCategory, setNewCategory] = useState({
     name: { en: '', ar: '' },
     description: { en: '', ar: '' },
@@ -291,6 +291,7 @@ const AdminDashboard: React.FC = () => {
           <Button
             variant={activeTab === 'products' ? 'default' : 'outline'}
             onClick={() => setActiveTab('products')}
+            style={{ marginLeft: '17px' }}
           >
             <Package className="w-4 h-4 mr-2" />
             {language === 'ar' ? 'المنتجات' : 'Products'}
@@ -392,7 +393,7 @@ const AdminDashboard: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <Label>{language === 'ar' ? 'الفئة' : 'Category'}</Label>
+                    <Label>{language === 'ar' ? 'ال��ئة' : 'Category'}</Label>
                     <select
                       value={newProduct.category}
                       onChange={(e) => setNewProduct({
