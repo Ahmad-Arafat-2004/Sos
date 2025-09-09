@@ -65,7 +65,7 @@ const Header: React.FC = () => {
 
   return (
     <header
-      dir="ltr"
+      dir={isRTL ? "rtl" : "ltr"}
       className={cn("bg-white shadow-soft sticky top-0 z-50", "font-english")}
     >
       <div className="container mx-auto px-4">
