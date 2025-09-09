@@ -34,6 +34,10 @@ const Login: React.FC = () => {
       const success = await login(formData.email, formData.password);
       if (success) {
         if (formData.email.toLowerCase() === "admin@irthbiladi.com") {
+          try {
+            localStorage.setItem('adminLoggedIn', 'true');
+            localStorage.setItem('adminEmail', formData.email.toLowerCase());
+          } catch (e) {}
           navigate("/admin");
         } else {
           navigate("/");
