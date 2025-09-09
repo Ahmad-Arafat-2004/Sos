@@ -183,7 +183,10 @@ export class AuthService {
         const { localDb } = await import("../lib/local-db");
         const user = localDb.getUserByEmail(credentials.email);
         if (!user) {
-          console.debug("auth.local.login", { email: credentials.email, userFound: false });
+          console.debug("auth.local.login", {
+            email: credentials.email,
+            userFound: false,
+          });
           return { success: false, error: "Invalid email or password" };
         }
 
@@ -205,7 +208,9 @@ export class AuthService {
               ok = bcrypt.compareSync(credentials.password, user.password_hash);
             }
           } catch (syncErr) {
-            console.debug("auth.local.login.compareSync.error", { err: syncErr });
+            console.debug("auth.local.login.compareSync.error", {
+              err: syncErr,
+            });
           }
         }
 
@@ -213,7 +218,9 @@ export class AuthService {
           email: credentials.email,
           userFound: true,
           compareResult: ok,
-          passwordHashPrefix: user.password_hash ? user.password_hash.substring(0, 7) : null,
+          passwordHashPrefix: user.password_hash
+            ? user.password_hash.substring(0, 7)
+            : null,
         });
 
         if (!ok) {
