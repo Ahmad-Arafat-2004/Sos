@@ -110,7 +110,7 @@ const Header: React.FC = () => {
               variant="outline"
               size="sm"
               onClick={toggleLanguage}
-              className="hidden sm:flex items-center space-x-1 rtl:space-x-reverse"
+              className={cn("hidden sm:flex items-center space-x-1 rtl:space-x-reverse", isRTL ? 'ml-3' : 'mr-3')}
             >
               <Globe className="w-4 h-4" />
               <span>{language === "en" ? "العربية" : "English"}</span>
