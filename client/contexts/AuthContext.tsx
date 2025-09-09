@@ -137,7 +137,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Always clear local state regardless of API call result
       apiClient.setToken(null);
       setUser(null);
-      
+      // Remove any admin flags stored in localStorage
+      try {
+        localStorage.removeItem('adminLoggedIn');
+        localStorage.removeItem('adminEmail');
+      } catch (e) {
+        // ignore
+      }
       showNotification(
         'تم تسجيل الخروج بنجاح',
         'success'
