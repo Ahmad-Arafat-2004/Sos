@@ -6,7 +6,8 @@ import { useNotification } from './NotificationContext';
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<boolean>;
-  signup: (email: string, password: string, name: string) => Promise<boolean>;
+  // signup now returns the raw ApiResponse so callers can show server errors
+  signup: (email: string, password: string, name: string) => Promise<import('../../shared/types').ApiResponse<import('../../shared/types').AuthResponse>>;
   logout: () => Promise<void>;
   updateProfile: (userData: Partial<User>) => Promise<boolean>;
   isLoading: boolean;
@@ -25,12 +26,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const initializeAuth = async () => {
       try {
         setIsLoading(true);
-        
+
         // Check if we have a token
         const token = localStorage.getItem('auth_token');
         if (token) {
           apiClient.setToken(token);
-          
+
           // Try to get user profile
           const result = await apiClient.auth.getProfile();
           if (result.success && result.data) {
@@ -56,21 +57,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
       setIsLoading(true);
-      
+
       const result = await apiClient.auth.login({ email, password });
-      
+
       if (result.success && result.data) {
         const { user: userData, token } = result.data;
-        
+
         // Set token and user
         apiClient.setToken(token);
         setUser(userData);
-        
+
         showNotification(
           'تم تسجيل الدخول بنجاح! أهلاً وسهلاً بك',
           'success'
         );
-        
+
         return true;
       } else {
         showNotification(
@@ -90,38 +91,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const signup = async (email: string, password: string, name: string): Promise<boolean> => {
+  const signup = async (email: string, password: string, name: string): Promise<import('../../shared/types').ApiResponse<import('../../shared/types').AuthResponse>> => {
     try {
       setIsLoading(true);
-      
+
       const result = await apiClient.auth.register({ email, password, name });
-      
+
       if (result.success && result.data) {
         const { user: userData, token } = result.data;
-        
+
         // Set token and user
         apiClient.setToken(token);
         setUser(userData);
-        
+
         showNotification(
           'تم إنشاء الحساب بنجاح! مرحباً بك في موقعنا',
           'success'
         );
-        
-        return true;
       } else {
         showNotification(
           result.error || 'خطأ في إنشاء الحساب',
           'error'
         );
-        return false;
       }
+
+      return result;
     } catch (error) {
       showNotification(
         'حدث خطأ في الاتصال. الرجاء المحاولة مرة أخرى',
         'error'
       );
-      return false;
+      return { success: false, error: error instanceof Error ? error.message : 'Network error' } as any;
     } finally {
       setIsLoading(false);
     }
