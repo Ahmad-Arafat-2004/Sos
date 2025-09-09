@@ -50,11 +50,16 @@ const SignUp: React.FC = () => {
     }
 
     try {
-      const success = await signup(formData.email, formData.password, formData.name);
-      if (success) {
+      const result = await signup(formData.email, formData.password, formData.name);
+      if (result.success) {
         navigate('/');
       } else {
-        setError(language === 'ar' ? 'فشل إنشاء الحساب. حاول مرة أخرى.' : 'Failed to create account. Please try again.');
+        // Show specific server message when user already exists
+        if (result.error && result.error.toLowerCase().includes('user already exists')) {
+          setError(language === 'ar' ? 'هذا المستخدم موجود' : 'User already exists');
+        } else {
+          setError(result.error || (language === 'ar' ? 'فشل إنشاء الحساب. حاول مرة أخرى.' : 'Failed to create account. Please try again.'));
+        }
       }
     } catch (error) {
       setError(language === 'ar' ? 'حدث خطأ. حاول مرة أخرى.' : 'An error occurred. Please try again.');
