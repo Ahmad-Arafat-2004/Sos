@@ -145,6 +145,24 @@ export class AuthService {
 
       const token = this.generateToken(user.id);
 
+      // Also persist the newly created user into local JSON database as a fallback
+      try {
+        const { localDb } = await import("../lib/local-db");
+        const existingLocal = localDb.getUserByEmail(user.email);
+        if (!existingLocal) {
+          // hashedPassword was computed earlier in this function
+          await localDb.createUser({
+            email: user.email,
+            name: user.name,
+            password_hash: hashedPassword,
+            role: user.role,
+          });
+        }
+      } catch (e) {
+        // ignore errors while writing local fallback
+        console.warn('Failed to persist user to local JSON fallback:', e);
+      }
+
       return {
         success: true,
         data: { user, token },
