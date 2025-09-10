@@ -45,6 +45,12 @@ const AdminDashboard: React.FC = () => {
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
 
+  // Refs to focus description inputs when missing
+  const addDescEnRef = React.useRef<HTMLInputElement | null>(null);
+  const addDescArRef = React.useRef<HTMLInputElement | null>(null);
+  const editDescEnRef = React.useRef<HTMLInputElement | null>(null);
+  const editDescArRef = React.useRef<HTMLInputElement | null>(null);
+
   // حالات نوافذ التأكيد
   const [confirmDialog, setConfirmDialog] = useState<{
     isOpen: boolean;
@@ -134,7 +140,7 @@ const AdminDashboard: React.FC = () => {
       if (!newProduct.description || !newProduct.description.ar) {
         showNotification(
           language === "ar"
-            ? "الرجاء إدخال الوصف بالعرب��ة"
+            ? "الرجاء إدخال الوصف بالعربية"
             : "Please enter description in Arabic",
         );
         return;
@@ -351,7 +357,7 @@ const AdminDashboard: React.FC = () => {
     });
   };
 
-  // فلترة المنتجات للتأكد من سلامتها
+  // فلترة المنتجات للتأكد من س��امتها
   const safeProducts = Array.isArray(products)
     ? products.filter(
         (p) =>
@@ -452,7 +458,7 @@ const AdminDashboard: React.FC = () => {
               </h2>
               <Button onClick={() => setShowAddProduct(true)}>
                 <Plus className="w-4 h-4 mr-2" />
-                {language === "ar" ? "إضافة منتج" : "Add Product"}
+                {language === "ar" ? "إضافة منت��" : "Add Product"}
               </Button>
             </div>
 
@@ -476,7 +482,7 @@ const AdminDashboard: React.FC = () => {
                     <Input
                       value={editingProduct.name?.ar || ''}
                       onChange={(e) => setEditingProduct({ ...editingProduct, name: { ...editingProduct.name, ar: e.target.value } })}
-                      placeholder="اسم المنتج بالعربية"
+                      placeholder="اسم ا��منتج بالعربية"
                     />
                   </div>
                   <div>
