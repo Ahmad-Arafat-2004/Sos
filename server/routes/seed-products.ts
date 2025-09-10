@@ -74,33 +74,54 @@ export const seedProducts = async (req: Request, res: Response) => {
       }
     ];
 
-    // Upsert products
+    // Insert products (resilient to schema differences)
     for (const p of products) {
       const category = catsBySlug[p.category_slug];
       if (!category) {
         return res.status(400).json({ success: false, error: `Missing category ${p.category_slug}` });
       }
 
-      const insertObj = {
+      // Build insert object with fields we expect are present
+      const insertObj: any = {
         name_en: p.name_en,
         name_ar: p.name_ar,
         description_en: p.description_en,
         description_ar: p.description_ar,
         price: p.price,
         category_id: category.id,
-        slug: p.slug,
-        store: p.store
+        store: p.store,
       };
 
-      const { data: prod, error: prodErr } = await supabase
-        .from('products')
-        .upsert(insertObj, { onConflict: 'slug' })
-        .select()
-        .single();
+      // Try to avoid using slug/upsert which may not exist in schema cache
+      try {
+        // Check if product with same name_en already exists
+        const { data: existing, error: checkErr } = await supabase
+          .from('products')
+          .select('id')
+          .eq('name_en', p.name_en)
+          .limit(1)
+          .single();
 
-      if (prodErr) {
-        console.error('Product upsert error', p.slug, prodErr);
-        return res.status(400).json({ success: false, error: prodErr.message });
+        if (checkErr && checkErr.code !== 'PGRST116') {
+          // If error other than not found, warn and continue
+          console.warn('Product existence check error', checkErr.message);
+        }
+
+        if (!existing) {
+          const { data: prod, error: prodErr } = await supabase
+            .from('products')
+            .insert(insertObj)
+            .select()
+            .single();
+
+          if (prodErr) {
+            console.error('Product insert error', p.name_en, prodErr);
+            return res.status(400).json({ success: false, error: prodErr.message });
+          }
+        }
+      } catch (e) {
+        console.error('Product seed error', e);
+        return res.status(500).json({ success: false, error: 'Failed seeding products' });
       }
     }
 
