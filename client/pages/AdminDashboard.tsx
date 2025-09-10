@@ -122,6 +122,23 @@ const AdminDashboard: React.FC = () => {
         );
         return;
       }
+      // Require descriptions in both languages
+      if (!newProduct.description || !newProduct.description.en) {
+        showNotification(
+          language === "ar"
+            ? "الرجاء إدخال الوصف بالإنجليزية"
+            : "Please enter description in English",
+        );
+        return;
+      }
+      if (!newProduct.description || !newProduct.description.ar) {
+        showNotification(
+          language === "ar"
+            ? "الرجاء إدخال الوصف بالعربية"
+            : "Please enter description in Arabic",
+        );
+        return;
+      }
       if (newProduct.price <= 0) {
         showNotification(
           language === "ar"
@@ -133,7 +150,7 @@ const AdminDashboard: React.FC = () => {
 
       const created = await addProduct(newProduct);
       if (!created) {
-        // addProduct already shows error notification
+        // addProduct already shows error notification (now includes validation details)
         return;
       }
 
