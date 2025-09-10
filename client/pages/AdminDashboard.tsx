@@ -160,7 +160,7 @@ const AdminDashboard: React.FC = () => {
         return;
       }
 
-      // إعادة تعيين النموذج فقط عند النجاح
+      // ��عادة تعيين النموذج فقط عند النجاح
       setNewProduct({
         name: { en: "", ar: "" },
         description: { en: "", ar: "" },
@@ -613,6 +613,37 @@ const AdminDashboard: React.FC = () => {
                       className={!newProduct.name.ar ? "border-red-300" : ""}
                     />
                   </div>
+
+                  <div>
+                    <Label>{language === "ar" ? "الوصف (إنجليزي)" : "Description (English)"}</Label>
+                    <Input
+                      ref={addDescEnRef}
+                      value={newProduct.description?.en || ""}
+                      onChange={(e) =>
+                        setNewProduct({
+                          ...newProduct,
+                          description: { ...newProduct.description, en: e.target.value },
+                        })
+                      }
+                      placeholder="Product description in English"
+                    />
+                  </div>
+
+                  <div>
+                    <Label>{language === "ar" ? "الوصف (عربي)" : "Description (Arabic)"}</Label>
+                    <Input
+                      ref={addDescArRef}
+                      value={newProduct.description?.ar || ""}
+                      onChange={(e) =>
+                        setNewProduct({
+                          ...newProduct,
+                          description: { ...newProduct.description, ar: e.target.value },
+                        })
+                      }
+                      placeholder="وصف المنتج بالعربية"
+                    />
+                  </div>
+
                   <div>
                     <Label>{language === "ar" ? "السعر" : "Price"} *</Label>
                     <Input
