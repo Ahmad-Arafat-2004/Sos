@@ -105,6 +105,9 @@ export function createServer() {
   app.get("/api/orders", authenticate, getUserOrders);
   app.get("/api/orders/:id", authenticate, getOrderById);
 
+  // Bot webhook forwarding (protected)
+  app.post("/api/bot", authenticate, (req, res) => import('./routes/bot').then(m => m.sendToBot(req, res)));
+
   // Admin-only order routes
   app.get("/api/admin/orders", authenticate, requireAdmin, getAllOrders);
   app.put(
