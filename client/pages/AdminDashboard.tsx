@@ -244,6 +244,17 @@ const AdminDashboard: React.FC = () => {
         return;
       }
 
+      // slug must be lowercase letters, numbers and hyphens
+      const slugRegex = /^[a-z0-9-]+$/;
+      if (!slugRegex.test(newCategory.slug)) {
+        showNotification(
+          language === "ar"
+            ? "الرمز المختصر يجب أن يحتوي أحرف صغيرة، أرقام وشرطات فقط"
+            : "Slug must contain only lowercase letters, numbers and hyphens",
+        );
+        return;
+      }
+
       const created = await addCategory(newCategory);
       if (!created) {
         return;
