@@ -88,7 +88,6 @@ export const seedProducts = async (req: Request, res: Response) => {
         description_ar: p.description_ar,
         price: p.price,
         category_id: category.id,
-        inventory: p.inventory,
         slug: p.slug,
         store: p.store
       };
