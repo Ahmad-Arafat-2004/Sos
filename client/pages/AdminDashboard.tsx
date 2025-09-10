@@ -142,7 +142,9 @@ const AdminDashboard: React.FC = () => {
             ? "الرجاء إدخال الوصف بال��نجليزية"
             : "Please enter description in English",
         );
-        try { addDescEnRef.current?.focus(); } catch (e) {}
+        try {
+          addDescEnRef.current?.focus();
+        } catch (e) {}
         return;
       }
       if (!newProduct.description || !newProduct.description.ar) {
@@ -151,7 +153,9 @@ const AdminDashboard: React.FC = () => {
             ? "الرجاء إدخال الوصف بالعربية"
             : "Please enter description in Arabic",
         );
-        try { addDescArRef.current?.focus(); } catch (e) {}
+        try {
+          addDescArRef.current?.focus();
+        } catch (e) {}
         return;
       }
       if (newProduct.price <= 0) {
@@ -165,7 +169,9 @@ const AdminDashboard: React.FC = () => {
 
       if (!newProduct.category) {
         showNotification(
-          language === "ar" ? "الرجاء اختيار الفئة" : "Please select a category",
+          language === "ar"
+            ? "الرجاء اختيار الفئة"
+            : "Please select a category",
         );
         return;
       }
@@ -202,21 +208,33 @@ const AdminDashboard: React.FC = () => {
         // Validate descriptions before update
         if (!editingProduct.description || !editingProduct.description.en) {
           showNotification(
-            language === 'ar' ? 'الرجاء إدخال الوصف بالإنجليزية' : 'Please enter description in English',
+            language === "ar"
+              ? "الرجاء إدخال الوصف بالإنجليزية"
+              : "Please enter description in English",
           );
-          try { editDescEnRef.current?.focus(); } catch (e) {}
+          try {
+            editDescEnRef.current?.focus();
+          } catch (e) {}
           return;
         }
         if (!editingProduct.description || !editingProduct.description.ar) {
           showNotification(
-            language === 'ar' ? 'الرجاء إدخال الوصف بالعربية' : 'Please enter description in Arabic',
+            language === "ar"
+              ? "الرجاء إدخال الوصف بالعربية"
+              : "Please enter description in Arabic",
           );
-          try { editDescArRef.current?.focus(); } catch (e) {}
+          try {
+            editDescArRef.current?.focus();
+          } catch (e) {}
           return;
         }
 
         if (!editingProduct.category) {
-          showNotification(language === 'ar' ? 'الرجاء اختيار الفئة' : 'Please select a category');
+          showNotification(
+            language === "ar"
+              ? "الرجاء اختيار الفئة"
+              : "Please select a category",
+          );
           return;
         }
 
@@ -326,7 +344,10 @@ const AdminDashboard: React.FC = () => {
   const handleUpdateCategory = async () => {
     try {
       if (editingCategory && editingCategory.id) {
-        const updated = await updateCategory(editingCategory.id, editingCategory as any);
+        const updated = await updateCategory(
+          editingCategory.id,
+          editingCategory as any,
+        );
         if (!updated) return; // updateCategory will show error
         setEditingCategory(null);
       }
@@ -503,108 +524,193 @@ const AdminDashboard: React.FC = () => {
             {editingProduct && editingProduct.id && (
               <div className="bg-white p-6 rounded-lg shadow">
                 <h3 className="text-lg font-semibold mb-4">
-                  {language === 'ar' ? 'تعديل المنتج' : 'Edit Product'}
+                  {language === "ar" ? "تعديل المنتج" : "Edit Product"}
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label>{language === 'ar' ? 'الاسم (إن��ليزي)' : 'Name (English)'} *</Label>
+                    <Label>
+                      {language === "ar"
+                        ? "الاسم (إن��ليزي)"
+                        : "Name (English)"}{" "}
+                      *
+                    </Label>
                     <Input
-                      value={editingProduct.name?.en || ''}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, name: { ...editingProduct.name, en: e.target.value } })}
+                      value={editingProduct.name?.en || ""}
+                      onChange={(e) =>
+                        setEditingProduct({
+                          ...editingProduct,
+                          name: { ...editingProduct.name, en: e.target.value },
+                        })
+                      }
                       placeholder="Product name in English"
                     />
                   </div>
                   <div>
-                    <Label>{language === 'ar' ? 'الاسم (عربي)' : 'Name (Arabic)'} *</Label>
+                    <Label>
+                      {language === "ar" ? "الاسم (عربي)" : "Name (Arabic)"} *
+                    </Label>
                     <Input
-                      value={editingProduct.name?.ar || ''}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, name: { ...editingProduct.name, ar: e.target.value } })}
+                      value={editingProduct.name?.ar || ""}
+                      onChange={(e) =>
+                        setEditingProduct({
+                          ...editingProduct,
+                          name: { ...editingProduct.name, ar: e.target.value },
+                        })
+                      }
                       placeholder="اسم ا��منتج بالعربية"
                     />
                   </div>
                   <div>
-                    <Label>{language === 'ar' ? 'الوصف (إنجليزي)' : 'Description (English)'} *</Label>
+                    <Label>
+                      {language === "ar"
+                        ? "الوصف (إنجليزي)"
+                        : "Description (English)"}{" "}
+                      *
+                    </Label>
                     <Input
                       ref={editDescEnRef}
-                      value={editingProduct.description?.en || ''}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, description: { ...editingProduct.description, en: e.target.value } })}
+                      value={editingProduct.description?.en || ""}
+                      onChange={(e) =>
+                        setEditingProduct({
+                          ...editingProduct,
+                          description: {
+                            ...editingProduct.description,
+                            en: e.target.value,
+                          },
+                        })
+                      }
                       placeholder="Product description in English"
                     />
                   </div>
                   <div>
-                    <Label>{language === 'ar' ? 'الوصف (عربي)' : 'Description (Arabic)'} *</Label>
+                    <Label>
+                      {language === "ar"
+                        ? "الوصف (عربي)"
+                        : "Description (Arabic)"}{" "}
+                      *
+                    </Label>
                     <Input
                       ref={editDescArRef}
-                      value={editingProduct.description?.ar || ''}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, description: { ...editingProduct.description, ar: e.target.value } })}
+                      value={editingProduct.description?.ar || ""}
+                      onChange={(e) =>
+                        setEditingProduct({
+                          ...editingProduct,
+                          description: {
+                            ...editingProduct.description,
+                            ar: e.target.value,
+                          },
+                        })
+                      }
                       placeholder="وصف المنتج بالعربية"
                     />
                   </div>
                   <div>
-                    <Label>{language === 'ar' ? 'السعر' : 'Price'} *</Label>
+                    <Label>{language === "ar" ? "السعر" : "Price"} *</Label>
                     <Input
                       type="number"
                       step="0.01"
                       value={editingProduct.price || 0}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, price: parseFloat(e.target.value) || 0 })}
+                      onChange={(e) =>
+                        setEditingProduct({
+                          ...editingProduct,
+                          price: parseFloat(e.target.value) || 0,
+                        })
+                      }
                       placeholder="0.00"
                     />
                   </div>
                   <div>
-                    <Label>{language === 'ar' ? 'الفئة' : 'Category'}</Label>
+                    <Label>{language === "ar" ? "الفئة" : "Category"}</Label>
                     <select
-                      value={editingProduct.category || ''}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value })}
+                      value={editingProduct.category || ""}
+                      onChange={(e) =>
+                        setEditingProduct({
+                          ...editingProduct,
+                          category: e.target.value,
+                        })
+                      }
                       className="w-full h-10 px-3 border border-gray-200 rounded-md"
                     >
                       <option value="">--</option>
                       {categories.map((category) => (
-                        <option key={category.id} value={category.id}>{category.name[language]}</option>
+                        <option key={category.id} value={category.id}>
+                          {category.name[language]}
+                        </option>
                       ))}
                     </select>
                   </div>
                   <div>
-                    <Label>{language === 'ar' ? 'المتجر' : 'Store'}</Label>
+                    <Label>{language === "ar" ? "المتجر" : "Store"}</Label>
                     <select
-                      value={editingProduct.store || 'irth-biladi'}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, store: e.target.value as any })}
+                      value={editingProduct.store || "irth-biladi"}
+                      onChange={(e) =>
+                        setEditingProduct({
+                          ...editingProduct,
+                          store: e.target.value as any,
+                        })
+                      }
                       className="w-full h-10 px-3 border border-gray-200 rounded-md"
                     >
-                      <option value="irth-biladi">{language === 'ar' ? 'إرث بلادي' : 'Irth Biladi'}</option>
+                      <option value="irth-biladi">
+                        {language === "ar" ? "إرث بلادي" : "Irth Biladi"}
+                      </option>
                       <option value="cilka">Cilka</option>
                     </select>
                   </div>
                   <div>
-                    <Label>{language === 'ar' ? 'رابط الصورة' : 'Image URL'}</Label>
+                    <Label>
+                      {language === "ar" ? "رابط الصورة" : "Image URL"}
+                    </Label>
                     <Input
-                      value={editingProduct.image || ''}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, image: e.target.value })}
+                      value={editingProduct.image || ""}
+                      onChange={(e) =>
+                        setEditingProduct({
+                          ...editingProduct,
+                          image: e.target.value,
+                        })
+                      }
                       placeholder="https://..."
                     />
                   </div>
                   <div>
-                    <Label>{language === 'ar' ? 'الوزن' : 'Weight'}</Label>
+                    <Label>{language === "ar" ? "الوزن" : "Weight"}</Label>
                     <Input
-                      value={editingProduct.weight || ''}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, weight: e.target.value })}
+                      value={editingProduct.weight || ""}
+                      onChange={(e) =>
+                        setEditingProduct({
+                          ...editingProduct,
+                          weight: e.target.value,
+                        })
+                      }
                       placeholder="500g"
                     />
                   </div>
                   <div>
-                    <Label>{language === 'ar' ? 'المنشأ' : 'Origin'}</Label>
+                    <Label>{language === "ar" ? "المنشأ" : "Origin"}</Label>
                     <Input
-                      value={editingProduct.origin || ''}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, origin: e.target.value })}
+                      value={editingProduct.origin || ""}
+                      onChange={(e) =>
+                        setEditingProduct({
+                          ...editingProduct,
+                          origin: e.target.value,
+                        })
+                      }
                       placeholder="Country"
                     />
                   </div>
                 </div>
                 <div className="flex gap-2 mt-4">
-                  <Button onClick={handleUpdateProduct} className="bg-blue-600 hover:bg-blue-700">
-                    {language === 'ar' ? 'حفظ التعديلات' : 'Save Changes'}
+                  <Button
+                    onClick={handleUpdateProduct}
+                    className="bg-blue-600 hover:bg-blue-700"
+                  >
+                    {language === "ar" ? "حفظ التعديلات" : "Save Changes"}
                   </Button>
-                  <Button variant="outline" onClick={() => setEditingProduct(null)}>
-                    {language === 'ar' ? 'إلغاء' : 'Cancel'}
+                  <Button
+                    variant="outline"
+                    onClick={() => setEditingProduct(null)}
+                  >
+                    {language === "ar" ? "إلغاء" : "Cancel"}
                   </Button>
                 </div>
               </div>
@@ -654,14 +760,21 @@ const AdminDashboard: React.FC = () => {
                   </div>
 
                   <div>
-                    <Label>{language === "ar" ? "الوصف (إنجليزي)" : "Description (English)"}</Label>
+                    <Label>
+                      {language === "ar"
+                        ? "الوصف (إنجليزي)"
+                        : "Description (English)"}
+                    </Label>
                     <Input
                       ref={addDescEnRef}
                       value={newProduct.description?.en || ""}
                       onChange={(e) =>
                         setNewProduct({
                           ...newProduct,
-                          description: { ...newProduct.description, en: e.target.value },
+                          description: {
+                            ...newProduct.description,
+                            en: e.target.value,
+                          },
                         })
                       }
                       placeholder="Product description in English"
@@ -669,14 +782,21 @@ const AdminDashboard: React.FC = () => {
                   </div>
 
                   <div>
-                    <Label>{language === "ar" ? "الوصف (عربي)" : "Description (Arabic)"}</Label>
+                    <Label>
+                      {language === "ar"
+                        ? "الوصف (عربي)"
+                        : "Description (Arabic)"}
+                    </Label>
                     <Input
                       ref={addDescArRef}
                       value={newProduct.description?.ar || ""}
                       onChange={(e) =>
                         setNewProduct({
                           ...newProduct,
-                          description: { ...newProduct.description, ar: e.target.value },
+                          description: {
+                            ...newProduct.description,
+                            ar: e.target.value,
+                          },
                         })
                       }
                       placeholder="وصف المنتج بالعربية"
@@ -700,25 +820,25 @@ const AdminDashboard: React.FC = () => {
                     />
                   </div>
                   <div>
-    <Label>{language === "ar" ? "ال��ئة" : "Category"}</Label>
-    <select
-      value={newProduct.category || ''}
-      onChange={(e) =>
-        setNewProduct({
-          ...newProduct,
-          category: e.target.value as Product["category"],
-        })
-      }
-      className="w-full h-10 px-3 border border-gray-200 rounded-md"
-    >
-      <option value="">-- Select Category --</option>
-      {categories.map((category) => (
-        <option key={category.id} value={category.id}>
-          {category.name[language]}
-        </option>
-      ))}
-    </select>
-  </div>
+                    <Label>{language === "ar" ? "ال��ئة" : "Category"}</Label>
+                    <select
+                      value={newProduct.category || ""}
+                      onChange={(e) =>
+                        setNewProduct({
+                          ...newProduct,
+                          category: e.target.value as Product["category"],
+                        })
+                      }
+                      className="w-full h-10 px-3 border border-gray-200 rounded-md"
+                    >
+                      <option value="">-- Select Category --</option>
+                      {categories.map((category) => (
+                        <option key={category.id} value={category.id}>
+                          {category.name[language]}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                   <div>
                     <Label>{language === "ar" ? "المتجر" : "Store"}</Label>
                     <select
@@ -822,7 +942,10 @@ const AdminDashboard: React.FC = () => {
                           </div>
                         </td>
                         <td className="py-4 px-6 text-sm text-gray-600 capitalize">
-                          {categories.find(c => c.id === product.category)?.name?.[language] || product.category || "unknown"}
+                          {categories.find((c) => c.id === product.category)
+                            ?.name?.[language] ||
+                            product.category ||
+                            "unknown"}
                         </td>
                         <td className="py-4 px-6">
                           <span

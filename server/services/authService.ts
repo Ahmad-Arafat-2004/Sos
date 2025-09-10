@@ -96,7 +96,11 @@ export class AuthService {
       try {
         // supabase.auth.admin.createUser is available when using service role
         // @ts-ignore
-        if (supabase.auth && (supabase.auth as any).admin && typeof (supabase.auth as any).admin.createUser === "function") {
+        if (
+          supabase.auth &&
+          (supabase.auth as any).admin &&
+          typeof (supabase.auth as any).admin.createUser === "function"
+        ) {
           // @ts-ignore
           const created = await (supabase.auth as any).admin.createUser({
             email: userData.email,
@@ -108,13 +112,14 @@ export class AuthService {
           authUserId = created.data?.user?.id;
         } else {
           // Fallback to client signUp
-          const { data: authData, error: authError } = await supabase.auth.signUp({
-            email: userData.email,
-            password: userData.password,
-            options: {
-              data: { name: userData.name },
-            },
-          });
+          const { data: authData, error: authError } =
+            await supabase.auth.signUp({
+              email: userData.email,
+              password: userData.password,
+              options: {
+                data: { name: userData.name },
+              },
+            });
 
           if (authError) {
             return { success: false, error: authError.message };
@@ -129,13 +134,15 @@ export class AuthService {
       } catch (e) {
         // If admin.createUser failed, try signUp as fallback
         try {
-          const { data: authData, error: authError } = await supabase.auth.signUp({
-            email: userData.email,
-            password: userData.password,
-            options: { data: { name: userData.name } },
-          });
+          const { data: authData, error: authError } =
+            await supabase.auth.signUp({
+              email: userData.email,
+              password: userData.password,
+              options: { data: { name: userData.name } },
+            });
           if (authError) return { success: false, error: authError.message };
-          if (!authData.user) return { success: false, error: "Failed to create user" };
+          if (!authData.user)
+            return { success: false, error: "Failed to create user" };
           authUserId = authData.user.id;
         } catch (err) {
           return { success: false, error: "Failed to create auth user" };
