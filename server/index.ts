@@ -75,6 +75,7 @@ export function createServer() {
   app.get("/api/seed-products", seedProducts);
   app.get("/api/inspect-products", (req, res) => import('./routes/inspect').then(m => m.inspectProducts(req, res)));
   app.post("/api/debug/delete-first-product", (req, res) => import('./routes/debug-delete').then(m => m.debugDeleteFirstProduct(req, res)));
+  app.post("/api/debug/run-tests", (req, res) => import('./routes/debug-run-tests').then(m => m.debugRunTests(req, res)));
 
   // Auth routes (public)
   app.post("/api/auth/register", register);
