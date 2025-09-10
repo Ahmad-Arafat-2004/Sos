@@ -103,13 +103,13 @@ const AdminDashboard: React.FC = () => {
     });
   };
 
-  // ��ضافة منتج جد��د
+  // إضافة منتج جديد
   const handleAddProduct = async () => {
     try {
       if (!newProduct.name.en) {
         showNotification(
           language === "ar"
-            ? "الر��اء إدخال الاسم با��إنجليزية"
+            ? "الرجاء إدخال الاسم بالإنجليزية"
             : "Please enter name in English",
         );
         return;
@@ -131,8 +131,13 @@ const AdminDashboard: React.FC = () => {
         return;
       }
 
-      await addProduct(newProduct);
-      // إعادة تعيين النموذج
+      const created = await addProduct(newProduct);
+      if (!created) {
+        // addProduct already shows error notification
+        return;
+      }
+
+      // إعادة تعيين النموذج فقط عند النجاح
       setNewProduct({
         name: { en: "", ar: "" },
         description: { en: "", ar: "" },
@@ -143,11 +148,6 @@ const AdminDashboard: React.FC = () => {
         store: "irth-biladi",
       });
       setShowAddProduct(false);
-      showNotification(
-        language === "ar"
-          ? "تم إضافة المنتج بنجاح!"
-          : "Product added successfully!",
-      );
     } catch (error) {
       console.error("Error adding product:", error);
       showNotification(
@@ -160,13 +160,13 @@ const AdminDashboard: React.FC = () => {
   const handleUpdateProduct = async () => {
     try {
       if (editingProduct && editingProduct.id) {
-        await updateProduct(editingProduct.id, editingProduct);
+        const updated = await updateProduct(editingProduct.id, editingProduct);
+        if (!updated) {
+          // updateProduct will show error notification
+          return;
+        }
         setEditingProduct(null);
-        showNotification(
-          language === "ar"
-            ? "تم تحديث المنتج بنجاح!"
-            : "Product updated successfully!",
-        );
+        // success notification already shown in context
       }
     } catch (error) {
       console.error("Error updating product:", error);
@@ -188,11 +188,7 @@ const AdminDashboard: React.FC = () => {
       onConfirm: async () => {
         try {
           await deleteProduct(id);
-          showNotification(
-            language === "ar"
-              ? "تم حذف المنتج بنجاح!"
-              : "Product deleted successfully!",
-          );
+          // deleteProduct in context handles notifications
         } catch (error) {
           console.error("Error deleting product:", error);
           showNotification("خطأ في حذف المنتج");
@@ -203,7 +199,7 @@ const AdminDashboard: React.FC = () => {
     });
   };
 
-  // إضافة فئة جدي��ة
+  // إضافة فئة جديدة
   const handleAddCategory = async () => {
     try {
       if (!newCategory.name.en) {
@@ -217,7 +213,7 @@ const AdminDashboard: React.FC = () => {
       if (!newCategory.name.ar) {
         showNotification(
           language === "ar"
-            ? "الرجاء إدخال اسم الفئة بالعربي��"
+            ? "الرجاء إدخال اسم الفئة بالعربية"
             : "Please enter category name in Arabic",
         );
         return;
@@ -231,19 +227,18 @@ const AdminDashboard: React.FC = () => {
         return;
       }
 
-      await addCategory(newCategory);
-      // إعادة تعيين النموذج
+      const created = await addCategory(newCategory);
+      if (!created) {
+        return;
+      }
+
+      // Reset only on success
       setNewCategory({
         name: { en: "", ar: "" },
         description: { en: "", ar: "" },
         slug: "",
       });
       setShowAddCategory(false);
-      showNotification(
-        language === "ar"
-          ? "تم إضافة الفئة بنجاح!"
-          : "Category added successfully!",
-      );
     } catch (error) {
       console.error("Error adding category:", error);
       const errorMessage =
@@ -260,13 +255,9 @@ const AdminDashboard: React.FC = () => {
   const handleUpdateCategory = async () => {
     try {
       if (editingCategory && editingCategory.id) {
-        await updateCategory(editingCategory.id, editingCategory);
+        const updated = await updateCategory(editingCategory.id, editingCategory as any);
+        if (!updated) return; // updateCategory will show error
         setEditingCategory(null);
-        showNotification(
-          language === "ar"
-            ? "تم تحديث الفئة بنجاح!"
-            : "Category updated successfully!",
-        );
       }
     } catch (error) {
       console.error("Error updating category:", error);
