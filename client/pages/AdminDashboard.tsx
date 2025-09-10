@@ -215,6 +215,11 @@ const AdminDashboard: React.FC = () => {
           return;
         }
 
+        if (!editingProduct.category) {
+          showNotification(language === 'ar' ? 'الرجاء اختيار الفئة' : 'Please select a category');
+          return;
+        }
+
         const updated = await updateProduct(editingProduct.id, editingProduct);
         if (!updated) {
           // updateProduct will show error notification
