@@ -132,10 +132,8 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   };
 
-  // Refresh categories
+  // Refresh categories (fetch even if user is not admin)
   const refreshCategories = async () => {
-    if (!isAdmin) return;
-    
     try {
       setCategoriesLoading(true);
       const result = await apiClient.categories.getAll();
