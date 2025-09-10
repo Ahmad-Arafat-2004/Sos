@@ -28,7 +28,7 @@ export const debugRunTests = async (req: Request, res: Response) => {
     const coffeeCat = (catsData || []).find((r: any) => r.slug === 'coffee-tea');
     if (!coffeeCat) return res.status(500).json({ success: false, error: 'Category missing after upsert' });
 
-    const productInsert = {
+    const productInsert: any = {
       name_en: 'Debug Runner Product',
       name_ar: 'منتج تصحيح',
       description_en: 'Debug description EN',
@@ -36,9 +36,18 @@ export const debugRunTests = async (req: Request, res: Response) => {
       price: 9.99,
       category_id: coffeeCat.id,
       image: null,
-      slug: `debug-run-product-${Date.now()}`,
       store: 'irth-biladi'
     };
+
+    // If slug column exists, include it
+    try {
+      const { data: sampleRow } = await supabase.from('products').select('slug').limit(1).single();
+      if (sampleRow && Object.prototype.hasOwnProperty.call(sampleRow, 'slug')) {
+        productInsert.slug = `debug-run-product-${Date.now()}`;
+      }
+    } catch (e) {
+      // ignore if column doesn't exist
+    }
 
     const { data: createdProd, error: createErr } = await supabase
       .from('products')
