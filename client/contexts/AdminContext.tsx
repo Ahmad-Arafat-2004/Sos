@@ -191,6 +191,11 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   }, [isAdmin]);
 
+  // Always load categories so forms work even if admin auth isn't set yet
+  React.useEffect(() => {
+    refreshCategories();
+  }, []);
+
   // Product methods
   const addProduct = async (productData: Omit<Product, 'id' | 'created_at' | 'updated_at'>): Promise<Product | null> => {
     try {
