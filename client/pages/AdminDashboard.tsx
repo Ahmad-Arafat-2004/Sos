@@ -403,7 +403,7 @@ const AdminDashboard: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <h1 className="text-2xl font-bold text-gray-900">
-              {language === "ar" ? "لوحة التحكم" : "Admin Dashboard"}
+              {language === "ar" ? "لوح�� التحكم" : "Admin Dashboard"}
             </h1>
             <Button onClick={handleLogout} variant="outline" size="sm">
               <LogOut className="w-4 h-4 mr-2" />
@@ -688,24 +688,25 @@ const AdminDashboard: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <Label>{language === "ar" ? "ال��ئة" : "Category"}</Label>
-                    <select
-                      value={newProduct.category}
-                      onChange={(e) =>
-                        setNewProduct({
-                          ...newProduct,
-                          category: e.target.value as Product["category"],
-                        })
-                      }
-                      className="w-full h-10 px-3 border border-gray-200 rounded-md"
-                    >
-                      {categories.map((category) => (
-                        <option key={category.id} value={category.id}>
-                          {category.name[language]}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+    <Label>{language === "ar" ? "ال��ئة" : "Category"}</Label>
+    <select
+      value={newProduct.category || ''}
+      onChange={(e) =>
+        setNewProduct({
+          ...newProduct,
+          category: e.target.value as Product["category"],
+        })
+      }
+      className="w-full h-10 px-3 border border-gray-200 rounded-md"
+    >
+      <option value="">-- Select Category --</option>
+      {categories.map((category) => (
+        <option key={category.id} value={category.id}>
+          {category.name[language]}
+        </option>
+      ))}
+    </select>
+  </div>
                   <div>
                     <Label>{language === "ar" ? "المتجر" : "Store"}</Label>
                     <select
