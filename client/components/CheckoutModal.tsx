@@ -38,6 +38,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const [country, setCountry] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [sendToBot, setSendToBot] = useState(false);
 
   if (!isOpen) return null;
 
