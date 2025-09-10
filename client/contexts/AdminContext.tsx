@@ -224,7 +224,13 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const updateProduct = async (id: string, productData: Partial<Product>): Promise<Product | null> => {
     try {
-      const result = await apiClient.products.update(id, productData);
+      const payload: any = { ...productData };
+      if (payload.category) {
+        const found = categories.find(c => c.id === payload.category || c.slug === payload.category);
+        if (found) payload.category = found.id;
+      }
+
+      const result = await apiClient.products.update(id, payload);
       if (result.success && result.data) {
         setProducts(prev => prev.map(p => p.id === id ? result.data! : p));
         showNotification('تم تحديث المنتج بنجاح!', 'success');
@@ -281,7 +287,7 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         showNotification('تم تحديث الفئة بنجاح!', 'success');
         return result.data;
       } else {
-        showNotification(result.error || 'خطأ في تحديث الفئة', 'error');
+        showNotification(result.error || '��طأ في تحديث الفئة', 'error');
         return null;
       }
     } catch (error) {
