@@ -70,16 +70,23 @@ const AdminDashboard: React.FC = () => {
     isDestructive: false,
   });
 
-  // نموذج الم����تج الجديد
+  // نموذج المنتج الجديد
   const [newProduct, setNewProduct] = useState({
     name: { en: "", ar: "" },
     description: { en: "", ar: "" },
     price: 0,
     image: "",
-    category: "dairy-cheese" as Product["category"],
+    category: "" as Product["category"],
     weight: "",
     store: "irth-biladi" as Product["store"],
   });
+
+  // When categories load, default the newProduct.category to first category id
+  React.useEffect(() => {
+    if (!newProduct.category && categories && categories.length > 0) {
+      setNewProduct((prev) => ({ ...prev, category: categories[0].id }));
+    }
+  }, [categories]);
 
   // نموذج الفئة الجديدة
   const [newCategory, setNewCategory] = useState({
@@ -95,7 +102,7 @@ const AdminDashboard: React.FC = () => {
       title: language === "ar" ? "تسجيل الخروج" : "Logout",
       description:
         language === "ar"
-          ? "هل أنت متأكد م�� تسجيل الخروج؟"
+          ? "هل أنت متأكد م���� تسجيل الخروج؟"
           : "Are you sure you want to logout?",
       confirmText: language === "ar" ? "تسجيل الخر��ج" : "Logout",
       cancelText: language === "ar" ? "إلغاء" : "Cancel",
@@ -132,7 +139,7 @@ const AdminDashboard: React.FC = () => {
       if (!newProduct.description || !newProduct.description.en) {
         showNotification(
           language === "ar"
-            ? "الرجاء إدخال الوصف بال��نجليزية"
+            ? "الرجاء إدخال الوصف ب��ل��نجليزية"
             : "Please enter description in English",
         );
         try { addDescEnRef.current?.focus(); } catch (e) {}
