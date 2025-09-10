@@ -18,12 +18,8 @@ const Cart: React.FC = () => {
   const navigate = useNavigate();
   
   const [authModalOpen, setAuthModalOpen] = useState(false);
-  const [promoCode, setPromoCode] = useState('');
-  const [discount, setDiscount] = useState(0);
 
-  const shipping = totalPrice > 50 ? 0 : 5.99;
-  const tax = totalPrice * 0.1; // 10% tax
-  const finalTotal = totalPrice + shipping + tax - discount;
+  const finalTotal = totalPrice;
 
   const handleQuantityChange = (productId: string, newQuantity: number) => {
     if (newQuantity < 1) return;
@@ -48,30 +44,6 @@ const Cart: React.FC = () => {
     navigate('/checkout');
   };
 
-  const applyPromoCode = () => {
-    const promoCodes: { [key: string]: number } = {
-      'WELCOME10': 0.1, // 10% discount
-      'SAVE5': 5,        // 5 JD off
-      'FIRST20': 0.2     // 20% discount
-    };
-
-    const discountRate = promoCodes[promoCode.toUpperCase()];
-    if (discountRate) {
-      const discountAmount = discountRate < 1 
-        ? totalPrice * discountRate 
-        : discountRate;
-      setDiscount(discountAmount);
-      alert(language === 'ar' 
-        ? 'تم تطبيق كود الخصم بنجاح!' 
-        : 'Promo code applied successfully!'
-      );
-    } else {
-      alert(language === 'ar' 
-        ? 'كود الخصم غير صحيح' 
-        : 'Invalid promo code'
-      );
-    }
-  };
 
   if (items.length === 0) {
     return (
@@ -270,28 +242,6 @@ const Cart: React.FC = () => {
               {language === 'ar' ? 'ملخص الطلب' : 'Order Summary'}
             </h2>
 
-            {/* Promo Code */}
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {language === 'ar' ? 'كود الخصم' : 'Promo Code'}
-              </label>
-              <div className="flex gap-2">
-                <Input
-                  value={promoCode}
-                  onChange={(e) => setPromoCode(e.target.value)}
-                  placeholder={language === 'ar' ? 'أدخل الكود' : 'Enter code'}
-                  className="flex-1"
-                />
-                <Button 
-                  variant="outline" 
-                  onClick={applyPromoCode}
-                  disabled={!promoCode.trim()}
-                >
-                  <Tag className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
-
             <Separator className="my-4" />
 
             {/* Price Breakdown */}
@@ -300,42 +250,6 @@ const Cart: React.FC = () => {
                 <span>{language === 'ar' ? 'المجموع الفرعي' : 'Subtotal'}</span>
                 <span>{totalPrice.toFixed(2)} {language === 'ar' ? 'د.أ' : 'JD'}</span>
               </div>
-
-              <div className="flex justify-between text-gray-600">
-                <span>{language === 'ar' ? 'الشحن' : 'Shipping'}</span>
-                <span>
-                  {shipping === 0 ? (
-                    <span className="text-green-600 font-medium">
-                      {language === 'ar' ? 'مجاني' : 'Free'}
-                    </span>
-                  ) : (
-                    `${shipping.toFixed(2)} ${language === 'ar' ? 'د.أ' : 'JD'}`
-                  )}
-                </span>
-              </div>
-
-              <div className="flex justify-between text-gray-600">
-                <span>{language === 'ar' ? 'الضريبة' : 'Tax'}</span>
-                <span>{tax.toFixed(2)} {language === 'ar' ? 'د.أ' : 'JD'}</span>
-              </div>
-
-              {discount > 0 && (
-                <div className="flex justify-between text-green-600">
-                  <span>{language === 'ar' ? 'الخصم' : 'Discount'}</span>
-                  <span>-{discount.toFixed(2)} {language === 'ar' ? 'د.أ' : 'JD'}</span>
-                </div>
-              )}
-
-              {totalPrice < 50 && (
-                <div className="bg-olive-50 border border-olive-200 rounded-lg p-3">
-                  <p className="text-sm text-olive-700">
-                    {language === 'ar'
-                      ? `أضف ${(50 - totalPrice).toFixed(2)} د.أ للحصول على شحن مجاني`
-                      : `Add ${(50 - totalPrice).toFixed(2)} JD for free shipping`
-                    }
-                  </p>
-                </div>
-              )}
             </div>
 
             <Separator className="my-4" />
