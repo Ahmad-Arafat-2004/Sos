@@ -9,7 +9,6 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Separator } from '../components/ui/separator';
 import AuthModal from '../components/AuthModal';
-import CheckoutModal from '../components/CheckoutModal';
 
 const Cart: React.FC = () => {
   const { t, language, isRTL } = useLanguage();
@@ -19,7 +18,6 @@ const Cart: React.FC = () => {
   const navigate = useNavigate();
   
   const [authModalOpen, setAuthModalOpen] = useState(false);
-  const [checkoutOpen, setCheckoutOpen] = useState(false);
 
   const finalTotal = totalPrice;
 
@@ -42,8 +40,8 @@ const Cart: React.FC = () => {
       setAuthModalOpen(true);
       return;
     }
-    // Open checkout modal to collect name, phone, and address, then send WhatsApp and save order
-    setCheckoutOpen(true);
+    // Navigate to checkout page (to be implemented)
+    navigate('/checkout');
   };
 
 
@@ -287,15 +285,6 @@ const Cart: React.FC = () => {
         initialTab="login"
       />
 
-      {/* Checkout Modal */}
-      <CheckoutModal
-        isOpen={checkoutOpen}
-        onClose={() => setCheckoutOpen(false)}
-        items={items}
-        total={finalTotal}
-        clearCart={clearCart}
-        recipientPhone={'0796427591'}
-      />
     </div>
   );
 };
