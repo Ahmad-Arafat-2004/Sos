@@ -72,11 +72,11 @@ export class AuthService {
     }
 
     try {
-      // Hash password
+      // Hash password for local fallback
       const saltRounds = 12;
       const hashedPassword = await bcrypt.hash(userData.password, saltRounds);
 
-      // Check if user already exists
+      // Check if profile already exists
       const { data: existingUser } = await supabase
         .from("users")
         .select("id")
@@ -90,36 +90,67 @@ export class AuthService {
         };
       }
 
-      // Create user in Supabase auth
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: userData.email,
-        password: userData.password,
-        options: {
-          data: {
-            name: userData.name,
-          },
-        },
-      });
+      // Try to create auth user using admin API (service role) when available
+      let authUserId: string | undefined;
 
-      if (authError) {
-        return {
-          success: false,
-          error: authError.message,
-        };
+      try {
+        // supabase.auth.admin.createUser is available when using service role
+        // @ts-ignore
+        if (supabase.auth && (supabase.auth as any).admin && typeof (supabase.auth as any).admin.createUser === "function") {
+          // @ts-ignore
+          const created = await (supabase.auth as any).admin.createUser({
+            email: userData.email,
+            password: userData.password,
+            email_confirm: true,
+            user_metadata: { name: userData.name },
+          });
+          if (created.error) throw created.error;
+          authUserId = created.data?.user?.id;
+        } else {
+          // Fallback to client signUp
+          const { data: authData, error: authError } = await supabase.auth.signUp({
+            email: userData.email,
+            password: userData.password,
+            options: {
+              data: { name: userData.name },
+            },
+          });
+
+          if (authError) {
+            return { success: false, error: authError.message };
+          }
+
+          if (!authData.user) {
+            return { success: false, error: "Failed to create user" };
+          }
+
+          authUserId = authData.user.id;
+        }
+      } catch (e) {
+        // If admin.createUser failed, try signUp as fallback
+        try {
+          const { data: authData, error: authError } = await supabase.auth.signUp({
+            email: userData.email,
+            password: userData.password,
+            options: { data: { name: userData.name } },
+          });
+          if (authError) return { success: false, error: authError.message };
+          if (!authData.user) return { success: false, error: "Failed to create user" };
+          authUserId = authData.user.id;
+        } catch (err) {
+          return { success: false, error: "Failed to create auth user" };
+        }
       }
 
-      if (!authData.user) {
-        return {
-          success: false,
-          error: "Failed to create user",
-        };
+      if (!authUserId) {
+        return { success: false, error: "Failed to create auth user" };
       }
 
-      // Create user profile in our users table
+      // Insert profile into users table using auth user id
       const { data: userProfile, error: profileError } = await supabase
         .from("users")
         .insert({
-          id: authData.user.id,
+          id: authUserId,
           email: userData.email,
           name: userData.name,
           role: "user",
@@ -150,7 +181,6 @@ export class AuthService {
         const { localDb } = await import("../lib/local-db");
         const existingLocal = localDb.getUserByEmail(user.email);
         if (!existingLocal) {
-          // hashedPassword was computed earlier in this function
           await localDb.createUser({
             email: user.email,
             name: user.name,
@@ -159,7 +189,6 @@ export class AuthService {
           });
         }
       } catch (e) {
-        // ignore errors while writing local fallback
         console.warn("Failed to persist user to local JSON fallback:", e);
       }
 
@@ -169,6 +198,7 @@ export class AuthService {
         message: "User registered successfully",
       };
     } catch (error) {
+      console.error("auth.register.error", error);
       return {
         success: false,
         error: "Failed to register user",
