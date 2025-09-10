@@ -264,6 +264,14 @@ class ApiClient {
       });
     },
 
+    // Send order payload to bot webhook via server
+    sendToBot: async (botPayload: any): Promise<ApiResponse<any>> => {
+      return this.request<any>("/bot", {
+        method: "POST",
+        body: JSON.stringify(botPayload),
+      });
+    },
+
     getUserOrders: async (): Promise<ApiResponse<Order[]>> => {
       return this.request<Order[]>("/orders");
     },
