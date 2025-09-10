@@ -50,15 +50,31 @@ class ApiClient {
     endpoint: string,
     options: RequestInit = {},
   ): Promise<ApiResponse<T>> {
+    const url = `${this.baseURL}${endpoint}`;
+
+    // Build fetch options
+    const fetchOptions: RequestInit = {
+      ...options,
+      headers: {
+        ...this.getHeaders(),
+        ...options.headers,
+      },
+    };
+
     try {
-      const url = `${this.baseURL}${endpoint}`;
-      const response = await fetch(url, {
-        ...options,
-        headers: {
-          ...this.getHeaders(),
-          ...options.headers,
-        },
-      });
+      let response: Response;
+      try {
+        response = await fetch(url, fetchOptions);
+      } catch (fetchErr) {
+        console.error("ApiClient.fetch.error", fetchErr, { url, fetchOptions });
+        return {
+          success: false,
+          error:
+            fetchErr instanceof Error
+              ? fetchErr.message
+              : "Network error: failed to reach API",
+        };
+      }
 
       // Safely read response body once and parse JSON if possible
       let text: string | null = null;
@@ -71,7 +87,7 @@ class ApiClient {
           data = null;
         }
       } catch (e) {
-        // If reading the body fails (already read), fallback to null
+        console.warn("ApiClient.readBody.failed", e);
         data = null;
       }
 
@@ -99,11 +115,12 @@ class ApiClient {
         };
       }
 
-      return data;
+      return data !== null ? data : { success: true, data: null };
     } catch (error) {
+      console.error("ApiClient.request.unexpected", error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : "Network error",
+        error: error instanceof Error ? error.message : "Unknown network error",
       };
     }
   }
