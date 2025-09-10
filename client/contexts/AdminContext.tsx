@@ -288,10 +288,14 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         showNotification('تم حذف الفئة بنجاح!', 'success');
         await refreshStats(); // Update stats
       } else {
-        showNotification(result.error || 'خطأ في حذف الفئة', 'error');
+        const err = result.error || 'خطأ في حذف الفئة';
+        console.warn('deleteCategory.failed', { id, err });
+        showNotification(err, 'error');
       }
     } catch (error) {
-      showNotification('خطأ في الاتصال. الرجاء المحاولة مرة أخرى', 'error');
+      console.error('deleteCategory.exception', error);
+      const msg = error instanceof Error ? error.message : 'خطأ في الاتصال. ��لرجاء المحاولة مرة أخرى';
+      showNotification(msg, 'error');
     }
   };
 
