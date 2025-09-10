@@ -76,10 +76,23 @@ class ApiClient {
       }
 
       if (!response.ok) {
-        const errMsg =
+        let errMsg =
           data && data.error
             ? data.error
             : `HTTP ${response.status}: ${response.statusText}`;
+
+        // If server provided validation details, include them
+        try {
+          if (data && Array.isArray(data.details)) {
+            const detailMsgs = data.details
+              .map((d: any) => (d && d.message ? d.message : JSON.stringify(d)))
+              .filter(Boolean);
+            if (detailMsgs.length) errMsg = `${errMsg}: ${detailMsgs.join('; ')}`;
+          }
+        } catch (e) {
+          // ignore
+        }
+
         return {
           success: false,
           error: errMsg,
