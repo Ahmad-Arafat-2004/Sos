@@ -70,6 +70,8 @@ export function createServer() {
   app.post("/api/quick-login", quickLogin);
   app.post("/api/setup-db", setupDatabase);
   app.get("/api/setup-admin", seedAdmin);
+  // Seed products and categories for dev
+  app.get("/api/seed-products", seedProducts);
 
   // Auth routes (public)
   app.post("/api/auth/register", register);
