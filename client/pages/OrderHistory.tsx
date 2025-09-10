@@ -32,43 +32,66 @@ const OrderHistory: React.FC = () => {
   const { t, language, isRTL } = useLanguage();
   const [orders, setOrders] = useState<Order[]>([]);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Load real user orders from API (only show orders placed by the logged-in user)
   useEffect(() => {
     let mounted = true;
     const loadOrders = async () => {
       if (!user) return;
+      setLoading(true);
+      setError(null);
       try {
         const { apiClient } = await import('../services/api');
         const result = await apiClient.orders.getUserOrders();
-        if (result.success && result.data && mounted) {
+        if (!mounted) return;
+        if (!result.success) {
+          setError(result.error || 'Failed to fetch orders');
+          setOrders([]);
+        } else if (result.data) {
           // Map API orders to local Order shape
           const mapped = result.data.map((o: any) => ({
             id: o.id,
             date: new Date(o.created_at || o.date || Date.now()),
-            status: o.status,
-            total: o.total,
+            status: o.status || 'pending',
+            total: Number(o.total) || 0,
             items: (o.items || o.order_items || []).map((it: any) => ({
-              id: it.id || it.product_id,
-              name: it.product?.name?.[language] || it.name || it.product?.name_en || 'Product',
-              quantity: it.quantity,
-              price: it.price,
-              image: it.product?.image || it.image || ''
+              id: it.id || it.product_id || `${o.id}-${Math.random()}`,
+              name: it.product?.name?.[language] || it.name || it.product?.name_en || (it.product && (it.product.name_en || it.product.name_ar)) || 'Product',
+              quantity: Number(it.quantity) || 1,
+              price: Number(it.price) || 0,
+              image: it.product?.image || (it.product && it.product.image) || it.image || ''
             })),
-            shippingAddress: typeof o.shipping_address === 'string' ? o.shipping_address : (o.shipping_address?.street ? `${o.shipping_address.street}, ${o.shipping_address.city}` : ''),
+            shippingAddress: typeof o.shipping_address === 'string' ? o.shipping_address : (o.shipping_address?.street ? `${o.shipping_address.street}, ${o.shipping_address.city}` : (o.shipping_address?.city ? `${o.shipping_address.city}` : '')),
             paymentMethod: o.payment_method || o.paymentMethod || (o.payment_method_type || '')
           }));
 
           setOrders(mapped);
+        } else {
+          setOrders([]);
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error('Failed to load user orders', err);
+        setError(err?.message || 'Failed to load orders');
+      } finally {
+        if (mounted) setLoading(false);
       }
     };
 
     loadOrders();
     return () => { mounted = false; };
   }, [user, language]);
+
+  const handleDownloadAll = () => {
+    const blob = new Blob([JSON.stringify(orders, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `orders_${user?.id || 'me'}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   if (!user) {
     return (
@@ -78,7 +101,7 @@ const OrderHistory: React.FC = () => {
             {language === 'ar' ? 'يجب تسجيل الدخول أولاً' : 'Please login first'}
           </h1>
           <Button onClick={() => window.location.href = '/login'}>
-            {language === 'ar' ? 'تسجيل الدخول' : 'Login'}
+            {language === 'ar' ? 'تس��يل الدخول' : 'Login'}
           </Button>
         </div>
       </div>
