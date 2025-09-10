@@ -265,7 +265,7 @@ const AdminDashboard: React.FC = () => {
       if (!newCategory.name.en) {
         showNotification(
           language === "ar"
-            ? "الرجاء إدخال اسم الفئة بالإنجليزية"
+            ? "الرجاء إدخال ا��م الفئة بالإنجليزية"
             : "Please enter category name in English",
         );
         return;
@@ -822,7 +822,7 @@ const AdminDashboard: React.FC = () => {
                           </div>
                         </td>
                         <td className="py-4 px-6 text-sm text-gray-600 capitalize">
-                          {product.category || "unknown"}
+                          {categories.find(c => c.id === product.category)?.name?.[language] || product.category || "unknown"}
                         </td>
                         <td className="py-4 px-6">
                           <span
