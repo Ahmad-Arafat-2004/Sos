@@ -6,6 +6,7 @@ import { testDatabase } from "./routes/test-db";
 import { quickLogin } from "./routes/quick-login";
 import { setupDatabase } from "./routes/setup-db";
 import { seedAdmin } from "./routes/seed-admin";
+import { seedProducts } from "./routes/seed-products";
 
 // Import all route handlers
 import {
