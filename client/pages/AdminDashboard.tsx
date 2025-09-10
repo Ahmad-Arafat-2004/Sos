@@ -134,7 +134,7 @@ const AdminDashboard: React.FC = () => {
       if (!newProduct.description || !newProduct.description.ar) {
         showNotification(
           language === "ar"
-            ? "الرجاء إدخال الوصف بالعربية"
+            ? "الرجاء إدخال الوصف بالعرب��ة"
             : "Please enter description in Arabic",
         );
         return;
@@ -455,6 +455,115 @@ const AdminDashboard: React.FC = () => {
                 {language === "ar" ? "إضافة منتج" : "Add Product"}
               </Button>
             </div>
+
+            {/* Edit Product Form */}
+            {editingProduct && editingProduct.id && (
+              <div className="bg-white p-6 rounded-lg shadow">
+                <h3 className="text-lg font-semibold mb-4">
+                  {language === 'ar' ? 'تعديل المنتج' : 'Edit Product'}
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label>{language === 'ar' ? 'الاسم (إنجليزي)' : 'Name (English)'} *</Label>
+                    <Input
+                      value={editingProduct.name?.en || ''}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, name: { ...editingProduct.name, en: e.target.value } })}
+                      placeholder="Product name in English"
+                    />
+                  </div>
+                  <div>
+                    <Label>{language === 'ar' ? 'الاسم (عربي)' : 'Name (Arabic)'} *</Label>
+                    <Input
+                      value={editingProduct.name?.ar || ''}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, name: { ...editingProduct.name, ar: e.target.value } })}
+                      placeholder="اسم المنتج بالعربية"
+                    />
+                  </div>
+                  <div>
+                    <Label>{language === 'ar' ? 'الوصف (إنجليزي)' : 'Description (English)'} *</Label>
+                    <Input
+                      value={editingProduct.description?.en || ''}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, description: { ...editingProduct.description, en: e.target.value } })}
+                      placeholder="Product description in English"
+                    />
+                  </div>
+                  <div>
+                    <Label>{language === 'ar' ? 'الوصف (عربي)' : 'Description (Arabic)'} *</Label>
+                    <Input
+                      value={editingProduct.description?.ar || ''}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, description: { ...editingProduct.description, ar: e.target.value } })}
+                      placeholder="وصف المنتج بالعربية"
+                    />
+                  </div>
+                  <div>
+                    <Label>{language === 'ar' ? 'السعر' : 'Price'} *</Label>
+                    <Input
+                      type="number"
+                      step="0.01"
+                      value={editingProduct.price || 0}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, price: parseFloat(e.target.value) || 0 })}
+                      placeholder="0.00"
+                    />
+                  </div>
+                  <div>
+                    <Label>{language === 'ar' ? 'الفئة' : 'Category'}</Label>
+                    <select
+                      value={editingProduct.category || ''}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value })}
+                      className="w-full h-10 px-3 border border-gray-200 rounded-md"
+                    >
+                      <option value="">--</option>
+                      {categories.map((category) => (
+                        <option key={category.id} value={category.id}>{category.name[language]}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <Label>{language === 'ar' ? 'المتجر' : 'Store'}</Label>
+                    <select
+                      value={editingProduct.store || 'irth-biladi'}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, store: e.target.value as any })}
+                      className="w-full h-10 px-3 border border-gray-200 rounded-md"
+                    >
+                      <option value="irth-biladi">{language === 'ar' ? 'إرث بلادي' : 'Irth Biladi'}</option>
+                      <option value="cilka">Cilka</option>
+                    </select>
+                  </div>
+                  <div>
+                    <Label>{language === 'ar' ? 'رابط الصورة' : 'Image URL'}</Label>
+                    <Input
+                      value={editingProduct.image || ''}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, image: e.target.value })}
+                      placeholder="https://..."
+                    />
+                  </div>
+                  <div>
+                    <Label>{language === 'ar' ? 'الوزن' : 'Weight'}</Label>
+                    <Input
+                      value={editingProduct.weight || ''}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, weight: e.target.value })}
+                      placeholder="500g"
+                    />
+                  </div>
+                  <div>
+                    <Label>{language === 'ar' ? 'المنشأ' : 'Origin'}</Label>
+                    <Input
+                      value={editingProduct.origin || ''}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, origin: e.target.value })}
+                      placeholder="Country"
+                    />
+                  </div>
+                </div>
+                <div className="flex gap-2 mt-4">
+                  <Button onClick={handleUpdateProduct} className="bg-blue-600 hover:bg-blue-700">
+                    {language === 'ar' ? 'حفظ التعديلات' : 'Save Changes'}
+                  </Button>
+                  <Button variant="outline" onClick={() => setEditingProduct(null)}>
+                    {language === 'ar' ? 'إلغاء' : 'Cancel'}
+                  </Button>
+                </div>
+              </div>
+            )}
 
             {/* Add Product Form */}
             {showAddProduct && (
