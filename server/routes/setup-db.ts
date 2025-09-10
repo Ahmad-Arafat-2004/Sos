@@ -20,21 +20,35 @@ export const setupDatabase = async (req: Request, res: Response) => {
       role: 'admin'
     };
 
-    // محاولة إدراج المستخدم
-    const { data: userData, error: userError } = await supabase
+    // Try to insert admin user, but skip if an account with the same email already exists
+    const { data: existingUser } = await supabase
       .from('users')
-      .upsert(adminUser)
-      .select()
+      .select('id')
+      .eq('email', adminUser.email)
       .single();
 
-    if (userError) {
-      console.error('User creation error:', userError);
-      return res.json({
-        success: false,
-        error: 'Failed to create admin user',
-        details: userError.message,
-        needsSchema: true
-      });
+    let userData: any = null;
+
+    if (existingUser) {
+      userData = existingUser;
+    } else {
+      const { data: createdUser, error: userError } = await supabase
+        .from('users')
+        .insert(adminUser)
+        .select()
+        .single();
+
+      if (userError) {
+        console.error('User creation error:', userError);
+        return res.json({
+          success: false,
+          error: 'Failed to create admin user',
+          details: userError.message,
+          needsSchema: true
+        });
+      }
+
+      userData = createdUser;
     }
 
     // اختبار إنشاء فئة
