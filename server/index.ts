@@ -73,6 +73,7 @@ export function createServer() {
   app.get("/api/setup-admin", seedAdmin);
   // Seed products and categories for dev
   app.get("/api/seed-products", seedProducts);
+  app.get("/api/inspect-products", (req, res) => import('./routes/inspect').then(m => m.inspectProducts(req, res)));
 
   // Auth routes (public)
   app.post("/api/auth/register", register);
