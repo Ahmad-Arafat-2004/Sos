@@ -199,7 +199,14 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // Product methods
   const addProduct = async (productData: Omit<Product, 'id' | 'created_at' | 'updated_at'>): Promise<Product | null> => {
     try {
-      const result = await apiClient.products.create(productData);
+      // Ensure category is a real category id (handle cases where a slug may be sent)
+      const payload: any = { ...productData };
+      if (payload.category) {
+        const found = categories.find(c => c.id === payload.category || c.slug === payload.category);
+        if (found) payload.category = found.id;
+      }
+
+      const result = await apiClient.products.create(payload);
       if (result.success && result.data) {
         setProducts(prev => [...prev, result.data!]);
         showNotification('تم إضافة المنتج بنجاح!', 'success');
