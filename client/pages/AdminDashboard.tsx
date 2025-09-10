@@ -115,7 +115,7 @@ const AdminDashboard: React.FC = () => {
       if (!newProduct.name.en) {
         showNotification(
           language === "ar"
-            ? "الرجاء إدخال الاسم بالإنجليزية"
+            ? "الرجاء إدخال الاسم بالإنجلي��ية"
             : "Please enter name in English",
         );
         return;
@@ -135,6 +135,7 @@ const AdminDashboard: React.FC = () => {
             ? "الرجاء إدخال الوصف بالإنجليزية"
             : "Please enter description in English",
         );
+        try { addDescEnRef.current?.focus(); } catch (e) {}
         return;
       }
       if (!newProduct.description || !newProduct.description.ar) {
@@ -143,6 +144,7 @@ const AdminDashboard: React.FC = () => {
             ? "الرجاء إدخال الوصف بالعربية"
             : "Please enter description in Arabic",
         );
+        try { addDescArRef.current?.focus(); } catch (e) {}
         return;
       }
       if (newProduct.price <= 0) {
@@ -228,7 +230,7 @@ const AdminDashboard: React.FC = () => {
       if (!newCategory.name.en) {
         showNotification(
           language === "ar"
-            ? "الرجاء إدخال اسم الفئة بالإنجليزية"
+            ? "الرجاء إدخال اسم الفئة بال��نجليزية"
             : "Please enter category name in English",
         );
         return;
