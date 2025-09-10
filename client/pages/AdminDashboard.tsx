@@ -163,6 +163,13 @@ const AdminDashboard: React.FC = () => {
         return;
       }
 
+      if (!newProduct.category) {
+        showNotification(
+          language === "ar" ? "الرجاء اختيار الفئة" : "Please select a category",
+        );
+        return;
+      }
+
       const created = await addProduct(newProduct);
       if (!created) {
         // addProduct already shows error notification (now includes validation details)
@@ -403,7 +410,7 @@ const AdminDashboard: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <h1 className="text-2xl font-bold text-gray-900">
-              {language === "ar" ? "لوح�� التحكم" : "Admin Dashboard"}
+              {language === "ar" ? "لوحة التحكم" : "Admin Dashboard"}
             </h1>
             <Button onClick={handleLogout} variant="outline" size="sm">
               <LogOut className="w-4 h-4 mr-2" />
