@@ -89,7 +89,6 @@ export const seedProducts = async (req: Request, res: Response) => {
         price: p.price,
         category_id: category.id,
         inventory: p.inventory,
-        images: p.images, // store as json string or array
         slug: p.slug,
         store: p.store
       };
