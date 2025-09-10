@@ -33,71 +33,41 @@ const OrderHistory: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
-  // Mock data for demonstration
+  // Load real user orders from API (only show orders placed by the logged-in user)
   useEffect(() => {
-    if (user) {
-      const mockOrders: Order[] = [
-        {
-          id: 'ORD-001',
-          date: new Date('2024-01-15'),
-          status: 'delivered',
-          total: 120.50,
-          items: [
-            {
-              id: '1',
-              name: language === 'ar' ? 'زيت زيتون فلسطيني' : 'Palestinian Olive Oil',
-              quantity: 2,
-              price: 45.25,
-              image: 'https://via.placeholder.com/60'
-            },
-            {
-              id: '2',
-              name: language === 'ar' ? 'صابون زيت الزيتون' : 'Olive Oil Soap',
-              quantity: 3,
-              price: 30.00,
-              image: 'https://via.placeholder.com/60'
-            }
-          ],
-          shippingAddress: language === 'ar' ? 'رام الله، فلسطين' : 'Ramallah, Palestine',
-          paymentMethod: language === 'ar' ? 'بطاقة ائتمان' : 'Credit Card'
-        },
-        {
-          id: 'ORD-002',
-          date: new Date('2024-01-10'),
-          status: 'shipped',
-          total: 75.00,
-          items: [
-            {
-              id: '3',
-              name: language === 'ar' ? 'تطريز فلسطيني تقليدي' : 'Traditional Palestinian Embroidery',
-              quantity: 1,
-              price: 75.00,
-              image: 'https://via.placeholder.com/60'
-            }
-          ],
-          shippingAddress: language === 'ar' ? 'غزة، فلسطين' : 'Gaza, Palestine',
-          paymentMethod: language === 'ar' ? 'الدفع عند التسليم' : 'Cash on Delivery'
-        },
-        {
-          id: 'ORD-003',
-          date: new Date('2024-01-05'),
-          status: 'processing',
-          total: 200.00,
-          items: [
-            {
-              id: '4',
-              name: language === 'ar' ? 'مجوهرات فضة تراثية' : 'Heritage Silver Jewelry',
-              quantity: 1,
-              price: 200.00,
-              image: 'https://via.placeholder.com/60'
-            }
-          ],
-          shippingAddress: language === 'ar' ? 'ا��قدس، فلسطين' : 'Jerusalem, Palestine',
-          paymentMethod: language === 'ar' ? 'بطاقة ائتمان' : 'Credit Card'
+    let mounted = true;
+    const loadOrders = async () => {
+      if (!user) return;
+      try {
+        const { apiClient } = await import('../services/api');
+        const result = await apiClient.orders.getUserOrders();
+        if (result.success && result.data && mounted) {
+          // Map API orders to local Order shape
+          const mapped = result.data.map((o: any) => ({
+            id: o.id,
+            date: new Date(o.created_at || o.date || Date.now()),
+            status: o.status,
+            total: o.total,
+            items: (o.items || o.order_items || []).map((it: any) => ({
+              id: it.id || it.product_id,
+              name: it.product?.name?.[language] || it.name || it.product?.name_en || 'Product',
+              quantity: it.quantity,
+              price: it.price,
+              image: it.product?.image || it.image || ''
+            })),
+            shippingAddress: typeof o.shipping_address === 'string' ? o.shipping_address : (o.shipping_address?.street ? `${o.shipping_address.street}, ${o.shipping_address.city}` : ''),
+            paymentMethod: o.payment_method || o.paymentMethod || (o.payment_method_type || '')
+          }));
+
+          setOrders(mapped);
         }
-      ];
-      setOrders(mockOrders);
-    }
+      } catch (err) {
+        console.error('Failed to load user orders', err);
+      }
+    };
+
+    loadOrders();
+    return () => { mounted = false; };
   }, [user, language]);
 
   if (!user) {
@@ -166,7 +136,7 @@ const OrderHistory: React.FC = () => {
             <CardContent className="py-12 text-center">
               <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">
-                {language === 'ar' ? 'لا توجد طلبات سابقة' : 'No previous orders'}
+                {language === 'ar' ? 'لا توجد طلب��ت سابقة' : 'No previous orders'}
               </h3>
               <p className="text-gray-500">
                 {language === 'ar' 
