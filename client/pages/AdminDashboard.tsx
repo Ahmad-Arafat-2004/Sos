@@ -95,7 +95,7 @@ const AdminDashboard: React.FC = () => {
       title: language === "ar" ? "تسجيل الخروج" : "Logout",
       description:
         language === "ar"
-          ? "هل أنت متأكد من تسجيل الخروج؟"
+          ? "هل أنت متأكد م�� تسجيل الخروج؟"
           : "Are you sure you want to logout?",
       confirmText: language === "ar" ? "تسجيل الخر��ج" : "Logout",
       cancelText: language === "ar" ? "إلغاء" : "Cancel",
@@ -132,7 +132,7 @@ const AdminDashboard: React.FC = () => {
       if (!newProduct.description || !newProduct.description.en) {
         showNotification(
           language === "ar"
-            ? "الرجاء إدخال الوصف بالإنجليزية"
+            ? "الرجاء إدخال الوصف بال��نجليزية"
             : "Please enter description in English",
         );
         try { addDescEnRef.current?.focus(); } catch (e) {}
@@ -488,7 +488,7 @@ const AdminDashboard: React.FC = () => {
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label>{language === 'ar' ? 'الاسم (إنجليزي)' : 'Name (English)'} *</Label>
+                    <Label>{language === 'ar' ? 'الاسم (إن��ليزي)' : 'Name (English)'} *</Label>
                     <Input
                       value={editingProduct.name?.en || ''}
                       onChange={(e) => setEditingProduct({ ...editingProduct, name: { ...editingProduct.name, en: e.target.value } })}
@@ -506,6 +506,7 @@ const AdminDashboard: React.FC = () => {
                   <div>
                     <Label>{language === 'ar' ? 'الوصف (إنجليزي)' : 'Description (English)'} *</Label>
                     <Input
+                      ref={editDescEnRef}
                       value={editingProduct.description?.en || ''}
                       onChange={(e) => setEditingProduct({ ...editingProduct, description: { ...editingProduct.description, en: e.target.value } })}
                       placeholder="Product description in English"
@@ -514,6 +515,7 @@ const AdminDashboard: React.FC = () => {
                   <div>
                     <Label>{language === 'ar' ? 'الوصف (عربي)' : 'Description (Arabic)'} *</Label>
                     <Input
+                      ref={editDescArRef}
                       value={editingProduct.description?.ar || ''}
                       onChange={(e) => setEditingProduct({ ...editingProduct, description: { ...editingProduct.description, ar: e.target.value } })}
                       placeholder="وصف المنتج بالعربية"
