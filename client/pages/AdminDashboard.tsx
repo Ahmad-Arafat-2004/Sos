@@ -102,7 +102,7 @@ const AdminDashboard: React.FC = () => {
       title: language === "ar" ? "تسجيل الخروج" : "Logout",
       description:
         language === "ar"
-          ? "هل أنت متأكد م���� تسجيل الخروج؟"
+          ? "هل أنت متأكد م�� تسجيل الخروج؟"
           : "Are you sure you want to logout?",
       confirmText: language === "ar" ? "تسجيل الخر��ج" : "Logout",
       cancelText: language === "ar" ? "إلغاء" : "Cancel",
@@ -139,7 +139,7 @@ const AdminDashboard: React.FC = () => {
       if (!newProduct.description || !newProduct.description.en) {
         showNotification(
           language === "ar"
-            ? "الرجاء إدخال الوصف ب��ل��نجليزية"
+            ? "الرجاء إدخال الوصف بال��نجليزية"
             : "Please enter description in English",
         );
         try { addDescEnRef.current?.focus(); } catch (e) {}
@@ -175,7 +175,7 @@ const AdminDashboard: React.FC = () => {
         description: { en: "", ar: "" },
         price: 0,
         image: "",
-        category: "dairy",
+        category: categories && categories.length > 0 ? categories[0].id : "",
         weight: "",
         store: "irth-biladi",
       });
@@ -343,7 +343,7 @@ const AdminDashboard: React.FC = () => {
         await deleteCategory(id);
         showNotification(
           language === "ar"
-            ? "تم حذف الفئة بنجاح!"
+            ? "تم حذف الفئ�� بنجاح!"
             : "Category deleted successfully!",
         );
       } catch (error) {
@@ -374,7 +374,7 @@ const AdminDashboard: React.FC = () => {
           );
         } catch (error) {
           console.error("Error deleting category:", error);
-          showNotification("خطأ في حذف الفئة");
+          showNotification("خطأ في حذف الف��ة");
         }
         setConfirmDialog({ ...confirmDialog, isOpen: false });
       },
