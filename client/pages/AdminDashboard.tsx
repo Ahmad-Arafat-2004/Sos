@@ -115,7 +115,7 @@ const AdminDashboard: React.FC = () => {
       if (!newProduct.name.en) {
         showNotification(
           language === "ar"
-            ? "الرجاء إدخال الاسم بالإنجلي��ية"
+            ? "الرجاء إدخال الاسم بالإنجليزية"
             : "Please enter name in English",
         );
         return;
@@ -185,6 +185,22 @@ const AdminDashboard: React.FC = () => {
   const handleUpdateProduct = async () => {
     try {
       if (editingProduct && editingProduct.id) {
+        // Validate descriptions before update
+        if (!editingProduct.description || !editingProduct.description.en) {
+          showNotification(
+            language === 'ar' ? 'الرجاء إدخال الوصف بالإنجليزية' : 'Please enter description in English',
+          );
+          try { editDescEnRef.current?.focus(); } catch (e) {}
+          return;
+        }
+        if (!editingProduct.description || !editingProduct.description.ar) {
+          showNotification(
+            language === 'ar' ? 'الرجاء إدخال الوصف بالعربية' : 'Please enter description in Arabic',
+          );
+          try { editDescArRef.current?.focus(); } catch (e) {}
+          return;
+        }
+
         const updated = await updateProduct(editingProduct.id, editingProduct);
         if (!updated) {
           // updateProduct will show error notification
@@ -230,7 +246,7 @@ const AdminDashboard: React.FC = () => {
       if (!newCategory.name.en) {
         showNotification(
           language === "ar"
-            ? "الرجاء إدخال اسم الفئة بال��نجليزية"
+            ? "الرجاء إدخال اسم الفئة بالإنجليزية"
             : "Please enter category name in English",
         );
         return;
