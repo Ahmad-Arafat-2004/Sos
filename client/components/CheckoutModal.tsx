@@ -76,19 +76,6 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
     setLoading(true);
 
     try {
-      // Open WhatsApp with prefilled message
-      const recipient = buildWhatsAppRecipient(recipientPhone || '0796427591');
-      const text = buildMessage();
-      if (recipient) {
-        const waUrl = `https://wa.me/${recipient}?text=${text}`;
-        window.open(waUrl, '_blank');
-      } else {
-        // fallback: open WhatsApp web without recipient
-        const waUrl = `https://web.whatsapp.com/send?text=${text}`;
-        window.open(waUrl, '_blank');
-      }
-
-      // Save order to the backend AFTER opening WhatsApp
       const orderPayload = {
         customer_name: name || user?.name || 'Guest',
         customer_email: user?.email || '',
@@ -103,16 +90,41 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
           quantity: it.quantity,
           price: it.product.price,
         })),
+        total: total,
       };
 
-      const res = await apiClient.orders.create(orderPayload);
-      if (!res.success) {
-        setError(res.error || 'Failed to save order');
+      if (sendToBot) {
+        // Send payload to server which forwards to bot webhook
+        const botRes = await apiClient.orders.sendToBot(orderPayload);
+        if (!botRes.success) {
+          setError(botRes.error || 'Failed to send to bot');
+        } else {
+          clearCart();
+          onOrderSaved && onOrderSaved();
+          onClose();
+        }
       } else {
-        // Clear cart and notify parent
-        clearCart();
-        onOrderSaved && onOrderSaved();
-        onClose();
+        // Open WhatsApp with prefilled message then create order
+        const recipient = buildWhatsAppRecipient(recipientPhone || '0796427591');
+        const text = buildMessage();
+        if (recipient) {
+          const waUrl = `https://wa.me/${recipient}?text=${text}`;
+          window.open(waUrl, '_blank');
+        } else {
+          // fallback: open WhatsApp web without recipient
+          const waUrl = `https://web.whatsapp.com/send?text=${text}`;
+          window.open(waUrl, '_blank');
+        }
+
+        const res = await apiClient.orders.create(orderPayload);
+        if (!res.success) {
+          setError(res.error || 'Failed to save order');
+        } else {
+          // Clear cart and notify parent
+          clearCart();
+          onOrderSaved && onOrderSaved();
+          onClose();
+        }
       }
     } catch (err: any) {
       setError(err?.message || 'Unknown error');
