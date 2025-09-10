@@ -286,6 +286,16 @@ const Cart: React.FC = () => {
         onClose={() => setAuthModalOpen(false)}
         initialTab="login"
       />
+
+      {/* Checkout Modal */}
+      <CheckoutModal
+        isOpen={checkoutOpen}
+        onClose={() => setCheckoutOpen(false)}
+        items={items}
+        total={finalTotal}
+        clearCart={clearCart}
+        recipientPhone={'0796427591'}
+      />
     </div>
   );
 };
