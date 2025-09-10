@@ -160,6 +160,11 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
             <Input value={street} onChange={(e) => setStreet(e.target.value)} />
           </div>
 
+          <div className="flex items-center gap-2">
+            <input id="sendToBot" type="checkbox" checked={sendToBot} onChange={(e) => setSendToBot(e.target.checked)} className="w-4 h-4" />
+            <label htmlFor="sendToBot" className="text-sm">ارسال للـ Bot (Webhook)</label>
+          </div>
+
           <div className="grid grid-cols-2 gap-3">
             <div>
               <Label>المدينة</Label>
