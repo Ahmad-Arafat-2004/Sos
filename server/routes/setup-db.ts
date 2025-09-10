@@ -11,8 +11,10 @@ export const setupDatabase = async (req: Request, res: Response) => {
     }
 
     // إنشاء مستخدم أدمن مباشرة (بدون مصادقة Supabase Auth)
+    // Use a valid UUID for the admin user id so it matches DB uuid column
+    const { randomUUID } = await import('crypto');
     const adminUser = {
-      id: 'admin-user-id-12345',
+      id: randomUUID(),
       email: 'admin@irthbiladi.com',
       name: 'مدير النظام',
       role: 'admin'
