@@ -6,7 +6,7 @@ export interface Product {
   description: { en: string; ar: string };
   price: number;
   image: string;
-  category: 'dairy' | 'spices' | 'oils' | 'beverages';
+  category: string;
   weight?: string;
   origin?: string;
   store: 'irth-biladi' | 'cilka';
