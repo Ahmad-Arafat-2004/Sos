@@ -214,7 +214,7 @@ const Header: React.FC = () => {
             )}
 
             {/* Cart */}
-            <Link to="/cart" className="relative">
+            <Link to="/cart" className="relative" onClick={() => startLoading()}>
               <Button variant="outline" size="sm" className="relative p-2">
                 <ShoppingCart className="w-5 h-5" />
                 {totalItems > 0 && (
