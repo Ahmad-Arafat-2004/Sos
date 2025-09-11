@@ -52,7 +52,7 @@ export const createOrder = async (req: Request, res: Response) => {
       items: validation.data.items
     };
 
-    const result = await orderService.createOrder(orderData);
+    const result = await orderService.createOrder(orderData as any);
     
     if (result.success) {
       res.status(201).json(result);
