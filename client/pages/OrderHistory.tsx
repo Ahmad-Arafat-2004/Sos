@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Badge } from '../components/ui/badge';
 import { Separator } from '../components/ui/separator';
 import { Package, Calendar, MapPin, CreditCard, Download, Eye } from 'lucide-react';
+import OrderDetailsModal from '../components/OrderDetailsModal';
 import { format } from 'date-fns';
 import { ar } from 'date-fns/locale';
 
