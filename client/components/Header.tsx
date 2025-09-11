@@ -40,7 +40,7 @@ const Header: React.FC = () => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.shiftKey && e.ctrlKey && e.key === "A") {
-        // التحقق من حالة تسجيل دخول المدير
+        // التحقق من حالة تسجيل دخو�� المدير
         const adminLoggedIn = localStorage.getItem("adminLoggedIn");
         if (adminLoggedIn === "true") {
           window.location.href = "/admin";
@@ -100,6 +100,7 @@ const Header: React.FC = () => {
                 key={item.key}
                 to={item.href}
                 className="text-gray-700 hover:text-olive-600 transition-colors duration-200 font-medium"
+                onClick={() => startLoading()}
               >
                 {t(`nav.${item.key}`)}
               </Link>
