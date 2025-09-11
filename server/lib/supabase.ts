@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
 import type { Database } from "../../shared/types";
 
 const supabaseUrl = process.env.SUPABASE_URL;
