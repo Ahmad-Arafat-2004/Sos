@@ -54,75 +54,12 @@ function App() {
                 <FavoritesProvider>
                   <AdminProvider>
                     <BrowserRouter>
-                      <Routes>
-                        {/* Auth pages without header */}
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/signup" element={<SignUp />} />
-
-                        {/* Admin routes without header */}
-                        <Route
-                          path="/admin"
-                          element={
-                            <AdminGuard>
-                              <AdminDashboard />
-                            </AdminGuard>
-                          }
-                        />
-                        <Route
-                          path="/Admin"
-                          element={
-                            <AdminGuard>
-                              <AdminDashboard />
-                            </AdminGuard>
-                          }
-                        />
-
-                        {/* Regular pages with header */}
-                        <Route
-                          path="*"
-                          element={
-                            <div className="min-h-screen bg-background">
-                              <Header />
-                              <main>
-                                <Routes>
-                                  <Route path="/" element={<Index />} />
-                                  <Route
-                                    path="/store-selection"
-                                    element={<StoreSelection />}
-                                  />
-                                  <Route
-                                    path="/products"
-                                    element={<Products />}
-                                  />
-                                  <Route
-                                    path="/favorites"
-                                    element={<Favorites />}
-                                  />
-                                  <Route path="/cart" element={<Cart />} />
-                                  <Route
-                                    path="/checkout"
-                                    element={<Checkout />}
-                                  />
-                                  <Route
-                                    path="/profile"
-                                    element={<Profile />}
-                                  />
-                                  <Route
-                                    path="/orders"
-                                    element={<OrderHistory />}
-                                  />
-                                  <Route path="/about" element={<About />} />
-                                  <Route
-                                    path="/contact"
-                                    element={<Contact />}
-                                  />
-                                  <Route path="*" element={<NotFound />} />
-                                </Routes>
-                              </main>
-                            </div>
-                          }
-                        />
-                      </Routes>
+                      {/* LoadingProvider must be inside Router to use useLocation */}
+                      <React.Suspense fallback={null}>
+                        {/* dynamic-level provider for navigation loading */}
+                        {/* eslint-disable-next-line react/jsx-pascal-case */}
+                      </React.Suspense>
+                      <BrowserRouter />
                     </BrowserRouter>
                   </AdminProvider>
                 </FavoritesProvider>
