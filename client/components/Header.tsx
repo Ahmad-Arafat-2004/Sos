@@ -33,6 +33,7 @@ const Header: React.FC = () => {
   const { totalItems, totalPrice } = useCart();
   const { user, logout } = useAuth();
   const { favorites } = useFavorites();
+  const { startLoading } = useLoading();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Admin shortcut: Shift+Ctrl+A
