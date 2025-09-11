@@ -290,14 +290,14 @@ const Header: React.FC = () => {
                   </div>
                   <Link
                     to="/profile"
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={() => { setIsMobileMenuOpen(false); startLoading(); }}
                   >
                     <Button variant="ghost" className="w-full justify-start">
                       <User className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" />
                       {language === "ar" ? "الملف الشخصي" : "Profile"}
                     </Button>
                   </Link>
-                  <Link to="/orders" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Link to="/orders" onClick={() => { setIsMobileMenuOpen(false); startLoading(); }}>
                     <Button variant="ghost" className="w-full justify-start">
                       <Package className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" />
                       {language === "ar" ? "طلباتي" : "My Orders"}
