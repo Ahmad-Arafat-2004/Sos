@@ -102,7 +102,7 @@ export const updateProduct = async (req: Request, res: Response) => {
       });
     }
 
-    const result = await productService.updateProduct(id, validation.data);
+    const result = await productService.updateProduct(id, validation.data as any);
     
     if (result.success) {
       res.json(result);
