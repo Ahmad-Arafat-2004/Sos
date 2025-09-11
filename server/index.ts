@@ -105,6 +105,9 @@ export function createServer() {
   app.get("/api/orders", authenticate, getUserOrders);
   app.get("/api/orders/:id", authenticate, getOrderById);
 
+  // Contact form endpoint (public)
+  app.post("/api/contact", (req, res) => import('./routes/contact').then(m => m.handleContact(req, res)));
+
   // Admin-only order routes
   app.get("/api/admin/orders", authenticate, requireAdmin, getAllOrders);
   app.put(
