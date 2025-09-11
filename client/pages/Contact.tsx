@@ -102,10 +102,10 @@ const Contact: React.FC = () => {
       color: 'bg-pink-500 hover:bg-pink-600'
     },
     {
-      name: 'Twitter',
-      icon: '🐦',
-      link: 'https://twitter.com/turathfoods',
-      color: 'bg-blue-400 hover:bg-blue-500'
+      name: 'TikTok',
+      icon: '🎵',
+      link: 'https://www.tiktok.com/@irthbiladi',
+      color: 'bg-black hover:bg-gray-800'
     }
   ];
 
@@ -348,7 +348,7 @@ const Contact: React.FC = () => {
                       onChange={handleInputChange}
                       rows={6}
                       className="w-full mt-1 px-3 py-2 border border-gray-200 rounded-md bg-white text-gray-900 focus:border-olive-400 focus:ring-olive-400 resize-vertical"
-                      placeholder={language === 'ar' ? 'اكتب رسالتك هنا...' : 'Write your message here...'}
+                      placeholder={language === 'ar' ? 'اكتب رسالتك ��نا...' : 'Write your message here...'}
                       required
                     />
                   </div>
