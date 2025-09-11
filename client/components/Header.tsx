@@ -201,7 +201,7 @@ const Header: React.FC = () => {
 
             {/* Favorites - Only show if user is logged in */}
             {user && (
-              <Link to="/favorites" className="relative">
+              <Link to="/favorites" className="relative" onClick={() => startLoading()}>
                 <Button variant="outline" size="sm" className="relative p-2">
                   <Heart className="w-5 h-5" />
                   {favorites.length > 0 && (
