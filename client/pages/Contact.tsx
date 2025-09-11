@@ -27,24 +27,30 @@ const Contact: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // محاكاة إرسال النموذج
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    
-    // إعادة تعيين النموذج بعد 3 ثواني
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        subject: '',
-        message: ''
+    setIsSubmitted(false);
+    setError(null);
+
+    try {
+      const resp = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
       });
-    }, 3000);
+      const data = await resp.json();
+      if (!resp.ok || !data.success) {
+        throw new Error(data.error || data.message || 'Failed to send message');
+      }
+
+      setIsSubmitted(true);
+      setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+    } catch (err: any) {
+      console.error('Contact submit error', err);
+      setError(err.message || 'Failed to send message');
+    } finally {
+      setIsSubmitting(false);
+      // hide success after 3s
+      setTimeout(() => setIsSubmitted(false), 3000);
+    }
   };
 
   const contactInfo = [
@@ -348,7 +354,7 @@ const Contact: React.FC = () => {
                       onChange={handleInputChange}
                       rows={6}
                       className="w-full mt-1 px-3 py-2 border border-gray-200 rounded-md bg-white text-gray-900 focus:border-olive-400 focus:ring-olive-400 resize-vertical"
-                      placeholder={language === 'ar' ? 'اكتب رسالتك ��نا...' : 'Write your message here...'}
+                      placeholder={language === 'ar' ? 'اكتب رسالتك هنا...' : 'Write your message here...'}
                       required
                     />
                   </div>
