@@ -98,7 +98,7 @@ const Contact: React.FC = () => {
     {
       name: 'Instagram',
       icon: '📷',
-      link: 'https://instagram.com/turathfoods',
+      link: 'https://www.instagram.com/irthbiladi?igsh=NWkyemQ5czF0cWJ6',
       color: 'bg-pink-500 hover:bg-pink-600'
     },
     {
