@@ -18,8 +18,8 @@ export const seedAdmin = async (req: Request, res: Response) => {
       page: 1,
       perPage: 1000,
     });
-    const existing = list.data?.users?.find(
-      (u) => u.email?.toLowerCase() === email.toLowerCase(),
+    const existing = (list.data?.users as any[] || []).find(
+      (u: any) => u.email?.toLowerCase() === email.toLowerCase(),
     );
 
     let userId = existing?.id;
