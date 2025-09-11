@@ -40,7 +40,7 @@ const Header: React.FC = () => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.shiftKey && e.ctrlKey && e.key === "A") {
-        // التحقق من حالة تسجيل دخو�� المدير
+        // التحقق من حالة تسجيل دخول المدير
         const adminLoggedIn = localStorage.getItem("adminLoggedIn");
         if (adminLoggedIn === "true") {
           window.location.href = "/admin";
@@ -154,7 +154,7 @@ const Header: React.FC = () => {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <Link to="/profile" className="cursor-pointer">
+                      <Link to="/profile" className="cursor-pointer" onClick={() => startLoading()}>
                         <User className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" />
                         <span>
                           {language === "ar" ? "الملف الشخصي" : "Profile"}
@@ -162,7 +162,7 @@ const Header: React.FC = () => {
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link to="/orders" className="cursor-pointer">
+                      <Link to="/orders" className="cursor-pointer" onClick={() => startLoading()}>
                         <Package className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" />
                         <span>
                           {language === "ar" ? "طلباتي" : "My Orders"}
