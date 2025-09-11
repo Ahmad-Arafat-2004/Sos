@@ -32,7 +32,7 @@ export const register = async (req: Request, res: Response) => {
       });
     }
 
-    const result = await authService.register(validation.data);
+    const result = await authService.register(validation.data as any);
     
     if (result.success) {
       res.status(201).json(result);
@@ -60,7 +60,7 @@ export const login = async (req: Request, res: Response) => {
       });
     }
 
-    const result = await authService.login(validation.data);
+    const result = await authService.login(validation.data as any);
     
     if (result.success) {
       res.json(result);
@@ -117,7 +117,7 @@ export const updateProfile = async (req: Request, res: Response) => {
       });
     }
 
-    const result = await authService.updateUser(req.user.id, validation.data);
+    const result = await authService.updateUser(req.user.id, validation.data as any);
     
     if (result.success) {
       res.json(result);
