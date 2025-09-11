@@ -1,7 +1,6 @@
 import { supabase, shouldSkipSupabase } from "../lib/supabase";
 import type { Product, Category, ApiResponse } from "../../shared/types";
 import { localStore } from "../lib/local-store";
-import { supabase, shouldSkipSupabase } from "../lib/supabase";
 
 export class ProductService {
   // Get all products
