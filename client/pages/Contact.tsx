@@ -119,7 +119,7 @@ const Contact: React.FC = () => {
   const subjects = [
     { value: 'general', labelAr: 'استفسار عام', labelEn: 'General Inquiry' },
     { value: 'products', labelAr: 'استفسار عن المنتجات', labelEn: 'Product Inquiry' },
-    { value: 'orders', labelAr: 'استفسار عن الطلبات', labelEn: 'Order Inquiry' },
+    { value: 'orders', labelAr: 'استفسا�� عن الطلبات', labelEn: 'Order Inquiry' },
     { value: 'wholesale', labelAr: 'طلبات الجملة', labelEn: 'Wholesale Orders' },
     { value: 'partnership', labelAr: 'الشراكة والتوزيع', labelEn: 'Partnership & Distribution' },
     { value: 'complaints', labelAr: 'شكاوى ومقترحات', labelEn: 'Complaints & Suggestions' }
@@ -143,7 +143,7 @@ const Contact: React.FC = () => {
             
             <p className="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
               {language === 'ar' 
-                ? 'نحن هنا للإجابة على استفساراتكم ومساعدتكم في الحصول على أفضل المنتجات التراثية الطبيعية'
+                ? 'نحن هنا للإج��بة على استفساراتكم ومساعدتكم في الحصول على أفضل المنتجات التراثية الطبيعية'
                 : 'We\'re here to answer your questions and help you get the best natural heritage products'
               }
             </p>
@@ -221,7 +221,7 @@ const Contact: React.FC = () => {
                   <span className="text-olive-200">•</span>
                   <span className="text-sm">
                     {language === 'ar' 
-                      ? 'للطلبات العاجلة، تواصل معنا عبر الواتساب'
+                      ? 'للطلبات العاجلة، تواصل مع��ا عبر الواتساب'
                       : 'For urgent orders, contact us via WhatsApp'
                     }
                   </span>
@@ -230,7 +230,7 @@ const Contact: React.FC = () => {
                   <span className="text-olive-200">•</span>
                   <span className="text-sm">
                     {language === 'ar' 
-                      ? 'نرد على جميع الاستفسارات خلال 24 ��اعة'
+                      ? 'نرد على جميع الاستفسارات خلال 24 ساعة'
                       : 'We respond to all inquiries within 24 hours'
                     }
                   </span>
@@ -264,7 +264,7 @@ const Contact: React.FC = () => {
                     {language === 'ar' ? 'تم إرسال رسالتك بنجاح!' : 'Message Sent Successfully!'}
                   </h3>
                   <p className="text-gray-600">
-                    {language === 'ar' 
+                    {language === 'ar'
                       ? 'شكراً لتواصلك معنا. سنرد عليك في أقرب وقت ممكن.'
                       : 'Thank you for contacting us. We\'ll get back to you as soon as possible.'
                     }
@@ -272,6 +272,10 @@ const Contact: React.FC = () => {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  {error && (
+                    <div className="text-sm text-red-600">{error}</div>
+                  )
+                  }
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <Label htmlFor="name" className="text-gray-700 font-medium">
