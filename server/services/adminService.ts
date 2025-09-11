@@ -101,8 +101,8 @@ export class AdminService {
 
       // Products by category
       const categoryCount: { [key: string]: number } = {};
-      productsData?.forEach(product => {
-        const categoryName = product.categories?.name_en || 'Unknown';
+      productsData?.forEach((product: any) => {
+        const categoryName = (product as any).categories?.name_en || 'Unknown';
         categoryCount[categoryName] = (categoryCount[categoryName] || 0) + 1;
       });
 
