@@ -73,7 +73,7 @@ export const createProduct = async (req: Request, res: Response) => {
       });
     }
 
-    const result = await productService.createProduct(validation.data);
+    const result = await productService.createProduct(validation.data as any);
     
     if (result.success) {
       res.status(201).json(result);
