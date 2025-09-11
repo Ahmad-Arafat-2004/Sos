@@ -16,6 +16,7 @@ const Contact: React.FC = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -229,7 +230,7 @@ const Contact: React.FC = () => {
                   <span className="text-olive-200">•</span>
                   <span className="text-sm">
                     {language === 'ar' 
-                      ? 'نرد على جميع الاستفسارات خلال 24 ساعة'
+                      ? 'نرد على جميع الاستفسارات خلال 24 ��اعة'
                       : 'We respond to all inquiries within 24 hours'
                     }
                   </span>
