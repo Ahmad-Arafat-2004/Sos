@@ -48,7 +48,7 @@ export const createCategory = async (req: Request, res: Response) => {
       });
     }
 
-    const result = await productService.createCategory(validation.data);
+    const result = await productService.createCategory(validation.data as any);
     
     if (result.success) {
       res.status(201).json(result);
@@ -77,7 +77,7 @@ export const updateCategory = async (req: Request, res: Response) => {
       });
     }
 
-    const result = await productService.updateCategory(id, validation.data);
+    const result = await productService.updateCategory(id, validation.data as any);
     
     if (result.success) {
       res.json(result);
