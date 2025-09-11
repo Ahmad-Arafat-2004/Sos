@@ -76,6 +76,7 @@ const Header: React.FC = () => {
           <Link
             to="/"
             className="flex items-center space-x-2 rtl:space-x-reverse"
+            onClick={() => startLoading()}
           >
             <div className="w-10 h-10 rounded-lg overflow-hidden">
               <img
