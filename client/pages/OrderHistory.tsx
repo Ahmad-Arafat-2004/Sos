@@ -268,7 +268,7 @@ const OrderHistory: React.FC = () => {
                         className="flex items-center gap-1"
                       >
                         <Download className="w-4 h-4" />
-                        {language === 'ar' ? 'تحميل الفاتورة' : 'Download Invoice'}
+                        {language === 'ar' ? 'تحميل ��لفاتورة' : 'Download Invoice'}
                       </Button>
                       {order.status === 'delivered' && (
                         <Button 
@@ -286,6 +286,10 @@ const OrderHistory: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Order details modal */}
+      <OrderDetailsModal order={selectedOrder} isOpen={!!selectedOrder} onClose={() => setSelectedOrder(null)} language={language} />
+
     </div>
   );
 };
