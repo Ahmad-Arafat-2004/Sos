@@ -15,13 +15,13 @@ const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "7d";
 export class AuthService {
   // Generate JWT token
   private generateToken(userId: string): string {
-    return jwt.sign({ userId }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+    return (jwt as any).sign({ userId }, JWT_SECRET as any, { expiresIn: JWT_EXPIRES_IN });
   }
 
   // Verify JWT token
   verifyToken(token: string): { userId: string } | null {
     try {
-      const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+      const decoded = (jwt as any).verify(token, JWT_SECRET as any) as { userId: string };
       return decoded;
     } catch (error) {
       return null;
