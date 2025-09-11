@@ -12,6 +12,7 @@ export default defineConfig(({ mode }) => ({
       allow: ["./client", "./shared"],
       deny: [".env", ".env.*", "*.{crt,pem}", "**/.git/**", "server/**"],
     },
+    hmr: { overlay: false },
   },
   build: {
     outDir: "dist/spa",

@@ -103,7 +103,8 @@ class ApiClient {
             const detailMsgs = data.details
               .map((d: any) => (d && d.message ? d.message : JSON.stringify(d)))
               .filter(Boolean);
-            if (detailMsgs.length) errMsg = `${errMsg}: ${detailMsgs.join('; ')}`;
+            if (detailMsgs.length)
+              errMsg = `${errMsg}: ${detailMsgs.join("; ")}`;
           }
         } catch (e) {
           // ignore
@@ -263,7 +264,6 @@ class ApiClient {
         body: JSON.stringify(orderData),
       });
     },
-
 
     getUserOrders: async (): Promise<ApiResponse<Order[]>> => {
       return this.request<Order[]>("/orders");
