@@ -182,7 +182,7 @@ const Header: React.FC = () => {
               </div>
             ) : (
               <div className="hidden sm:flex items-center space-x-2 rtl:space-x-reverse">
-                <Link to="/login">
+                <Link to="/login" onClick={() => startLoading()}>
                   <Button
                     variant="ghost"
                     size="sm"
@@ -191,7 +191,7 @@ const Header: React.FC = () => {
                     {t("nav.login")}
                   </Button>
                 </Link>
-                <Link to="/signup">
+                <Link to="/signup" onClick={() => startLoading()}>
                   <Button size="sm" className="bg-olive-600 hover:bg-olive-700">
                     {t("nav.signup")}
                   </Button>
