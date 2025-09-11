@@ -1,39 +1,39 @@
-import { Request, Response } from 'express';
-import { authService } from '../services/authService';
-import { z } from 'zod';
+import { Request, Response } from "express";
+import { authService } from "../services/authService";
+import { z } from "zod";
 
 // Validation schemas
 const registerSchema = z.object({
-  email: z.string().email('Invalid email format'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-  name: z.string().min(1, 'Name is required')
+  email: z.string().email("Invalid email format"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  name: z.string().min(1, "Name is required"),
 });
 
 const loginSchema = z.object({
-  email: z.string().email('Invalid email format'),
-  password: z.string().min(1, 'Password is required')
+  email: z.string().email("Invalid email format"),
+  password: z.string().min(1, "Password is required"),
 });
 
 const updateProfileSchema = z.object({
-  name: z.string().min(1, 'Name is required').optional(),
-  email: z.string().email('Invalid email format').optional()
+  name: z.string().min(1, "Name is required").optional(),
+  email: z.string().email("Invalid email format").optional(),
 });
 
 // Register new user
 export const register = async (req: Request, res: Response) => {
   try {
     const validation = registerSchema.safeParse(req.body);
-    
+
     if (!validation.success) {
       return res.status(400).json({
         success: false,
-        error: 'Validation failed',
-        details: validation.error.errors
+        error: "Validation failed",
+        details: validation.error.errors,
       });
     }
 
     const result = await authService.register(validation.data as any);
-    
+
     if (result.success) {
       res.status(201).json(result);
     } else {
@@ -42,7 +42,7 @@ export const register = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: 'Internal server error'
+      error: "Internal server error",
     });
   }
 };
@@ -51,17 +51,17 @@ export const register = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   try {
     const validation = loginSchema.safeParse(req.body);
-    
+
     if (!validation.success) {
       return res.status(400).json({
         success: false,
-        error: 'Validation failed',
-        details: validation.error.errors
+        error: "Validation failed",
+        details: validation.error.errors,
       });
     }
 
     const result = await authService.login(validation.data as any);
-    
+
     if (result.success) {
       res.json(result);
     } else {
@@ -70,7 +70,7 @@ export const login = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: 'Internal server error'
+      error: "Internal server error",
     });
   }
 };
@@ -81,18 +81,18 @@ export const getProfile = async (req: Request, res: Response) => {
     if (!req.user) {
       return res.status(401).json({
         success: false,
-        error: 'Authentication required'
+        error: "Authentication required",
       });
     }
 
     res.json({
       success: true,
-      data: req.user
+      data: req.user,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: 'Internal server error'
+      error: "Internal server error",
     });
   }
 };
@@ -103,22 +103,25 @@ export const updateProfile = async (req: Request, res: Response) => {
     if (!req.user) {
       return res.status(401).json({
         success: false,
-        error: 'Authentication required'
+        error: "Authentication required",
       });
     }
 
     const validation = updateProfileSchema.safeParse(req.body);
-    
+
     if (!validation.success) {
       return res.status(400).json({
         success: false,
-        error: 'Validation failed',
-        details: validation.error.errors
+        error: "Validation failed",
+        details: validation.error.errors,
       });
     }
 
-    const result = await authService.updateUser(req.user.id, validation.data as any);
-    
+    const result = await authService.updateUser(
+      req.user.id,
+      validation.data as any,
+    );
+
     if (result.success) {
       res.json(result);
     } else {
@@ -127,7 +130,7 @@ export const updateProfile = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: 'Internal server error'
+      error: "Internal server error",
     });
   }
 };
@@ -136,17 +139,17 @@ export const updateProfile = async (req: Request, res: Response) => {
 export const refreshToken = async (req: Request, res: Response) => {
   try {
     const authHeader = req.headers.authorization;
-    
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({
         success: false,
-        error: 'Token required'
+        error: "Token required",
       });
     }
 
     const token = authHeader.substring(7);
     const result = await authService.refreshToken(token);
-    
+
     if (result.success) {
       res.json(result);
     } else {
@@ -155,7 +158,7 @@ export const refreshToken = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: 'Internal server error'
+      error: "Internal server error",
     });
   }
 };
@@ -167,12 +170,12 @@ export const logout = async (req: Request, res: Response) => {
     // For now, we'll just return success (client should remove token)
     res.json({
       success: true,
-      message: 'Logged out successfully'
+      message: "Logged out successfully",
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: 'Internal server error'
+      error: "Internal server error",
     });
   }
 };

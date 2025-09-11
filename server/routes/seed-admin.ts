@@ -18,7 +18,7 @@ export const seedAdmin = async (req: Request, res: Response) => {
       page: 1,
       perPage: 1000,
     });
-    const existing = (list.data?.users as any[] || []).find(
+    const existing = ((list.data?.users as any[]) || []).find(
       (u: any) => u.email?.toLowerCase() === email.toLowerCase(),
     );
 
@@ -32,12 +32,10 @@ export const seedAdmin = async (req: Request, res: Response) => {
         user_metadata: { name },
       });
       if (created.error || !created.data.user) {
-        return res
-          .status(400)
-          .json({
-            success: false,
-            error: created.error?.message || "Failed to create auth user",
-          });
+        return res.status(400).json({
+          success: false,
+          error: created.error?.message || "Failed to create auth user",
+        });
       }
       userId = created.data.user.id;
     } else {

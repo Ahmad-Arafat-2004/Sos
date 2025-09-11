@@ -1,5 +1,5 @@
-import { supabase, shouldSkipSupabase } from '../lib/supabase';
-import type { ApiResponse } from '../../shared/types';
+import { supabase, shouldSkipSupabase } from "../lib/supabase";
+import type { ApiResponse } from "../../shared/types";
 
 export interface AdminStats {
   users: {
@@ -10,8 +10,8 @@ export interface AdminStats {
   products: {
     total: number;
     by_store: {
-      'irth-biladi': number;
-      'cilka': number;
+      "irth-biladi": number;
+      cilka: number;
     };
     by_category: Array<{
       category_name: string;
@@ -38,7 +38,11 @@ export interface AdminStats {
 
 export interface RecentActivity {
   id: string;
-  type: 'user_registered' | 'order_created' | 'product_added' | 'category_added';
+  type:
+    | "user_registered"
+    | "order_created"
+    | "product_added"
+    | "category_added";
   description: string;
   created_at: string;
   details?: any;
@@ -52,10 +56,10 @@ export class AdminService {
         success: true,
         data: {
           users: { total: 0, new_this_month: 0, admins: 0 },
-          products: { 
-            total: 0, 
-            by_store: { 'irth-biladi': 0, 'cilka': 0 },
-            by_category: []
+          products: {
+            total: 0,
+            by_store: { "irth-biladi": 0, cilka: 0 },
+            by_category: [],
           },
           orders: {
             total: 0,
@@ -67,75 +71,93 @@ export class AdminService {
               processing: 0,
               shipped: 0,
               delivered: 0,
-              cancelled: 0
-            }
+              cancelled: 0,
+            },
           },
-          categories: { total: 0 }
+          categories: { total: 0 },
         },
-        message: 'Using fallback data - Supabase not configured'
+        message: "Using fallback data - Supabase not configured",
       };
     }
 
     try {
       // Get current date for monthly calculations
       const now = new Date();
-      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+      const startOfMonth = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        1,
+      ).toISOString();
 
       // Users statistics
       const { data: usersData } = await supabase
-        .from('users')
-        .select('id, created_at, role');
+        .from("users")
+        .select("id, created_at, role");
 
       const totalUsers = usersData?.length || 0;
-      const newUsersThisMonth = usersData?.filter(u => u.created_at >= startOfMonth).length || 0;
-      const adminUsers = usersData?.filter(u => u.role === 'admin').length || 0;
+      const newUsersThisMonth =
+        usersData?.filter((u) => u.created_at >= startOfMonth).length || 0;
+      const adminUsers =
+        usersData?.filter((u) => u.role === "admin").length || 0;
 
       // Products statistics
       const { data: productsData } = await supabase
-        .from('products')
-        .select('id, store, category_id, categories(name_en)');
+        .from("products")
+        .select("id, store, category_id, categories(name_en)");
 
       const totalProducts = productsData?.length || 0;
-      const irthBiladiProducts = productsData?.filter(p => p.store === 'irth-biladi').length || 0;
-      const cilkaProducts = productsData?.filter(p => p.store === 'cilka').length || 0;
+      const irthBiladiProducts =
+        productsData?.filter((p) => p.store === "irth-biladi").length || 0;
+      const cilkaProducts =
+        productsData?.filter((p) => p.store === "cilka").length || 0;
 
       // Products by category
       const categoryCount: { [key: string]: number } = {};
       productsData?.forEach((product: any) => {
-        const categoryName = (product as any).categories?.name_en || 'Unknown';
+        const categoryName = (product as any).categories?.name_en || "Unknown";
         categoryCount[categoryName] = (categoryCount[categoryName] || 0) + 1;
       });
 
-      const productsByCategory = Object.entries(categoryCount).map(([category_name, count]) => ({
-        category_name,
-        count
-      }));
+      const productsByCategory = Object.entries(categoryCount).map(
+        ([category_name, count]) => ({
+          category_name,
+          count,
+        }),
+      );
 
       // Orders statistics
       const { data: ordersData } = await supabase
-        .from('orders')
-        .select('id, total, status, created_at');
+        .from("orders")
+        .select("id, total, status, created_at");
 
       const totalOrders = ordersData?.length || 0;
-      const totalRevenue = ordersData?.reduce((sum, order) => sum + order.total, 0) || 0;
-      
-      const ordersThisMonth = ordersData?.filter(o => o.created_at >= startOfMonth) || [];
+      const totalRevenue =
+        ordersData?.reduce((sum, order) => sum + order.total, 0) || 0;
+
+      const ordersThisMonth =
+        ordersData?.filter((o) => o.created_at >= startOfMonth) || [];
       const thisMonthOrders = ordersThisMonth.length;
-      const thisMonthRevenue = ordersThisMonth.reduce((sum, order) => sum + order.total, 0);
+      const thisMonthRevenue = ordersThisMonth.reduce(
+        (sum, order) => sum + order.total,
+        0,
+      );
 
       // Orders by status
       const ordersByStatus = {
-        pending: ordersData?.filter(o => o.status === 'pending').length || 0,
-        processing: ordersData?.filter(o => o.status === 'processing').length || 0,
-        shipped: ordersData?.filter(o => o.status === 'shipped').length || 0,
-        delivered: ordersData?.filter(o => o.status === 'delivered').length || 0,
-        cancelled: ordersData?.filter(o => o.status === 'cancelled').length || 0,
+        pending: ordersData?.filter((o) => o.status === "pending").length || 0,
+        processing:
+          ordersData?.filter((o) => o.status === "processing").length || 0,
+        shipped: ordersData?.filter((o) => o.status === "shipped").length || 0,
+        delivered:
+          ordersData?.filter((o) => o.status === "delivered").length || 0,
+        cancelled:
+          ordersData?.filter((o) => o.status === "cancelled").length || 0,
       };
 
       // Categories statistics
       const { data: categoriesData } = await supabase
-        .from('categories')
-        .select('id');
+        .from("categories")
+        .select("id");
 
       const totalCategories = categoriesData?.length || 0;
 
@@ -143,47 +165,49 @@ export class AdminService {
         users: {
           total: totalUsers,
           new_this_month: newUsersThisMonth,
-          admins: adminUsers
+          admins: adminUsers,
         },
         products: {
           total: totalProducts,
           by_store: {
-            'irth-biladi': irthBiladiProducts,
-            'cilka': cilkaProducts
+            "irth-biladi": irthBiladiProducts,
+            cilka: cilkaProducts,
           },
-          by_category: productsByCategory
+          by_category: productsByCategory,
         },
         orders: {
           total: totalOrders,
           total_revenue: totalRevenue,
           this_month: thisMonthOrders,
           this_month_revenue: thisMonthRevenue,
-          by_status: ordersByStatus
+          by_status: ordersByStatus,
         },
         categories: {
-          total: totalCategories
-        }
+          total: totalCategories,
+        },
       };
 
       return {
         success: true,
-        data: stats
+        data: stats,
       };
     } catch (error) {
       return {
         success: false,
-        error: 'Failed to fetch dashboard statistics'
+        error: "Failed to fetch dashboard statistics",
       };
     }
   }
 
   // Get recent activity
-  async getRecentActivity(limit: number = 10): Promise<ApiResponse<RecentActivity[]>> {
+  async getRecentActivity(
+    limit: number = 10,
+  ): Promise<ApiResponse<RecentActivity[]>> {
     if (shouldSkipSupabase()) {
       return {
         success: true,
         data: [],
-        message: 'Using fallback data - Supabase not configured'
+        message: "Using fallback data - Supabase not configured",
       };
     }
 
@@ -192,85 +216,88 @@ export class AdminService {
 
       // Get recent users
       const { data: recentUsers } = await supabase
-        .from('users')
-        .select('id, name, email, created_at')
-        .order('created_at', { ascending: false })
+        .from("users")
+        .select("id, name, email, created_at")
+        .order("created_at", { ascending: false })
         .limit(5);
 
-      recentUsers?.forEach(user => {
+      recentUsers?.forEach((user) => {
         activities.push({
           id: `user-${user.id}`,
-          type: 'user_registered',
+          type: "user_registered",
           description: `New user ${user.name} registered`,
           created_at: user.created_at,
-          details: { user_email: user.email }
+          details: { user_email: user.email },
         });
       });
 
       // Get recent orders
       const { data: recentOrders } = await supabase
-        .from('orders')
-        .select('id, customer_name, total, created_at')
-        .order('created_at', { ascending: false })
+        .from("orders")
+        .select("id, customer_name, total, created_at")
+        .order("created_at", { ascending: false })
         .limit(5);
 
-      recentOrders?.forEach(order => {
+      recentOrders?.forEach((order) => {
         activities.push({
           id: `order-${order.id}`,
-          type: 'order_created',
+          type: "order_created",
           description: `New order by ${order.customer_name} - $${order.total}`,
           created_at: order.created_at,
-          details: { order_id: order.id, total: order.total }
+          details: { order_id: order.id, total: order.total },
         });
       });
 
       // Get recent products
       const { data: recentProducts } = await supabase
-        .from('products')
-        .select('id, name_en, created_at')
-        .order('created_at', { ascending: false })
+        .from("products")
+        .select("id, name_en, created_at")
+        .order("created_at", { ascending: false })
         .limit(3);
 
-      recentProducts?.forEach(product => {
+      recentProducts?.forEach((product) => {
         activities.push({
           id: `product-${product.id}`,
-          type: 'product_added',
+          type: "product_added",
           description: `New product added: ${product.name_en}`,
           created_at: product.created_at,
-          details: { product_id: product.id }
+          details: { product_id: product.id },
         });
       });
 
       // Get recent categories
       const { data: recentCategories } = await supabase
-        .from('categories')
-        .select('id, name_en, created_at')
-        .order('created_at', { ascending: false })
+        .from("categories")
+        .select("id, name_en, created_at")
+        .order("created_at", { ascending: false })
         .limit(2);
 
-      recentCategories?.forEach(category => {
+      recentCategories?.forEach((category) => {
         activities.push({
           id: `category-${category.id}`,
-          type: 'category_added',
+          type: "category_added",
           description: `New category added: ${category.name_en}`,
           created_at: category.created_at,
-          details: { category_id: category.id }
+          details: { category_id: category.id },
         });
       });
 
       // Sort all activities by date and limit
       const sortedActivities = activities
-        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+        .sort(
+          (a, b) =>
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+        )
         .slice(0, limit);
 
       return {
         success: true,
-        data: sortedActivities
+        data: sortedActivities,
       };
     } catch (error) {
       return {
         success: false,
-        error: 'Failed to fetch recent activity'
+        error: "Failed to fetch recent activity",
       };
     }
   }
@@ -281,68 +308,71 @@ export class AdminService {
       return {
         success: true,
         data: [],
-        message: 'Using fallback data - Supabase not configured'
+        message: "Using fallback data - Supabase not configured",
       };
     }
 
     try {
       const { data, error } = await supabase
-        .from('users')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .from("users")
+        .select("*")
+        .order("created_at", { ascending: false });
 
       if (error) {
         return {
           success: false,
-          error: error.message
+          error: error.message,
         };
       }
 
       return {
         success: true,
-        data: data || []
+        data: data || [],
       };
     } catch (error) {
       return {
         success: false,
-        error: 'Failed to fetch users'
+        error: "Failed to fetch users",
       };
     }
   }
 
   // Update user role
-  async updateUserRole(userId: string, role: 'user' | 'admin'): Promise<ApiResponse<any>> {
+  async updateUserRole(
+    userId: string,
+    role: "user" | "admin",
+  ): Promise<ApiResponse<any>> {
     if (shouldSkipSupabase()) {
       return {
         success: false,
-        error: 'Supabase not configured'
+        error: "Supabase not configured",
       };
     }
 
     try {
       const { data, error } = await supabase
-        .from('users')
+        .from("users")
         .update({ role })
-        .eq('id', userId)
+        .eq("id", userId)
         .select()
         .single();
 
       if (error) {
         return {
           success: false,
-          error: error.message
+          error: error.message,
         };
       }
 
       return {
         success: true,
         data: data,
-        message: 'User role updated successfully'
+        message: "User role updated successfully",
       };
     } catch (error) {
       return {
         success: false,
-        error: 'Failed to update user role'
+        error: "Failed to update user role",
       };
     }
   }
@@ -352,31 +382,28 @@ export class AdminService {
     if (shouldSkipSupabase()) {
       return {
         success: false,
-        error: 'Supabase not configured'
+        error: "Supabase not configured",
       };
     }
 
     try {
-      const { error } = await supabase
-        .from('users')
-        .delete()
-        .eq('id', userId);
+      const { error } = await supabase.from("users").delete().eq("id", userId);
 
       if (error) {
         return {
           success: false,
-          error: error.message
+          error: error.message,
         };
       }
 
       return {
         success: true,
-        message: 'User deleted successfully'
+        message: "User deleted successfully",
       };
     } catch (error) {
       return {
         success: false,
-        error: 'Failed to delete user'
+        error: "Failed to delete user",
       };
     }
   }

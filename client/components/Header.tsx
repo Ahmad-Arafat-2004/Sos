@@ -12,7 +12,7 @@ import {
   Package,
 } from "lucide-react";
 import { useLanguage } from "../contexts/LanguageContext";
-import { useLoading } from '../contexts/LoadingContext';
+import { useLoading } from "../contexts/LoadingContext";
 import { useCart } from "../contexts/CartContext";
 import { useAuth } from "../contexts/AuthContext";
 import { useFavorites } from "../contexts/FavoritesContext";
@@ -154,7 +154,11 @@ const Header: React.FC = () => {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <Link to="/profile" className="cursor-pointer" onClick={() => startLoading()}>
+                      <Link
+                        to="/profile"
+                        className="cursor-pointer"
+                        onClick={() => startLoading()}
+                      >
                         <User className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" />
                         <span>
                           {language === "ar" ? "الملف الشخصي" : "Profile"}
@@ -162,7 +166,11 @@ const Header: React.FC = () => {
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link to="/orders" className="cursor-pointer" onClick={() => startLoading()}>
+                      <Link
+                        to="/orders"
+                        className="cursor-pointer"
+                        onClick={() => startLoading()}
+                      >
                         <Package className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" />
                         <span>
                           {language === "ar" ? "طلباتي" : "My Orders"}
@@ -201,7 +209,11 @@ const Header: React.FC = () => {
 
             {/* Favorites - Only show if user is logged in */}
             {user && (
-              <Link to="/favorites" className="relative" onClick={() => startLoading()}>
+              <Link
+                to="/favorites"
+                className="relative"
+                onClick={() => startLoading()}
+              >
                 <Button variant="outline" size="sm" className="relative p-2">
                   <Heart className="w-5 h-5" />
                   {favorites.length > 0 && (
@@ -214,7 +226,11 @@ const Header: React.FC = () => {
             )}
 
             {/* Cart */}
-            <Link to="/cart" className="relative" onClick={() => startLoading()}>
+            <Link
+              to="/cart"
+              className="relative"
+              onClick={() => startLoading()}
+            >
               <Button variant="outline" size="sm" className="relative p-2">
                 <ShoppingCart className="w-5 h-5" />
                 {totalItems > 0 && (
@@ -257,7 +273,10 @@ const Header: React.FC = () => {
                   key={item.key}
                   to={item.href}
                   className="block px-3 py-2 text-gray-700 hover:text-olive-600 hover:bg-olive-50 rounded-md transition-colors duration-200"
-                  onClick={() => { setIsMobileMenuOpen(false); startLoading(); }}
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    startLoading();
+                  }}
                 >
                   {t(`nav.${item.key}`)}
                 </Link>
@@ -290,14 +309,23 @@ const Header: React.FC = () => {
                   </div>
                   <Link
                     to="/profile"
-                    onClick={() => { setIsMobileMenuOpen(false); startLoading(); }}
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      startLoading();
+                    }}
                   >
                     <Button variant="ghost" className="w-full justify-start">
                       <User className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" />
                       {language === "ar" ? "الملف الشخصي" : "Profile"}
                     </Button>
                   </Link>
-                  <Link to="/orders" onClick={() => { setIsMobileMenuOpen(false); startLoading(); }}>
+                  <Link
+                    to="/orders"
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      startLoading();
+                    }}
+                  >
                     <Button variant="ghost" className="w-full justify-start">
                       <Package className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" />
                       {language === "ar" ? "طلباتي" : "My Orders"}
@@ -317,12 +345,24 @@ const Header: React.FC = () => {
                 </div>
               ) : (
                 <div className="px-3 py-2 border-t space-y-2">
-                  <Link to="/login" onClick={() => { setIsMobileMenuOpen(false); startLoading(); }}>
+                  <Link
+                    to="/login"
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      startLoading();
+                    }}
+                  >
                     <Button variant="ghost" className="w-full justify-start">
                       {t("nav.login")}
                     </Button>
                   </Link>
-                  <Link to="/signup" onClick={() => { setIsMobileMenuOpen(false); startLoading(); }}>
+                  <Link
+                    to="/signup"
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      startLoading();
+                    }}
+                  >
                     <Button className="w-full bg-olive-600 hover:bg-olive-700">
                       {t("nav.signup")}
                     </Button>

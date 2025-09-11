@@ -15,13 +15,17 @@ const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "7d";
 export class AuthService {
   // Generate JWT token
   private generateToken(userId: string): string {
-    return (jwt as any).sign({ userId }, JWT_SECRET as any, { expiresIn: JWT_EXPIRES_IN });
+    return (jwt as any).sign({ userId }, JWT_SECRET as any, {
+      expiresIn: JWT_EXPIRES_IN,
+    });
   }
 
   // Verify JWT token
   verifyToken(token: string): { userId: string } | null {
     try {
-      const decoded = (jwt as any).verify(token, JWT_SECRET as any) as { userId: string };
+      const decoded = (jwt as any).verify(token, JWT_SECRET as any) as {
+        userId: string;
+      };
       return decoded;
     } catch (error) {
       return null;
@@ -96,7 +100,11 @@ export class AuthService {
       try {
         // supabase.auth.admin.createUser is available when using service role
         // @ts-ignore
-        if (supabase.auth && (supabase.auth as any).admin && typeof (supabase.auth as any).admin.createUser === "function") {
+        if (
+          supabase.auth &&
+          (supabase.auth as any).admin &&
+          typeof (supabase.auth as any).admin.createUser === "function"
+        ) {
           // @ts-ignore
           const created = await (supabase.auth as any).admin.createUser({
             email: userData.email,
@@ -108,13 +116,14 @@ export class AuthService {
           authUserId = created.data?.user?.id;
         } else {
           // Fallback to client signUp
-          const { data: authData, error: authError } = await supabase.auth.signUp({
-            email: userData.email,
-            password: userData.password,
-            options: {
-              data: { name: userData.name },
-            },
-          });
+          const { data: authData, error: authError } =
+            await supabase.auth.signUp({
+              email: userData.email,
+              password: userData.password,
+              options: {
+                data: { name: userData.name },
+              },
+            });
 
           if (authError) {
             return { success: false, error: authError.message };
@@ -129,13 +138,15 @@ export class AuthService {
       } catch (e) {
         // If admin.createUser failed, try signUp as fallback
         try {
-          const { data: authData, error: authError } = await supabase.auth.signUp({
-            email: userData.email,
-            password: userData.password,
-            options: { data: { name: userData.name } },
-          });
+          const { data: authData, error: authError } =
+            await supabase.auth.signUp({
+              email: userData.email,
+              password: userData.password,
+              options: { data: { name: userData.name } },
+            });
           if (authError) return { success: false, error: authError.message };
-          if (!authData.user) return { success: false, error: "Failed to create user" };
+          if (!authData.user)
+            return { success: false, error: "Failed to create user" };
           authUserId = authData.user.id;
         } catch (err) {
           return { success: false, error: "Failed to create auth user" };

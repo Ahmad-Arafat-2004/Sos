@@ -1,5 +1,11 @@
-import React, { createContext, useContext, useRef, useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, {
+  createContext,
+  useContext,
+  useRef,
+  useState,
+  useEffect,
+} from "react";
+import { useLocation } from "react-router-dom";
 
 interface LoadingContextType {
   isLoading: boolean;
@@ -10,7 +16,9 @@ interface LoadingContextType {
 
 const LoadingContext = createContext<LoadingContextType | undefined>(undefined);
 
-export const LoadingProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const LoadingProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const counter = useRef(0);
   const location = useLocation();
@@ -37,7 +45,9 @@ export const LoadingProvider: React.FC<{ children: React.ReactNode }> = ({ child
   }, [location.pathname]);
 
   return (
-    <LoadingContext.Provider value={{ isLoading, startLoading, stopLoading, reset }}>
+    <LoadingContext.Provider
+      value={{ isLoading, startLoading, stopLoading, reset }}
+    >
       {children}
     </LoadingContext.Provider>
   );
@@ -45,6 +55,6 @@ export const LoadingProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
 export const useLoading = (): LoadingContextType => {
   const ctx = useContext(LoadingContext);
-  if (!ctx) throw new Error('useLoading must be used within LoadingProvider');
+  if (!ctx) throw new Error("useLoading must be used within LoadingProvider");
   return ctx;
 };

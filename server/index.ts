@@ -73,9 +73,17 @@ export function createServer() {
   app.get("/api/setup-admin", seedAdmin);
   // Seed products and categories for dev
   app.get("/api/seed-products", seedProducts);
-  app.get("/api/inspect-products", (req, res) => import('./routes/inspect').then(m => m.inspectProducts(req, res)));
-  app.post("/api/debug/delete-first-product", (req, res) => import('./routes/debug-delete').then(m => m.debugDeleteFirstProduct(req, res)));
-  app.post("/api/debug/run-tests", (req, res) => import('./routes/debug-run-tests').then(m => m.debugRunTests(req, res)));
+  app.get("/api/inspect-products", (req, res) =>
+    import("./routes/inspect").then((m) => m.inspectProducts(req, res)),
+  );
+  app.post("/api/debug/delete-first-product", (req, res) =>
+    import("./routes/debug-delete").then((m) =>
+      m.debugDeleteFirstProduct(req, res),
+    ),
+  );
+  app.post("/api/debug/run-tests", (req, res) =>
+    import("./routes/debug-run-tests").then((m) => m.debugRunTests(req, res)),
+  );
 
   // Auth routes (public)
   app.post("/api/auth/register", register);
@@ -106,7 +114,9 @@ export function createServer() {
   app.get("/api/orders/:id", authenticate, getOrderById);
 
   // Contact form endpoint (public)
-  app.post("/api/contact", (req, res) => import('./routes/contact').then(m => m.handleContact(req, res)));
+  app.post("/api/contact", (req, res) =>
+    import("./routes/contact").then((m) => m.handleContact(req, res)),
+  );
 
   // Admin-only order routes
   app.get("/api/admin/orders", authenticate, requireAdmin, getAllOrders);

@@ -1,73 +1,93 @@
-import React, { useState } from 'react';
-import { X, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
-import { useLanguage } from '../contexts/LanguageContext';
-import { useAuth } from '../contexts/AuthContext';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
+import React, { useState } from "react";
+import { X, Mail, Lock, User, Eye, EyeOff } from "lucide-react";
+import { useLanguage } from "../contexts/LanguageContext";
+import { useAuth } from "../contexts/AuthContext";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
-  initialTab?: 'login' | 'signup';
+  initialTab?: "login" | "signup";
 }
 
-const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'login' }) => {
+const AuthModal: React.FC<AuthModalProps> = ({
+  isOpen,
+  onClose,
+  initialTab = "login",
+}) => {
   const { t, isRTL } = useLanguage();
   const { login, signup, isLoading } = useAuth();
   const [activeTab, setActiveTab] = useState(initialTab);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
-    name: ''
+    email: "",
+    password: "",
+    confirmPassword: "",
+    name: "",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
-    setError('');
+    setError("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
-    if (activeTab === 'signup') {
+    if (activeTab === "signup") {
       if (formData.password !== formData.confirmPassword) {
-        setError('Passwords do not match');
+        setError("Passwords do not match");
         return;
       }
       if (!formData.name.trim()) {
-        setError('Name is required');
+        setError("Name is required");
         return;
       }
     }
 
     try {
-      if (activeTab === 'login') {
+      if (activeTab === "login") {
         const success = await login(formData.email, formData.password);
         if (success) {
           onClose();
-          setFormData({ email: '', password: '', confirmPassword: '', name: '' });
+          setFormData({
+            email: "",
+            password: "",
+            confirmPassword: "",
+            name: "",
+          });
         } else {
-          setError('Authentication failed. Please try again.');
+          setError("Authentication failed. Please try again.");
         }
       } else {
-        const result = await signup(formData.email, formData.password, formData.name);
+        const result = await signup(
+          formData.email,
+          formData.password,
+          formData.name,
+        );
         if (result && (result as any).success) {
           onClose();
-          setFormData({ email: '', password: '', confirmPassword: '', name: '' });
+          setFormData({
+            email: "",
+            password: "",
+            confirmPassword: "",
+            name: "",
+          });
         } else {
-          setError((result as any).error || 'Authentication failed. Please try again.');
+          setError(
+            (result as any).error || "Authentication failed. Please try again.",
+          );
         }
       }
     } catch (error: any) {
-      setError(error?.message || 'An error occurred. Please try again.');
+      setError(error?.message || "An error occurred. Please try again.");
     }
   };
 
@@ -79,7 +99,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'lo
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b">
           <h2 className="text-2xl font-bold text-gray-900">
-            {activeTab === 'login' ? t('auth.login') : t('auth.signup')}
+            {activeTab === "login" ? t("auth.login") : t("auth.signup")}
           </h2>
           <button
             onClick={onClose}
@@ -92,24 +112,24 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'lo
         {/* Tabs */}
         <div className="flex border-b">
           <button
-            onClick={() => setActiveTab('login')}
+            onClick={() => setActiveTab("login")}
             className={`flex-1 py-3 px-4 text-center font-medium transition-colors ${
-              activeTab === 'login'
-                ? 'text-olive-600 border-b-2 border-olive-600'
-                : 'text-gray-500 hover:text-gray-700'
+              activeTab === "login"
+                ? "text-olive-600 border-b-2 border-olive-600"
+                : "text-gray-500 hover:text-gray-700"
             }`}
           >
-            {t('auth.login')}
+            {t("auth.login")}
           </button>
           <button
-            onClick={() => setActiveTab('signup')}
+            onClick={() => setActiveTab("signup")}
             className={`flex-1 py-3 px-4 text-center font-medium transition-colors ${
-              activeTab === 'signup'
-                ? 'text-olive-600 border-b-2 border-olive-600'
-                : 'text-gray-500 hover:text-gray-700'
+              activeTab === "signup"
+                ? "text-olive-600 border-b-2 border-olive-600"
+                : "text-gray-500 hover:text-gray-700"
             }`}
           >
-            {t('auth.signup')}
+            {t("auth.signup")}
           </button>
         </div>
 
@@ -121,9 +141,9 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'lo
             </div>
           )}
 
-          {activeTab === 'signup' && (
+          {activeTab === "signup" && (
             <div className="space-y-2">
-              <Label htmlFor="name">{t('auth.name')}</Label>
+              <Label htmlFor="name">{t("auth.name")}</Label>
               <div className="relative">
                 <User className="absolute start-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <Input
@@ -132,7 +152,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'lo
                   type="text"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className={`${isRTL ? 'pr-10' : 'pl-10'}`}
+                  className={`${isRTL ? "pr-10" : "pl-10"}`}
                   placeholder="Your full name"
                   required
                 />
@@ -141,7 +161,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'lo
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="email">{t('auth.email')}</Label>
+            <Label htmlFor="email">{t("auth.email")}</Label>
             <div className="relative">
               <Mail className="absolute start-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
@@ -150,7 +170,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'lo
                 type="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className={`${isRTL ? 'pr-10' : 'pl-10'}`}
+                className={`${isRTL ? "pr-10" : "pl-10"}`}
                 placeholder="your@email.com"
                 required
               />
@@ -158,16 +178,16 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'lo
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">{t('auth.password')}</Label>
+            <Label htmlFor="password">{t("auth.password")}</Label>
             <div className="relative">
               <Lock className="absolute start-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
                 id="password"
                 name="password"
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 value={formData.password}
                 onChange={handleInputChange}
-                className={`${isRTL ? 'pr-10 pl-10' : 'pl-10 pr-10'}`}
+                className={`${isRTL ? "pr-10 pl-10" : "pl-10 pr-10"}`}
                 placeholder="••••••••"
                 required
               />
@@ -176,14 +196,20 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'lo
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute end-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
               >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
               </button>
             </div>
           </div>
 
-          {activeTab === 'signup' && (
+          {activeTab === "signup" && (
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">{t('auth.confirmPassword')}</Label>
+              <Label htmlFor="confirmPassword">
+                {t("auth.confirmPassword")}
+              </Label>
               <div className="relative">
                 <Lock className="absolute start-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <Input
@@ -192,7 +218,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'lo
                   type="password"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                  className={`${isRTL ? 'pr-10' : 'pl-10'}`}
+                  className={`${isRTL ? "pr-10" : "pl-10"}`}
                   placeholder="••••••••"
                   required
                 />
@@ -200,13 +226,13 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'lo
             </div>
           )}
 
-          {activeTab === 'login' && (
+          {activeTab === "login" && (
             <div className="text-end">
               <button
                 type="button"
                 className="text-sm text-olive-600 hover:text-olive-700"
               >
-                {t('auth.forgotPassword')}
+                {t("auth.forgotPassword")}
               </button>
             </div>
           )}
@@ -216,30 +242,34 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'lo
             className="w-full bg-olive-600 hover:bg-olive-700"
             disabled={isLoading}
           >
-            {isLoading ? t('general.loading') : (activeTab === 'login' ? t('auth.login') : t('auth.signup'))}
+            {isLoading
+              ? t("general.loading")
+              : activeTab === "login"
+                ? t("auth.login")
+                : t("auth.signup")}
           </Button>
 
           <div className="text-center text-sm text-gray-600">
-            {activeTab === 'login' ? (
+            {activeTab === "login" ? (
               <>
-                {t('auth.noAccount')}{' '}
+                {t("auth.noAccount")}{" "}
                 <button
                   type="button"
-                  onClick={() => setActiveTab('signup')}
+                  onClick={() => setActiveTab("signup")}
                   className="text-olive-600 hover:text-olive-700 font-medium"
                 >
-                  {t('auth.signup')}
+                  {t("auth.signup")}
                 </button>
               </>
             ) : (
               <>
-                {t('auth.hasAccount')}{' '}
+                {t("auth.hasAccount")}{" "}
                 <button
                   type="button"
-                  onClick={() => setActiveTab('login')}
+                  onClick={() => setActiveTab("login")}
                   className="text-olive-600 hover:text-olive-700 font-medium"
                 >
-                  {t('auth.login')}
+                  {t("auth.login")}
                 </button>
               </>
             )}
