@@ -12,6 +12,7 @@ import {
   Package,
 } from "lucide-react";
 import { useLanguage } from "../contexts/LanguageContext";
+import { useLoading } from '../contexts/LoadingContext';
 import { useCart } from "../contexts/CartContext";
 import { useAuth } from "../contexts/AuthContext";
 import { useFavorites } from "../contexts/FavoritesContext";
