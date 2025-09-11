@@ -101,7 +101,7 @@ const OrderHistory: React.FC = () => {
             {language === 'ar' ? 'يجب تسجيل الدخول أولاً' : 'Please login first'}
           </h1>
           <Button onClick={() => window.location.href = '/login'}>
-            {language === 'ar' ? 'تس��يل الدخول' : 'Login'}
+            {language === 'ar' ? 'تسجيل الدخول' : 'Login'}
           </Button>
         </div>
       </div>
@@ -148,13 +148,15 @@ const OrderHistory: React.FC = () => {
           <h1 className="text-3xl font-bold text-gray-900">
             {language === 'ar' ? 'تاريخ الطلبات' : 'Order History'}
           </h1>
-          <Button variant="outline" className="flex items-center gap-2">
+          <Button variant="outline" className="flex items-center gap-2" onClick={handleDownloadAll}>
             <Download className="w-4 h-4" />
             {language === 'ar' ? 'تحميل الكل' : 'Download All'}
           </Button>
         </div>
 
-        {orders.length === 0 ? (
+        {loading ? (
+          <div className="py-12 text-center">{language === 'ar' ? 'جارٍ التحميل...' : 'Loading orders...'}</div>
+        ) : orders.length === 0 ? (
           <Card>
             <CardContent className="py-12 text-center">
               <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
