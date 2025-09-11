@@ -92,7 +92,7 @@ const Contact: React.FC = () => {
     {
       name: 'Facebook',
       icon: '📘',
-      link: 'https://facebook.com/turathfoods',
+      link: 'https://www.facebook.com/share/19xANKWK8i/',
       color: 'bg-blue-600 hover:bg-blue-700'
     },
     {
