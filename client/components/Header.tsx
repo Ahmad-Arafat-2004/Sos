@@ -317,12 +317,12 @@ const Header: React.FC = () => {
                 </div>
               ) : (
                 <div className="px-3 py-2 border-t space-y-2">
-                  <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Link to="/login" onClick={() => { setIsMobileMenuOpen(false); startLoading(); }}>
                     <Button variant="ghost" className="w-full justify-start">
                       {t("nav.login")}
                     </Button>
                   </Link>
-                  <Link to="/signup" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Link to="/signup" onClick={() => { setIsMobileMenuOpen(false); startLoading(); }}>
                     <Button className="w-full bg-olive-600 hover:bg-olive-700">
                       {t("nav.signup")}
                     </Button>
