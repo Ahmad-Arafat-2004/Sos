@@ -36,7 +36,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const isAR = language === 'ar';
 
   const [name, setName] = useState<string>(user?.name || '');
-  const [phone, setPhone] = useState<string>(user?.phone || '');
+  const [phone, setPhone] = useState<string>('');
   const [street, setStreet] = useState<string>('');
   const [city, setCity] = useState<string>('');
   const [country, setCountry] = useState<string>('');
