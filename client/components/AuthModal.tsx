@@ -49,21 +49,25 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'lo
     }
 
     try {
-      let success = false;
       if (activeTab === 'login') {
-        success = await login(formData.email, formData.password);
+        const success = await login(formData.email, formData.password);
+        if (success) {
+          onClose();
+          setFormData({ email: '', password: '', confirmPassword: '', name: '' });
+        } else {
+          setError('Authentication failed. Please try again.');
+        }
       } else {
-        success = await signup(formData.email, formData.password, formData.name);
+        const result = await signup(formData.email, formData.password, formData.name);
+        if (result && (result as any).success) {
+          onClose();
+          setFormData({ email: '', password: '', confirmPassword: '', name: '' });
+        } else {
+          setError((result as any).error || 'Authentication failed. Please try again.');
+        }
       }
-
-      if (success) {
-        onClose();
-        setFormData({ email: '', password: '', confirmPassword: '', name: '' });
-      } else {
-        setError('Authentication failed. Please try again.');
-      }
-    } catch (error) {
-      setError('An error occurred. Please try again.');
+    } catch (error: any) {
+      setError(error?.message || 'An error occurred. Please try again.');
     }
   };
 
