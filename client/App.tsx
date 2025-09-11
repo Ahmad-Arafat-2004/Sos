@@ -9,6 +9,8 @@ import { StoreProvider } from "./contexts/StoreContext";
 import { NotificationProvider } from "./contexts/NotificationContext";
 import { AppWithNotification } from "./components/AppWithNotification";
 import Header from "./components/Header";
+import { LoadingProvider } from './contexts/LoadingContext';
+import TopProgressBar from './components/TopProgressBar';
 import Index from "./pages/Index";
 import Products from "./pages/Products";
 import About from "./pages/About";
@@ -54,12 +56,78 @@ function App() {
                 <FavoritesProvider>
                   <AdminProvider>
                     <BrowserRouter>
-                      {/* LoadingProvider must be inside Router to use useLocation */}
-                      <React.Suspense fallback={null}>
-                        {/* dynamic-level provider for navigation loading */}
-                        {/* eslint-disable-next-line react/jsx-pascal-case */}
-                      </React.Suspense>
-                      <BrowserRouter />
+                      <LoadingProvider>
+                        <TopProgressBar />
+                        <Routes>
+                          {/* Auth pages without header */}
+                          <Route path="/login" element={<Login />} />
+                          <Route path="/signup" element={<SignUp />} />
+
+                          {/* Admin routes without header */}
+                          <Route
+                            path="/admin"
+                            element={
+                              <AdminGuard>
+                                <AdminDashboard />
+                              </AdminGuard>
+                            }
+                          />
+                          <Route
+                            path="/Admin"
+                            element={
+                              <AdminGuard>
+                                <AdminDashboard />
+                              </AdminGuard>
+                            }
+                          />
+
+                          {/* Regular pages with header */}
+                          <Route
+                            path="*"
+                            element={
+                              <div className="min-h-screen bg-background">
+                                <Header />
+                                <main>
+                                  <Routes>
+                                    <Route path="/" element={<Index />} />
+                                    <Route
+                                      path="/store-selection"
+                                      element={<StoreSelection />}
+                                    />
+                                    <Route
+                                      path="/products"
+                                      element={<Products />}
+                                    />
+                                    <Route
+                                      path="/favorites"
+                                      element={<Favorites />}
+                                    />
+                                    <Route path="/cart" element={<Cart />} />
+                                    <Route
+                                      path="/checkout"
+                                      element={<Checkout />}
+                                    />
+                                    <Route
+                                      path="/profile"
+                                      element={<Profile />}
+                                    />
+                                    <Route
+                                      path="/orders"
+                                      element={<OrderHistory />}
+                                    />
+                                    <Route path="/about" element={<About />} />
+                                    <Route
+                                      path="/contact"
+                                      element={<Contact />}
+                                    />
+                                    <Route path="*" element={<NotFound />} />
+                                  </Routes>
+                                </main>
+                              </div>
+                            }
+                          />
+                        </Routes>
+                      </LoadingProvider>
                     </BrowserRouter>
                   </AdminProvider>
                 </FavoritesProvider>
