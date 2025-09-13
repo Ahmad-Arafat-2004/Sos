@@ -1,14 +1,14 @@
-import React from 'react';
-import { Heart, ShoppingCart, Check } from 'lucide-react';
-import { Product } from '../contexts/CartContext';
-import { useLanguage } from '../contexts/LanguageContext';
-import { useCart } from '../contexts/CartContext';
-import { useAuth } from '../contexts/AuthContext';
-import { useFavorites } from '../contexts/FavoritesContext';
-import { useAdmin } from '../contexts/AdminContext';
-import { Button } from './ui/button';
-import { cn } from '../lib/utils';
-import { useToast } from '../hooks/use-toast';
+import React from "react";
+import { Heart, ShoppingCart, Check } from "lucide-react";
+import { Product } from "../contexts/CartContext";
+import { useLanguage } from "../contexts/LanguageContext";
+import { useCart } from "../contexts/CartContext";
+import { useAuth } from "../contexts/AuthContext";
+import { useFavorites } from "../contexts/FavoritesContext";
+import { useAdmin } from "../contexts/AdminContext";
+import { Button } from "./ui/button";
+import { cn } from "../lib/utils";
+import { useToast } from "../hooks/use-toast";
 
 interface ProductCardProps {
   product: Product;
@@ -16,7 +16,11 @@ interface ProductCardProps {
   onAuthRequired?: () => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, onBuyNow, onAuthRequired }) => {
+const ProductCard: React.FC<ProductCardProps> = ({
+  product,
+  onBuyNow,
+  onAuthRequired,
+}) => {
   const { language, t } = useLanguage();
   const { addToCart } = useCart();
   const { user } = useAuth();
@@ -53,7 +57,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onBuyNow, onAuthRequ
           className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        
+
         {/* Favorite Button */}
         <button
           onClick={handleFavoriteClick}
@@ -61,18 +65,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onBuyNow, onAuthRequ
             "absolute top-3 end-3 w-8 h-8 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110",
             isFavorite(product.id)
               ? "bg-red-500 opacity-100"
-              : "bg-white/80 opacity-0 group-hover:opacity-100 hover:bg-white"
+              : "bg-white/80 opacity-0 group-hover:opacity-100 hover:bg-white",
           )}
         >
-          <Heart className={cn(
-            "w-4 h-4 transition-colors duration-200",
-            isFavorite(product.id)
-              ? "text-white fill-white"
-              : "text-gray-600 hover:text-red-500"
-          )} />
+          <Heart
+            className={cn(
+              "w-4 h-4 transition-colors duration-200",
+              isFavorite(product.id)
+                ? "text-white fill-white"
+                : "text-gray-600 hover:text-red-500",
+            )}
+          />
         </button>
-
-
       </div>
 
       {/* Product Info */}
@@ -96,12 +100,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onBuyNow, onAuthRequ
         {/* Price */}
         <div className="flex items-center justify-between mb-4">
           <div className="text-2xl font-bold text-olive-800">
-            {product.price.toFixed(2)} {language === 'ar' ? 'د.أ' : 'JD'}
+            {product.price.toFixed(2)} {language === "ar" ? "د.أ" : "JD"}
           </div>
-          
+
           {/* Category Badge */}
           <span className="bg-olive-100 text-olive-700 text-xs px-2 py-1 rounded-full capitalize">
-            {categories.find((c) => c.id === product.category || c.slug === product.category)?.name?.[language] ?? String(product.category || '-')}
+            {categories.find(
+              (c) => c.id === product.category || c.slug === product.category,
+            )?.name?.[language] ?? String(product.category || "-")}
           </span>
         </div>
 
@@ -113,14 +119,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onBuyNow, onAuthRequ
             className="flex-1 border-olive-200 text-olive-700 hover:bg-olive-50 hover:border-olive-300"
           >
             <ShoppingCart className="w-4 h-4 me-2" />
-            {t('product.addToCart')}
+            {t("product.addToCart")}
           </Button>
-          
+
           <Button
             onClick={handleBuyNow}
             className="flex-1 bg-olive-600 hover:bg-olive-700"
           >
-            {t('product.buyNow')}
+            {t("product.buyNow")}
           </Button>
         </div>
       </div>
