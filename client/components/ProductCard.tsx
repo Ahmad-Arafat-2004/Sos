@@ -5,6 +5,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useFavorites } from '../contexts/FavoritesContext';
+import { useAdmin } from '../contexts/AdminContext';
 import { Button } from './ui/button';
 import { cn } from '../lib/utils';
 import { useToast } from '../hooks/use-toast';
