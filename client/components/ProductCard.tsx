@@ -101,11 +101,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onBuyNow, onAuthRequ
           
           {/* Category Badge */}
           <span className="bg-olive-100 text-olive-700 text-xs px-2 py-1 rounded-full capitalize">
-            {(() => {
-              const { categories = [] } = useAdmin();
-              const cat = categories.find((c) => c.id === product.category || c.slug === product.category);
-              return cat ? cat.name[language] : String(product.category || "-");
-            })()}
+            {categories.find((c) => c.id === product.category || c.slug === product.category)?.name?.[language] ?? String(product.category || '-')}
           </span>
         </div>
 
