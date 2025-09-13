@@ -57,7 +57,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           loading="lazy"
           onError={(e) => {
             try {
-              (e.target as HTMLImageElement).src = '/placeholder.svg';
+              (e.target as HTMLImageElement).src = "/placeholder.svg";
             } catch (err) {
               // ignore
             }
