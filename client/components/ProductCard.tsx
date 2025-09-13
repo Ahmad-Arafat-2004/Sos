@@ -21,6 +21,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onBuyNow, onAuthRequ
   const { addToCart } = useCart();
   const { user } = useAuth();
   const { isFavorite, toggleFavorite } = useFavorites();
+  const { categories = [] } = useAdmin();
 
   const handleAddToCart = () => {
     addToCart(product);
