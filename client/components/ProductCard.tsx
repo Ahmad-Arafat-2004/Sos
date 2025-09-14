@@ -93,9 +93,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <h3 className="font-semibold text-lg text-gray-900 mb-1 line-clamp-1">
             {product.name[language]}
           </h3>
-          <p className="text-gray-600 text-sm line-clamp-2 leading-relaxed">
-            {product.description[language]}
-          </p>
         </div>
 
         {/* Weight */}
