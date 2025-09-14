@@ -8,10 +8,12 @@ const createProductSchema = z.object({
     en: z.string().min(1, "English name is required"),
     ar: z.string().min(1, "Arabic name is required"),
   }),
-  description: z.object({
-    en: z.string().min(1, "English description is required"),
-    ar: z.string().min(1, "Arabic description is required"),
-  }),
+  description: z
+    .object({
+      en: z.string().optional(),
+      ar: z.string().optional(),
+    })
+    .optional(),
   price: z.number().positive("Price must be positive"),
   image: z.string().optional(),
   category: z.string().min(1, "Category is required"),
