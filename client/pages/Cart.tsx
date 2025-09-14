@@ -170,9 +170,6 @@ const Cart: React.FC = () => {
                           <h3 className="font-semibold text-gray-900 line-clamp-1">
                             {item.product.name[language]}
                           </h3>
-                          <p className="text-sm text-gray-600 line-clamp-2 mt-1">
-                            {item.product.description[language]}
-                          </p>
                           <div className="flex items-center gap-4 mt-2">
                             {item.product.weight && (
                               <span className="text-sm text-olive-600 font-medium">
