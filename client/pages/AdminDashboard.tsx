@@ -129,29 +129,6 @@ const AdminDashboard: React.FC = () => {
         );
         return;
       }
-      // Require descriptions in both languages
-      if (!newProduct.description || !newProduct.description.en) {
-        showNotification(
-          language === "ar"
-            ? "الرجاء إدخال الوصف بال��نجليزية"
-            : "Please enter description in English",
-        );
-        try {
-          addDescEnRef.current?.focus();
-        } catch (e) {}
-        return;
-      }
-      if (!newProduct.description || !newProduct.description.ar) {
-        showNotification(
-          language === "ar"
-            ? "الرجاء إدخال الوصف بالعربية"
-            : "Please enter description in Arabic",
-        );
-        try {
-          addDescArRef.current?.focus();
-        } catch (e) {}
-        return;
-      }
       if (newProduct.price <= 0) {
         showNotification(
           language === "ar"
