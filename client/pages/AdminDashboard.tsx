@@ -45,6 +45,10 @@ const AdminDashboard: React.FC = () => {
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
 
+  // Refs for edit inputs (prevent ReferenceError when using ref prop)
+  const editDescEnRef = React.useRef<HTMLInputElement | null>(null);
+  const editDescArRef = React.useRef<HTMLInputElement | null>(null);
+
 
   // حالات نوافذ التأكيد
   const [confirmDialog, setConfirmDialog] = useState<{
@@ -99,7 +103,7 @@ const AdminDashboard: React.FC = () => {
           ? "هل أنت متأكد م�� تسجيل الخروج؟"
           : "Are you sure you want to logout?",
       confirmText: language === "ar" ? "تسجيل الخر��ج" : "Logout",
-      cancelText: language === "ar" ? "إلغاء" : "Cancel",
+      cancelText: language === "ar" ? "إلغا��" : "Cancel",
       onConfirm: () => {
         localStorage.removeItem("adminLoggedIn");
         localStorage.removeItem("adminEmail");
