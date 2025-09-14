@@ -11,9 +11,10 @@ import { Product } from '../contexts/CartContext';
 
 const categories = [
   {
-    key: 'milk',
-        image: 'photo/4.jpg',
-    color: 'from-blue-500 to-blue-600'
+    key: 'pickles',
+    // image chosen from Unsplash (pickles)
+    image: 'https://images.unsplash.com/photo-1584270354949-3a2e4b95b1ef?auto=format&fit=crop&w=800&q=80',
+    color: 'from-green-600 to-olive-600'
   },
   {
     key: 'spices',
