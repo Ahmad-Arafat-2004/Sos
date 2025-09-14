@@ -71,7 +71,7 @@ const Products: React.FC = () => {
     }
   }, [searchParams, categories]);
 
-  // إنشاء قائمة الفئات الهرمية مع خيار "جميع المنتجات"
+  // إنشاء قا��مة الفئات الهرمية مع خيار "جميع المنتجات"
   const categoryOptions = [
     {
       value: "all",
@@ -83,9 +83,6 @@ const Products: React.FC = () => {
     .filter((product) => {
       const matchesSearch =
         product.name[language]
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase()) ||
-        product.description[language]
           .toLowerCase()
           .includes(searchTerm.toLowerCase());
       const matchesCategory =
