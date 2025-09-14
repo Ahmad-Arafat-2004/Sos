@@ -3,6 +3,25 @@ import type { Product, Category, ApiResponse } from "../../shared/types";
 import { localStore } from "../lib/local-store";
 
 export class ProductService {
+  // Simple in-memory cache for table column existence checks
+  private columnCache: Record<string, boolean> = {};
+
+  private async columnExists(table: string, column: string) {
+    const cacheKey = `${table}.${column}`;
+    if (this.columnCache[cacheKey] !== undefined) return this.columnCache[cacheKey];
+
+    try {
+      // Try selecting the column; if it doesn't exist, Supabase/PostgREST returns an error
+      const { error } = await supabase.from(table).select(column).limit(1);
+      const exists = !error;
+      this.columnCache[cacheKey] = exists;
+      return exists;
+    } catch (err) {
+      this.columnCache[cacheKey] = false;
+      return false;
+    }
+  }
+
   // Get all products
   async getAllProducts(store?: string): Promise<ApiResponse<Product[]>> {
     if (shouldSkipSupabase()) {
@@ -39,8 +58,8 @@ export class ProductService {
             ar: product.name_ar,
           },
           description: {
-            en: product.description_en,
-            ar: product.description_ar,
+            en: product.description_en ?? undefined,
+            ar: product.description_ar ?? undefined,
           },
           price: product.price,
           image: product.image,
@@ -99,8 +118,8 @@ export class ProductService {
           ar: data.name_ar,
         },
         description: {
-          en: data.description_en,
-          ar: data.description_ar,
+          en: data.description_en ?? undefined,
+          ar: data.description_ar ?? undefined,
         },
         price: data.price,
         image: data.image,
@@ -138,20 +157,31 @@ export class ProductService {
     }
 
     try {
+      const insertData: any = {
+        name_en: productData.name.en,
+        name_ar: productData.name.ar,
+        price: productData.price,
+        image: productData.image,
+        category_id: productData.category,
+        weight: productData.weight,
+        origin: productData.origin,
+        store: productData.store,
+      };
+
+      // Conditionally include description_en/description_ar only if the columns exist
+      if (productData.description && productData.description.en !== undefined) {
+        const hasDescEn = await this.columnExists("products", "description_en");
+        if (hasDescEn) insertData.description_en = productData.description.en;
+      }
+
+      if (productData.description && productData.description.ar !== undefined) {
+        const hasDescAr = await this.columnExists("products", "description_ar");
+        if (hasDescAr) insertData.description_ar = productData.description.ar;
+      }
+
       const { data, error } = await supabase
         .from("products")
-        .insert({
-          name_en: productData.name.en,
-          name_ar: productData.name.ar,
-          description_en: productData.description?.en || null,
-          description_ar: productData.description?.ar || null,
-          price: productData.price,
-          image: productData.image,
-          category_id: productData.category,
-          weight: productData.weight,
-          origin: productData.origin,
-          store: productData.store,
-        })
+        .insert(insertData)
         .select()
         .single();
 
@@ -169,8 +199,8 @@ export class ProductService {
           ar: data.name_ar,
         },
         description: {
-          en: data.description_en,
-          ar: data.description_ar,
+          en: data.description_en ?? undefined,
+          ar: data.description_ar ?? undefined,
         },
         price: data.price,
         image: data.image,
@@ -218,17 +248,19 @@ export class ProductService {
         updateData.name_en = productData.name.en;
         updateData.name_ar = productData.name.ar;
       }
+
       if (productData.description) {
-        updateData.description_en = productData.description.en;
-        updateData.description_ar = productData.description.ar;
+        const hasDescEn = await this.columnExists("products", "description_en");
+        const hasDescAr = await this.columnExists("products", "description_ar");
+        if (hasDescEn) updateData.description_en = productData.description.en;
+        if (hasDescAr) updateData.description_ar = productData.description.ar;
       }
+
       if (productData.price !== undefined) updateData.price = productData.price;
       if (productData.image !== undefined) updateData.image = productData.image;
       if (productData.category) updateData.category_id = productData.category;
-      if (productData.weight !== undefined)
-        updateData.weight = productData.weight;
-      if (productData.origin !== undefined)
-        updateData.origin = productData.origin;
+      if (productData.weight !== undefined) updateData.weight = productData.weight;
+      if (productData.origin !== undefined) updateData.origin = productData.origin;
       if (productData.store) updateData.store = productData.store;
 
       const { data, error } = await supabase
@@ -252,8 +284,8 @@ export class ProductService {
           ar: data.name_ar,
         },
         description: {
-          en: data.description_en,
-          ar: data.description_ar,
+          en: data.description_en ?? undefined,
+          ar: data.description_ar ?? undefined,
         },
         price: data.price,
         image: data.image,
@@ -336,8 +368,8 @@ export class ProductService {
             ar: category.name_ar,
           },
           description: {
-            en: category.description_en,
-            ar: category.description_ar,
+            en: category.description_en ?? undefined,
+            ar: category.description_ar ?? undefined,
           },
           slug: category.slug,
           created_at: category.created_at,
@@ -370,15 +402,24 @@ export class ProductService {
     }
 
     try {
+      const insertData: any = {
+        name_en: categoryData.name.en,
+        name_ar: categoryData.name.ar,
+        slug: categoryData.slug,
+      };
+
+      if (categoryData.description && categoryData.description.en !== undefined) {
+        const hasDescEn = await this.columnExists("categories", "description_en");
+        if (hasDescEn) insertData.description_en = categoryData.description.en;
+      }
+      if (categoryData.description && categoryData.description.ar !== undefined) {
+        const hasDescAr = await this.columnExists("categories", "description_ar");
+        if (hasDescAr) insertData.description_ar = categoryData.description.ar;
+      }
+
       const { data, error } = await supabase
         .from("categories")
-        .insert({
-          name_en: categoryData.name.en,
-          name_ar: categoryData.name.ar,
-          description_en: categoryData.description?.en || null,
-          description_ar: categoryData.description?.ar || null,
-          slug: categoryData.slug,
-        })
+        .insert(insertData)
         .select()
         .single();
 
@@ -396,8 +437,8 @@ export class ProductService {
           ar: data.name_ar,
         },
         description: {
-          en: data.description_en,
-          ar: data.description_ar,
+          en: data.description_en ?? undefined,
+          ar: data.description_ar ?? undefined,
         },
         slug: data.slug,
         created_at: data.created_at,
@@ -441,8 +482,10 @@ export class ProductService {
         updateData.name_ar = categoryData.name.ar;
       }
       if (categoryData.description) {
-        updateData.description_en = categoryData.description.en;
-        updateData.description_ar = categoryData.description.ar;
+        const hasDescEn = await this.columnExists("categories", "description_en");
+        const hasDescAr = await this.columnExists("categories", "description_ar");
+        if (hasDescEn) updateData.description_en = categoryData.description.en;
+        if (hasDescAr) updateData.description_ar = categoryData.description.ar;
       }
       if (categoryData.slug) updateData.slug = categoryData.slug;
 
@@ -467,8 +510,8 @@ export class ProductService {
           ar: data.name_ar,
         },
         description: {
-          en: data.description_en,
-          ar: data.description_ar,
+          en: data.description_en ?? undefined,
+          ar: data.description_ar ?? undefined,
         },
         slug: data.slug,
         created_at: data.created_at,
