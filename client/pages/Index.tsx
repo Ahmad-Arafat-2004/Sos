@@ -23,7 +23,7 @@ const categories = [
   {
     key: 'pickles',
     // restore pickles to local milk-like image
-    image: 'photo/1.jpg',
+    image: 'https://cdn.builder.io/api/v1/image/assets%2Fe12438f47c744e98a4d75a71611dd8bf%2F3e513131b4664bc8bf59880c463bb08c?format=webp&width=800',
     color: 'from-green-600 to-olive-600'
   },
   {
