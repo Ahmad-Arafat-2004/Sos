@@ -103,7 +103,7 @@ const AdminDashboard: React.FC = () => {
           ? "هل أنت متأكد م�� تسجيل الخروج؟"
           : "Are you sure you want to logout?",
       confirmText: language === "ar" ? "تسجيل الخر��ج" : "Logout",
-      cancelText: language === "ar" ? "إلغا��" : "Cancel",
+      cancelText: language === "ar" ? "إلغاء" : "Cancel",
       onConfirm: () => {
         localStorage.removeItem("adminLoggedIn");
         localStorage.removeItem("adminEmail");
@@ -367,7 +367,7 @@ const AdminDashboard: React.FC = () => {
     });
   };
 
-  // فلترة المنتجات للتأكد من س��امتها
+  // ��لترة المنتجات للتأكد من س��امتها
   const safeProducts = Array.isArray(products)
     ? products.filter(
         (p) =>
@@ -781,6 +781,20 @@ const AdminDashboard: React.FC = () => {
                       placeholder="https://..."
                     />
                   </div>
+
+                  <div>
+                    <Label>{language === "ar" ? "الوزن" : "Weight"}</Label>
+                    <Input
+                      value={newProduct.weight}
+                      onChange={(e) =>
+                        setNewProduct({
+                          ...newProduct,
+                          weight: e.target.value,
+                        })
+                      }
+                      placeholder="e.g. 500g, 1kg"
+                    />
+                  </div>
                 </div>
                 <div className="flex gap-2 mt-4">
                   <Button
@@ -1038,7 +1052,7 @@ const AdminDashboard: React.FC = () => {
                     variant="outline"
                     onClick={() => setShowAddCategory(false)}
                   >
-                    {language === "ar" ? "إلغاء" : "Cancel"}
+                    {language === "ar" ? "��لغاء" : "Cancel"}
                   </Button>
                 </div>
               </div>
