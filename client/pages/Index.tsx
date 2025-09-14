@@ -23,7 +23,7 @@ const categories = [
   {
     key: 'pickles',
     // use a local image matching the milk card style
-    image: 'photo/1.jpg',
+    image: 'https://cdn.builder.io/api/v1/image/assets%2Fe12438f47c744e98a4d75a71611dd8bf%2F16aa7a5869b3427baa3919f899f19dce?format=webp&width=800',
     color: 'from-green-600 to-olive-600'
   },
   {
