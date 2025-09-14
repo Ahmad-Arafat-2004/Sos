@@ -216,7 +216,7 @@ const Index: React.FC = () => {
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <h3 className="text-white text-xl font-bold text-center px-4">
+                  <h3 className="text-black text-xl font-bold text-center px-4">
                     {category.key === "milk" &&
                       (language === "ar"
                         ? "منتجات الألبان"
