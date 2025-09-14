@@ -22,13 +22,14 @@ const categories = [
   },
   {
     key: 'pickles',
-    // use a local image matching the milk card style
-    image: 'https://cdn.builder.io/api/v1/image/assets%2Fe12438f47c744e98a4d75a71611dd8bf%2F3f8f7290819244ebaa41e0d8b30b2062?format=webp&width=800',
+    // restore pickles to local milk-like image
+    image: 'photo/1.jpg',
     color: 'from-green-600 to-olive-600'
   },
   {
     key: 'cleaning',
-    image: 'photo/3.jpg',
+    // use the uploaded WhatsApp image for Cleaning Supplies
+    image: 'https://cdn.builder.io/api/v1/image/assets%2Fe12438f47c744e98a4d75a71611dd8bf%2F3f8f7290819244ebaa41e0d8b30b2062?format=webp&width=800',
     color: 'from-green-500 to-olive-600'
   }
 ];
