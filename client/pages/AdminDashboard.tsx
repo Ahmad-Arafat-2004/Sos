@@ -164,7 +164,7 @@ const AdminDashboard: React.FC = () => {
       if (!newProduct.category) {
         showNotification(
           language === "ar"
-            ? "الرجاء اختيار الفئة"
+            ? "الرجا�� اختيار الفئة"
             : "Please select a category",
         );
         return;
@@ -179,7 +179,6 @@ const AdminDashboard: React.FC = () => {
       // ��عادة تعيين النموذج فقط عند النجاح
       setNewProduct({
         name: { en: "", ar: "" },
-        description: { en: "", ar: "" },
         price: 0,
         image: "",
         category: categories && categories.length > 0 ? categories[0].id : "",
@@ -277,7 +276,7 @@ const AdminDashboard: React.FC = () => {
       if (!newCategory.name.en) {
         showNotification(
           language === "ar"
-            ? "الرجاء إدخال ا����م الفئة بالإنجليزية"
+            ? "الرجاء إدخال ا��م الفئة بالإنجليزية"
             : "Please enter category name in English",
         );
         return;
