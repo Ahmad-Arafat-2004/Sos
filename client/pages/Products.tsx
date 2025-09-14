@@ -71,7 +71,7 @@ const Products: React.FC = () => {
     }
   }, [searchParams, categories]);
 
-  // إنشاء قا��مة الفئات الهرمية مع خيار "جميع المنتجات"
+  // إنشاء قائمة الفئات الهرمية مع خيار "جميع المنتجات"
   const categoryOptions = [
     {
       value: "all",
@@ -323,9 +323,6 @@ const Products: React.FC = () => {
                         ${product.price.toFixed(2)}
                       </span>
                     </div>
-                    <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-                      {product.description[language]}
-                    </p>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
                         {product.weight && (
