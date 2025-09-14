@@ -205,7 +205,7 @@ const Index: React.FC = () => {
                 <div className={`absolute inset-0 bg-gradient-to-t ${category.color} opacity-60 group-hover:opacity-50 transition-opacity duration-300`} />
                 <div className="absolute inset-0 flex items-center justify-center">
                         <h3 className="text-white text-xl font-bold text-center px-4">
-                            {category.key === 'milk' && (language === 'ar' ? 'منتجات الألبان' : 'Milks and cheese')}
+                            {category.key === 'pickles' && (language === 'ar' ? 'مخللات' : 'Pickles')}
                             {category.key === 'spices' && (language === 'ar' ? 'البهارات والأعشاب' : 'Spices & Herbs')}
                             {category.key === 'oils' && (language === 'ar' ? 'الزيوت' : 'Premium Oils')}
                             {category.key === 'cleaning' && (language === 'ar' ? 'مواد التنظيف' : 'Cleaning Supplies')}
