@@ -22,8 +22,8 @@ const categories = [
   },
   {
     key: 'pickles',
-    // pickles image from Unsplash
-    image: 'https://images.unsplash.com/photo-1584270354949-3a2e4b95b1ef?auto=format&fit=crop&w=800&q=80',
+    // use a local image matching the milk card style
+    image: 'photo/1.jpg',
     color: 'from-green-600 to-olive-600'
   },
   {
