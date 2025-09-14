@@ -11,24 +11,24 @@ import { Product } from '../contexts/CartContext';
 
 const categories = [
   {
+    key: 'milk',
+    image: 'photo/4.jpg',
+    color: 'from-blue-500 to-blue-600'
+  },
+  {
+    key: 'spices',
+    image: 'photo/2.jpg',
+    color: 'from-orange-500 to-red-500'
+  },
+  {
     key: 'pickles',
-    // image chosen from Unsplash (pickles)
+    // pickles image from Unsplash
     image: 'https://images.unsplash.com/photo-1584270354949-3a2e4b95b1ef?auto=format&fit=crop&w=800&q=80',
     color: 'from-green-600 to-olive-600'
   },
   {
-    key: 'spices',
-      image: 'photo/2.jpg',
-    color: 'from-orange-500 to-red-500'
-  },
-  {
-    key: 'oils',
-    image: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&h=300&fit=crop',
-    color: 'from-yellow-500 to-orange-500'
-  },
-  {
-      key: 'cleaning',
-      image: 'photo/3.jpg',
+    key: 'cleaning',
+    image: 'photo/3.jpg',
     color: 'from-green-500 to-olive-600'
   }
 ];
