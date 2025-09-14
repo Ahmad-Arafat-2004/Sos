@@ -68,7 +68,6 @@ const AdminDashboard: React.FC = () => {
   // نموذج المنتج الجديد
   const [newProduct, setNewProduct] = useState({
     name: { en: "", ar: "" },
-    description: { en: "", ar: "" },
     price: 0,
     image: "",
     category: "" as Product["category"],
@@ -278,7 +277,7 @@ const AdminDashboard: React.FC = () => {
       if (!newCategory.name.en) {
         showNotification(
           language === "ar"
-            ? "الرجاء إدخال ا��م الفئة بالإنجليزية"
+            ? "الرجاء إدخال ا����م الفئة بالإنجليزية"
             : "Please enter category name in English",
         );
         return;
@@ -363,7 +362,7 @@ const AdminDashboard: React.FC = () => {
     if (
       confirm(
         language === "ar"
-          ? "هل أنت متأكد من حذف هذه ال��ئة؟"
+          ? "هل أنت متأكد من حذف هذه الفئة؟"
           : "Are you sure you want to delete this category?",
       )
     ) {
@@ -397,7 +396,7 @@ const AdminDashboard: React.FC = () => {
           await deleteCategory(id);
           showNotification(
             language === "ar"
-              ? "ت�� حذف الفئة بنجاح!"
+              ? "تم حذف الفئة بنجاح!"
               : "Category deleted successfully!",
           );
         } catch (error) {
@@ -558,7 +557,7 @@ const AdminDashboard: React.FC = () => {
                   <div>
                     <Label>
                       {language === "ar"
-                        ? "الوصف (إنجليز��)"
+                        ? "الوصف (إنجليزي)"
                         : "Description (English)"}{" "}
                       *
                     </Label>
