@@ -175,29 +175,7 @@ const AdminDashboard: React.FC = () => {
   const handleUpdateProduct = async () => {
     try {
       if (editingProduct && editingProduct.id) {
-        // Validate descriptions before update
-        if (!editingProduct.description || !editingProduct.description.en) {
-          showNotification(
-            language === "ar"
-              ? "الرجاء إدخال الوصف بالإنجليزية"
-              : "Please enter description in English",
-          );
-          try {
-            editDescEnRef.current?.focus();
-          } catch (e) {}
-          return;
-        }
-        if (!editingProduct.description || !editingProduct.description.ar) {
-          showNotification(
-            language === "ar"
-              ? "الرجاء إدخال الوصف بالعربية"
-              : "Please enter description in Arabic",
-          );
-          try {
-            editDescArRef.current?.focus();
-          } catch (e) {}
-          return;
-        }
+        // description validation removed
 
         if (!editingProduct.category) {
           showNotification(
@@ -372,7 +350,7 @@ const AdminDashboard: React.FC = () => {
           await deleteCategory(id);
           showNotification(
             language === "ar"
-              ? "تم حذف الفئة بنجاح!"
+              ? "تم حذف الفئة بنج��ح!"
               : "Category deleted successfully!",
           );
         } catch (error) {
@@ -410,7 +388,7 @@ const AdminDashboard: React.FC = () => {
             </h1>
             <Button onClick={handleLogout} variant="outline" size="sm">
               <LogOut className="w-4 h-4 mr-2" />
-              {language === "ar" ? "خروج" : "Logout"}
+              {language === "ar" ? "خ��وج" : "Logout"}
             </Button>
           </div>
         </div>
