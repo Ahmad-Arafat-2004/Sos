@@ -143,8 +143,8 @@ export class ProductService {
         .insert({
           name_en: productData.name.en,
           name_ar: productData.name.ar,
-          description_en: productData.description.en,
-          description_ar: productData.description.ar,
+          description_en: productData.description?.en || null,
+          description_ar: productData.description?.ar || null,
           price: productData.price,
           image: productData.image,
           category_id: productData.category,
