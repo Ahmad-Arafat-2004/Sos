@@ -49,7 +49,6 @@ const AdminDashboard: React.FC = () => {
   const editDescEnRef = React.useRef<HTMLInputElement | null>(null);
   const editDescArRef = React.useRef<HTMLInputElement | null>(null);
 
-
   // حالات نوافذ التأكيد
   const [confirmDialog, setConfirmDialog] = useState<{
     isOpen: boolean;
@@ -710,7 +709,6 @@ const AdminDashboard: React.FC = () => {
                       className={!newProduct.name.ar ? "border-red-300" : ""}
                     />
                   </div>
-
 
                   <div>
                     <Label>{language === "ar" ? "السعر" : "Price"} *</Label>
