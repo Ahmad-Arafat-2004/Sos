@@ -45,11 +45,6 @@ const AdminDashboard: React.FC = () => {
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
 
-  // Refs to focus description inputs when missing
-  const addDescEnRef = React.useRef<HTMLInputElement | null>(null);
-  const addDescArRef = React.useRef<HTMLInputElement | null>(null);
-  const editDescEnRef = React.useRef<HTMLInputElement | null>(null);
-  const editDescArRef = React.useRef<HTMLInputElement | null>(null);
 
   // حالات نوافذ التأكيد
   const [confirmDialog, setConfirmDialog] = useState<{
@@ -368,7 +363,7 @@ const AdminDashboard: React.FC = () => {
     if (
       confirm(
         language === "ar"
-          ? "هل أنت متأكد من حذف هذه الفئة؟"
+          ? "هل أنت متأكد من حذف هذه ال��ئة؟"
           : "Are you sure you want to delete this category?",
       )
     ) {
@@ -402,7 +397,7 @@ const AdminDashboard: React.FC = () => {
           await deleteCategory(id);
           showNotification(
             language === "ar"
-              ? "تم حذف الفئة بنجاح!"
+              ? "ت�� حذف الفئة بنجاح!"
               : "Category deleted successfully!",
           );
         } catch (error) {
@@ -563,7 +558,7 @@ const AdminDashboard: React.FC = () => {
                   <div>
                     <Label>
                       {language === "ar"
-                        ? "الوصف (إنجليزي)"
+                        ? "الوصف (إنجليز��)"
                         : "Description (English)"}{" "}
                       *
                     </Label>
