@@ -246,6 +246,8 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({
   ): Promise<Product | null> => {
     try {
       const payload: any = { ...productData };
+      // remove description field from payload (we no longer use it)
+      if (payload.description) delete payload.description;
       if (payload.category) {
         const found = categories.find(
           (c) => c.id === payload.category || c.slug === payload.category,
@@ -333,7 +335,7 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({
       const result = await apiClient.categories.delete(id);
       if (result.success) {
         setCategories((prev) => prev.filter((c) => c.id !== id));
-        showNotification("تم حذف الفئة بنجا��!", "success");
+        showNotification("تم حذف الفئة بنجاح!", "success");
         await refreshStats(); // Update stats
       } else {
         const err = result.error || "خطأ في حذف الفئة";
