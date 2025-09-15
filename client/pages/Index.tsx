@@ -8,6 +8,7 @@ import ProductCard from "../components/ProductCard";
 import AuthModal from "../components/AuthModal";
 import { useAdmin } from "../contexts/AdminContext";
 import { Product } from "../contexts/CartContext";
+import { getFeaturedProducts } from "../data/products";
 
 const categories = [
   {
@@ -280,7 +281,7 @@ const Index: React.FC = () => {
                   <h3 className="text-black text-xl font-bold text-center px-4">
                     {category.key === "milk" &&
                       (language === "ar"
-                        ? "منتجات ا��ألبان"
+                        ? "منتجات الألبان"
                         : "Milks and cheese")}
                     {category.key === "spices" &&
                       (language === "ar"
