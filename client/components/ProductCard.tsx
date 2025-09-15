@@ -50,7 +50,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <div className="bg-white rounded-2xl shadow-soft hover:shadow-soft-lg transition-all duration-300 overflow-hidden group">
       {/* Product Image */}
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden w-full aspect-square bg-gray-100">
         <img
           src={product.image}
           alt={product.name[language]}
@@ -62,7 +62,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               // ignore
             }
           }}
-          className="w-full h-48 object-contain bg-gray-100 object-center group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
