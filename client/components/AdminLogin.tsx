@@ -91,7 +91,7 @@ export const AdminLogin: React.FC = () => {
             Email: admin@irthbiladi.com
           </p>
           <p className="text-sm text-olive-600 font-arabic">
-            Password: admin123
+            {language === 'ar' ? 'كلمة المرور تم تغييرها لأسباب أمنية' : 'Password has been changed for security'}
           </p>
         </div>
       </div>
