@@ -51,13 +51,14 @@ const ProductCard: React.FC<ProductCardProps> = ({
     <div className="bg-white rounded-2xl shadow-soft hover:shadow-soft-lg transition-all duration-300 overflow-hidden group">
       {/* Product Image */}
       <div className="relative overflow-hidden">
+        {/* normalize src to fix backslashes and empty values */}
         <img
-          src={product.image}
+          src={(product.image || '').replace(/\\/g, '/') || '/placeholder.svg'}
           alt={product.name[language]}
           loading="lazy"
           onError={(e) => {
             try {
-              (e.target as HTMLImageElement).src = "/placeholder.svg";
+              (e.target as HTMLImageElement).src = '/placeholder.svg';
             } catch (err) {
               // ignore
             }
