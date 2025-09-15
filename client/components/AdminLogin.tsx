@@ -60,7 +60,7 @@ export const AdminLogin: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="mt-1 font-arabic"
-              placeholder="admin123"
+              placeholder={language === 'ar' ? 'أدخل كلمة المرور' : 'Enter password'}
               required
             />
           </div>
@@ -78,7 +78,7 @@ export const AdminLogin: React.FC = () => {
           >
             {isLoading 
               ? (language === 'ar' ? 'جارٍ تسجيل الدخول...' : 'Logging in...') 
-              : (language === 'ar' ? 'تسجيل ا��دخول' : 'Login')
+              : (language === 'ar' ? 'تسجيل الدخول' : 'Login')
             }
           </Button>
         </form>
