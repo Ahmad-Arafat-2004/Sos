@@ -99,12 +99,12 @@ const Index: React.FC = () => {
 
   // rotate featured products every 10 seconds
   React.useEffect(() => {
-    if (!products || products.length <= chunkSize) return;
+    if (!productsSource || productsSource.length <= chunkSize) return;
     const interval = setInterval(() => {
-      setFeaturedIndex((prev) => (prev + chunkSize) % products.length);
+      setFeaturedIndex((prev) => (prev + chunkSize) % productsSource.length);
     }, 10000);
     return () => clearInterval(interval);
-  }, [products]);
+  }, [productsSource]);
 
   const featuredProducts = React.useMemo(() => {
     if (!products) return [];
@@ -258,7 +258,7 @@ const Index: React.FC = () => {
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               {language === "ar"
-                ? "اكتشف مجموعتنا المختارة بعناية من الأطعمة التراثية الأص��لة"
+                ? "اكتشف مجموعتنا المختارة بعناية من الأطعمة التراثية الأصيلة"
                 : "Discover our carefully curated selection of authentic traditional foods"}
             </p>
           </div>
@@ -350,7 +350,7 @@ const Index: React.FC = () => {
             </h2>
             <p className="text-olive-100 mb-8">
               {language === "ar"
-                ? "اشترك في نشرتنا البريدية لتح��ل على أحدث العروض والمنتجات الجديدة"
+                ? "اشترك في نشرتنا البريدية لتحصل على أحدث العروض والمنتجات الجديدة"
                 : "Subscribe to our newsletter for the latest offers and new products"}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
