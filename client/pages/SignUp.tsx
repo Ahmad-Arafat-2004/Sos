@@ -121,7 +121,7 @@ const SignUp: React.FC = () => {
             <p className="text-gray-600">
               {language === "ar"
                 ? "انضم إلى عائلة طعام التراث اليوم"
-                : "Join the Turath Foods family today"}
+                : "Join the Irth Biladi family today"}
             </p>
           </div>
 
