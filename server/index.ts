@@ -165,5 +165,20 @@ export function createServer() {
     });
   });
 
+  // Serve client SPA for non-API GET requests (helps when reloading client routes)
+  app.get("/*", (req, res, next) => {
+    // If request is for API, skip
+    if (req.path.startsWith("/api/") || req.path.startsWith("/health")) return next();
+
+    // Serve root index.html if exists
+    const indexPath = path.join(process.cwd(), "index.html");
+    if (fs.existsSync(indexPath)) {
+      return res.sendFile(indexPath);
+    }
+
+    // Not found, continue
+    return res.status(404).send("Not Found");
+  });
+
   return app;
 }
