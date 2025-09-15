@@ -13,10 +13,3 @@
   from = "/api/*"
   status = 200
   to = "/.netlify/functions/api/:splat"
-
-# SPA fallback to index.html so client-side routes work on Netlify
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  force = false
