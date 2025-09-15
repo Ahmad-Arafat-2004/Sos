@@ -64,7 +64,31 @@ const Index: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   // fallback to local static products when admin API doesn't provide products
   const fallbackProducts = React.useMemo(() => getFeaturedProducts(), []);
-  const productsSource = (adminProducts && adminProducts.length > 0) ? adminProducts : fallbackProducts;
+
+  // Fetch public products for everyone (so Featured section always shows real products if available)
+  const [publicProducts, setPublicProducts] = React.useState<Product[]>([]);
+  React.useEffect(() => {
+    let mounted = true;
+    apiClient.products
+      .getAll()
+      .then((res) => {
+        if (!mounted) return;
+        if (res.success && Array.isArray(res.data) && res.data.length > 0) {
+          setPublicProducts(res.data);
+        }
+      })
+      .catch((e) => {
+        console.warn("Failed to fetch public products for featured section", e);
+      });
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  // Choose source: public products > admin products > fallback
+  const productsSource = publicProducts && publicProducts.length > 0
+    ? publicProducts
+    : (adminProducts && adminProducts.length > 0 ? adminProducts : fallbackProducts);
 
   const chunkSize = 6; // number of products to show at once (show 6 for everyone)
   const storageKey = "featuredIndex";
