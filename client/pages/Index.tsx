@@ -86,9 +86,12 @@ const Index: React.FC = () => {
   }, []);
 
   // Choose source: public products > admin products > fallback
-  const productsSource = publicProducts && publicProducts.length > 0
-    ? publicProducts
-    : (adminProducts && adminProducts.length > 0 ? adminProducts : fallbackProducts);
+  const productsSource =
+    publicProducts && publicProducts.length > 0
+      ? publicProducts
+      : adminProducts && adminProducts.length > 0
+        ? adminProducts
+        : fallbackProducts;
 
   const chunkSize = 6; // number of products to show at once (show 6 for everyone)
   const storageKey = "featuredIndex";
@@ -129,7 +132,10 @@ const Index: React.FC = () => {
     if (list.length <= chunkSize) return list.slice(0, chunkSize);
 
     // ensure featuredIndex is within bounds
-    const safeIndex = Math.max(0, Math.min(featuredIndex, Math.max(0, list.length - 1)));
+    const safeIndex = Math.max(
+      0,
+      Math.min(featuredIndex, Math.max(0, list.length - 1)),
+    );
 
     // slice from featuredIndex wrapping around
     const end = safeIndex + chunkSize;
