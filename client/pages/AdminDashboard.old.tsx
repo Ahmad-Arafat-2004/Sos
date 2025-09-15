@@ -172,7 +172,7 @@ const AdminDashboard: React.FC = () => {
                 <p className="text-sm font-medium text-gray-900">
                   {language === 'ar' ? 'مرحباً أدمن' : 'Welcome Admin'}
                 </p>
-                <p className="text-xs text-gray-500">admin@turathfoods.com</p>
+                <p className="text-xs text-gray-500">admin@irthbiladi.com</p>
               </div>
               <Button
                 onClick={handleLogout}
