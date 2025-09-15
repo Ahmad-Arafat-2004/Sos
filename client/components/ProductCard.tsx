@@ -62,7 +62,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               // ignore
             }
           }}
-          className="w-full h-44 object-cover object-center scale-102 group-hover:scale-105 transform transition-transform duration-300"
+          className="w-full h-36 object-cover object-center scale-100 group-hover:scale-103 transform transition-transform duration-300"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
