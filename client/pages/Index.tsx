@@ -62,7 +62,28 @@ const Index: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const chunkSize = 3; // number of products to show at once
+  const storageKey = "featuredIndex";
   const [featuredIndex, setFeaturedIndex] = React.useState(0);
+
+  // restore index from localStorage on mount
+  React.useEffect(() => {
+    try {
+      const raw = localStorage.getItem(storageKey);
+      if (raw) {
+        const parsed = parseInt(raw, 10);
+        if (!Number.isNaN(parsed)) setFeaturedIndex(parsed);
+      }
+    } catch (e) {
+      // ignore (e.g., SSR)
+    }
+  }, []);
+
+  // persist index to localStorage when it changes
+  React.useEffect(() => {
+    try {
+      localStorage.setItem(storageKey, String(featuredIndex));
+    } catch (e) {}
+  }, [featuredIndex]);
 
   // rotate featured products every 10 seconds
   React.useEffect(() => {
@@ -77,13 +98,16 @@ const Index: React.FC = () => {
     if (!products) return [];
     if (products.length <= chunkSize) return products.slice(0, chunkSize);
 
+    // ensure featuredIndex is within bounds
+    const safeIndex = Math.max(0, Math.min(featuredIndex, Math.max(0, products.length - 1)));
+
     // slice from featuredIndex wrapping around
-    const end = featuredIndex + chunkSize;
-    if (end <= products.length) return products.slice(featuredIndex, end);
+    const end = safeIndex + chunkSize;
+    if (end <= products.length) return products.slice(safeIndex, end);
 
     // wrap
     return products
-      .slice(featuredIndex, products.length)
+      .slice(safeIndex, products.length)
       .concat(products.slice(0, end % products.length));
   }, [products, featuredIndex]);
 
