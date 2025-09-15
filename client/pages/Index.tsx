@@ -107,21 +107,22 @@ const Index: React.FC = () => {
   }, [productsSource]);
 
   const featuredProducts = React.useMemo(() => {
-    if (!products) return [];
-    if (products.length <= chunkSize) return products.slice(0, chunkSize);
+    const list = productsSource || [];
+    if (list.length === 0) return [];
+    if (list.length <= chunkSize) return list.slice(0, chunkSize);
 
     // ensure featuredIndex is within bounds
-    const safeIndex = Math.max(0, Math.min(featuredIndex, Math.max(0, products.length - 1)));
+    const safeIndex = Math.max(0, Math.min(featuredIndex, Math.max(0, list.length - 1)));
 
     // slice from featuredIndex wrapping around
     const end = safeIndex + chunkSize;
-    if (end <= products.length) return products.slice(safeIndex, end);
+    if (end <= list.length) return list.slice(safeIndex, end);
 
     // wrap
-    return products
-      .slice(safeIndex, products.length)
-      .concat(products.slice(0, end % products.length));
-  }, [products, featuredIndex]);
+    return list
+      .slice(safeIndex, list.length)
+      .concat(list.slice(0, end % list.length));
+  }, [productsSource, featuredIndex]);
 
   const handleBuyNow = (product: Product) => {
     if (!user) {
