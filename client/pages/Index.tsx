@@ -61,7 +61,31 @@ const Index: React.FC = () => {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  const featuredProducts = products.slice(0, 6);
+  const chunkSize = 3; // number of products to show at once
+  const [featuredIndex, setFeaturedIndex] = React.useState(0);
+
+  // rotate featured products every 10 seconds
+  React.useEffect(() => {
+    if (!products || products.length <= chunkSize) return;
+    const interval = setInterval(() => {
+      setFeaturedIndex((prev) => (prev + chunkSize) % products.length);
+    }, 10000);
+    return () => clearInterval(interval);
+  }, [products]);
+
+  const featuredProducts = React.useMemo(() => {
+    if (!products) return [];
+    if (products.length <= chunkSize) return products.slice(0, chunkSize);
+
+    // slice from featuredIndex wrapping around
+    const end = featuredIndex + chunkSize;
+    if (end <= products.length) return products.slice(featuredIndex, end);
+
+    // wrap
+    return products
+      .slice(featuredIndex, products.length)
+      .concat(products.slice(0, end % products.length));
+  }, [products, featuredIndex]);
 
   const handleBuyNow = (product: Product) => {
     if (!user) {
