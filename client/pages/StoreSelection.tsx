@@ -100,7 +100,7 @@ const StoreSelection: React.FC = () => {
               <div className="p-8 text-center">
                 <div className="w-20 h-20 rounded-full overflow-hidden mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
                   <img
-                                      src="photo\8.png"
+                                      src="photo/8.png"
                     alt="Cilka Store"
                     className="w-full h-full object-cover"
                   />
