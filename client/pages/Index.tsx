@@ -9,6 +9,7 @@ import AuthModal from "../components/AuthModal";
 import { useAdmin } from "../contexts/AdminContext";
 import { Product } from "../contexts/CartContext";
 import { getFeaturedProducts } from "../data/products";
+import { apiClient } from "../services/api";
 
 const categories = [
   {
