@@ -64,7 +64,7 @@ const About: React.FC = () => {
     },
     {
       icon: "🍯",
-      titleAr: "العسل الطبيعي",
+      titleAr: "ال��سل الطبيعي",
       titleEn: "Natural Honey",
       itemsAr: "عسل السدر، الطلح، وعسل الطاقة",
       itemsEn: "Sidr honey, Acacia honey, and Energy honey"
@@ -97,7 +97,7 @@ const About: React.FC = () => {
       icon: Users,
       titleAr: "للعائلة العربية",
       titleEn: "For Arab Families",
-      descAr: "نحافظ على الهوية الغذائية التي تربينا عليها",
+      descAr: "نحافظ على الهوية الغذائية ��لتي تربينا عليها",
       descEn: "We preserve the food identity we grew up with"
     }
   ];
@@ -111,13 +111,13 @@ const About: React.FC = () => {
             <div className="flex items-center justify-center mb-6">
               <div className="w-20 h-20 bg-olive-600 rounded-2xl flex items-center justify-center shadow-lg">
                 <span className="text-white font-bold text-3xl">
-                  {language === 'ar' ? 'إ' : 'T'}
+                  {language === 'ar' ? 'إ' : 'I'}
                 </span>
               </div>
             </div>
             
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              {language === 'ar' ? 'إرث بلادي' : 'Turath Foods'}
+              {language === 'ar' ? 'إرث بلادي' : 'Irth Biladi'}
             </h1>
             
             <div className="flex items-center justify-center space-x-2 rtl:space-x-reverse mb-8">
@@ -161,7 +161,7 @@ const About: React.FC = () => {
                 </h3>
                 <p className="text-gray-700 leading-relaxed">
                   {language === 'ar'
-                    ? 'هدفنا هو أن نوصل منتجات صحية، طبيعية، وآمنة إلى كل بيت أردني وعربي، وأن نحافظ على الهوية الغذائية التي تربينا عليها. نؤمن أن الطعام ليس مجرد منتج استهلاكي، بل تجربة وهوية وثقافة، لذلك نحرص على توفير كل منتج بأعلى جودة وضمن معايير نظافة صارمة.'
+                    ? 'هدفنا هو أن نوصل منتجات صحية، طبيعية، وآمنة إلى كل بيت أر��ني وعربي، وأن نحافظ على الهوية الغذائية التي تربينا عليها. نؤمن أن الطعام ليس مجرد منتج استهلاكي، بل تجربة وهوية وثقافة، لذلك نحرص على توفير كل منتج بأعلى جودة وضمن معايير نظافة صارمة.'
                     : 'Our goal is to deliver healthy, natural, and safe products to every Jordanian and Arab home, and to preserve the food identity we grew up with. We believe that food is not just a consumer product, but an experience, identity, and culture, so we ensure that every product is provided with the highest quality and strict hygiene standards.'
                   }
                 </p>
@@ -233,7 +233,7 @@ const About: React.FC = () => {
             <p className="text-xl text-olive-100 mb-8 leading-relaxed">
               {language === 'ar'
                 ? 'إذا كنت تبحث عن نكهة زمان، جودة اليوم، وسعر يناسب كل بيت، فـ إرث بلادي هو اختيارك.'
-                : 'If you\'re looking for yesterday\'s flavor, today\'s quality, and prices that suit every home, Turath Foods is your choice.'
+                : 'If you\'re looking for yesterday\'s flavor, today\'s quality, and prices that suit every home, Irth Biladi is your choice.'
               }
             </p>
             
