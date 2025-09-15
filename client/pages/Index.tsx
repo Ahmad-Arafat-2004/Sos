@@ -233,7 +233,7 @@ const Index: React.FC = () => {
             <div className="relative">
               <div className="aspect-square rounded-3xl overflow-hidden shadow-soft-lg">
                 <img
-                  src="photo\1.jpg"
+                  src="photo/1.jpg"
                   alt="Traditional Middle Eastern Foods"
                   className="w-full h-full object-cover"
                 />
