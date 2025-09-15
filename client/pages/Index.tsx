@@ -57,9 +57,21 @@ const features = [
 const Index: React.FC = () => {
   const { t, language, isRTL } = useLanguage();
   const { user } = useAuth();
-  const { products } = useAdmin();
+  const { products: adminProducts } = useAdmin();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  // fallback to local static products when admin API doesn't provide products
+  const fallbackProducts = React.useMemo(() => {
+    try {
+      // lazy import to avoid module cycles
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const p = require("../data/products");
+      return p.getFeaturedProducts();
+    } catch (e) {
+      return [] as Product[];
+    }
+  }, []);
+  const productsSource = (adminProducts && adminProducts.length > 0) ? adminProducts : fallbackProducts;
 
   const chunkSize = 3; // number of products to show at once
   const storageKey = "featuredIndex";
@@ -246,7 +258,7 @@ const Index: React.FC = () => {
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               {language === "ar"
-                ? "اكتشف مجموعتنا المختارة بعناية من الأطعمة التراثية الأصيلة"
+                ? "اكتشف مجموعتنا المختارة بعناية من الأطعمة التراثية الأص��لة"
                 : "Discover our carefully curated selection of authentic traditional foods"}
             </p>
           </div>
@@ -338,7 +350,7 @@ const Index: React.FC = () => {
             </h2>
             <p className="text-olive-100 mb-8">
               {language === "ar"
-                ? "اشترك في نشرتنا البريدية لتحصل على أحدث العروض والمنتجات الجديدة"
+                ? "اشترك في نشرتنا البريدية لتح��ل على أحدث العروض والمنتجات الجديدة"
                 : "Subscribe to our newsletter for the latest offers and new products"}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
