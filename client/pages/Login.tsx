@@ -81,7 +81,7 @@ const Login: React.FC = () => {
             <p className="text-gray-600">
               {language === "ar"
                 ? "أهلاً بك مرة أخرى في طعام التراث"
-                : "Welcome back to Turath Foods"}
+                : "Welcome back to Irth Biladi"}
             </p>
           </div>
 
