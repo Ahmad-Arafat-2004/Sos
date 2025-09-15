@@ -73,7 +73,7 @@ const Index: React.FC = () => {
   }, []);
   const productsSource = (adminProducts && adminProducts.length > 0) ? adminProducts : fallbackProducts;
 
-  const chunkSize = 3; // number of products to show at once
+  const chunkSize = 6; // number of products to show at once (show 6 for everyone)
   const storageKey = "featuredIndex";
   const [featuredIndex, setFeaturedIndex] = React.useState(0);
 
@@ -280,7 +280,7 @@ const Index: React.FC = () => {
                   <h3 className="text-black text-xl font-bold text-center px-4">
                     {category.key === "milk" &&
                       (language === "ar"
-                        ? "منتجات الألبان"
+                        ? "منتجات ا��ألبان"
                         : "Milks and cheese")}
                     {category.key === "spices" &&
                       (language === "ar"
