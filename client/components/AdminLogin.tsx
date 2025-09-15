@@ -9,7 +9,7 @@ export const AdminLogin: React.FC = () => {
   const { login, isLoading } = useAuth();
   const { language } = useLanguage();
   const [email, setEmail] = useState('admin@irthbiladi.com');
-  const [password, setPassword] = useState('admin123');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -78,7 +78,7 @@ export const AdminLogin: React.FC = () => {
           >
             {isLoading 
               ? (language === 'ar' ? 'جارٍ تسجيل الدخول...' : 'Logging in...') 
-              : (language === 'ar' ? 'تسجيل الدخول' : 'Login')
+              : (language === 'ar' ? 'تسجيل ا��دخول' : 'Login')
             }
           </Button>
         </form>
