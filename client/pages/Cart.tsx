@@ -325,7 +325,7 @@ const Cart: React.FC = () => {
         items={items}
         total={finalTotal}
         clearCart={clearCart}
-        recipientPhone={"0796427591"}
+        recipientPhone={"0799600750"}
       />
     </div>
   );
