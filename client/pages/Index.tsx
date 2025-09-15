@@ -62,16 +62,7 @@ const Index: React.FC = () => {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   // fallback to local static products when admin API doesn't provide products
-  const fallbackProducts = React.useMemo(() => {
-    try {
-      // lazy import to avoid module cycles
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const p = require("../data/products");
-      return p.getFeaturedProducts();
-    } catch (e) {
-      return [] as Product[];
-    }
-  }, []);
+  const fallbackProducts = React.useMemo(() => getFeaturedProducts(), []);
   const productsSource = (adminProducts && adminProducts.length > 0) ? adminProducts : fallbackProducts;
 
   const chunkSize = 6; // number of products to show at once (show 6 for everyone)
@@ -310,7 +301,7 @@ const Index: React.FC = () => {
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               {language === "ar"
-                ? "منتجاتنا الأكثر شعبية وطلباً من عملائنا"
+                ? "منتجاتنا الأكثر شعبية وطلباً م�� عملائنا"
                 : "Our most popular and sought-after products by our customers"}
             </p>
           </div>
