@@ -428,7 +428,7 @@ const AdminDashboard: React.FC = () => {
 
         {/* Overview Tab */}
         {activeTab === "overview" && (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white p-6 rounded-lg shadow">
               <h3 className="text-lg font-semibold mb-2">
                 {language === "ar" ? "إجمالي المنتجات" : "Total Products"}
@@ -455,69 +455,6 @@ const AdminDashboard: React.FC = () => {
                 {safeProducts.filter((p) => p.store === "cilka").length}
               </p>
             </div>
-
-            {/* Delivery Fee Card */}
-            <div className="bg-white p-6 rounded-lg shadow flex flex-col justify-between">
-              <div>
-                <h3 className="text-lg font-semibold mb-2">
-                  {language === "ar" ? "مبلغ التوصيل" : "Delivery Fee"}
-                </h3>
-                {!editingDelivery ? (
-                  <p className="text-3xl font-bold text-gray-800">
-                    {deliveryFee.toFixed(2)} JD
-                  </p>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={deliveryInput}
-                      onChange={(e) => setDeliveryInput(e.target.value)}
-                      className="w-28 px-2 py-1 border rounded"
-                    />
-                    <button
-                      onClick={async () => {
-                        const val = parseFloat(deliveryInput) || 0;
-                        const res = await apiClient.settings.update("delivery_fee", val);
-                        if (res.success) {
-                          setDeliveryFee(val);
-                          setEditingDelivery(false);
-                          showSuccess(
-                            language === "ar" ? "تم تحديث مبلغ التوصيل" : "Delivery fee updated",
-                          );
-                        } else {
-                          showError(res.error || (language === "ar" ? "فشل التحديث" : "Failed to update"));
-                        }
-                      }}
-                      className="px-3 py-1 bg-olive-600 text-white rounded"
-                    >
-                      {language === "ar" ? "حفظ" : "Save"}
-                    </button>
-                    <button
-                      onClick={() => {
-                        setEditingDelivery(false);
-                        setDeliveryInput(String(deliveryFee));
-                      }}
-                      className="px-3 py-1 border rounded"
-                    >
-                      {language === "ar" ? "إلغاء" : "Cancel"}
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              {!editingDelivery && (
-                <div className="mt-4">
-                  <button
-                    onClick={() => setEditingDelivery(true)}
-                    className="px-3 py-1 border rounded"
-                  >
-                    {language === "ar" ? "تعديل" : "Edit"}
-                  </button>
-                </div>
-              )}
-            </div>
-
           </div>
         )}
 
@@ -791,7 +728,7 @@ const AdminDashboard: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <Label>{language === "ar" ? "ال��ئة" : "Category"}</Label>
+                    <Label>{language === "ar" ? "ال��ئ��" : "Category"}</Label>
                     <select
                       value={newProduct.category || ""}
                       onChange={(e) =>
@@ -1218,7 +1155,7 @@ const AdminDashboard: React.FC = () => {
                           },
                         })
                       }
-                      placeholder="وصف الفئة بالعرب��ة"
+                      placeholder="وصف الفئة ��العرب��ة"
                     />
                   </div>
                 </div>
