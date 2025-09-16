@@ -22,6 +22,7 @@ const ImageCropper: React.FC<Props> = ({ src, onCancel, onApply, aspect = 1 }) =
   const dragStart = useRef<any>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [panMode, setPanMode] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
     setLoaded(false);
