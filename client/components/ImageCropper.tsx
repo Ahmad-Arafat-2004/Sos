@@ -146,16 +146,25 @@ const ImageCropper: React.FC<Props> = ({ src, onCancel, onApply, aspect = 1 }) =
       setPreviewUrl(null);
       return;
     }
-    const c = document.createElement("canvas");
-    const target = 200; // preview size
-    c.width = target;
-    c.height = Math.round((shN / swN) * target);
-    const ctx = c.getContext("2d");
-    if (!ctx) return;
-    // draw portion from natural image
-    ctx.drawImage(img, sx, sy, swN, shN, 0, 0, c.width, c.height);
-    const url = c.toDataURL("image/jpeg", 0.9);
-    setPreviewUrl(url);
+    try {
+      const c = document.createElement("canvas");
+      const target = 200; // preview size
+      c.width = target;
+      c.height = Math.round((shN / swN) * target);
+      const ctx = c.getContext("2d");
+      if (!ctx) return;
+      // draw portion from natural image
+      ctx.drawImage(img, sx, sy, swN, shN, 0, 0, c.width, c.height);
+      const url = c.toDataURL("image/jpeg", 0.9);
+      setPreviewUrl(url);
+      setErrorMsg(null);
+    } catch (err: any) {
+      console.warn('ImageCropper.preview.error', err);
+      setPreviewUrl(null);
+      setErrorMsg(
+        "This image cannot be previewed due to cross-origin restrictions. Use an image URL that allows CORS or upload the image to a CORS-enabled host.",
+      );
+    }
   }, [sel, scale, pan, loaded, natural, displayBase]);
 
   const applyCrop = () => {
