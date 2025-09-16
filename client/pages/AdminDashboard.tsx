@@ -351,7 +351,7 @@ const AdminDashboard: React.FC = () => {
         language === "ar"
           ? "هل أنت متأكد من حذف هذه الفئة؟ لا يمكن التراجع عن هذا الإجراء."
           : "Are you sure you want to delete this category? This action cannot be undone.",
-      confirmText: language === "ar" ? "حذف الفئة" : "Delete Category",
+      confirmText: language === "ar" ? "حذف الفئ��" : "Delete Category",
       cancelText: language === "ar" ? "إلغاء" : "Cancel",
       onConfirm: async () => {
         try {
@@ -846,24 +846,30 @@ const AdminDashboard: React.FC = () => {
                       placeholder="https://..."
                     />
 
-                    {/* File input + preview + crop */}
                     <div className="mt-2">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={async (e) => {
-                          const f = e.target.files && e.target.files[0];
-                          if (!f) return;
-                          const reader = new FileReader();
-                          reader.onload = () => {
-                            const src = String(reader.result || "");
-                            // open cropper for this src
-                            setCropSrc(src);
-                            setCropTarget("new");
-                          };
-                          reader.readAsDataURL(f);
-                        }}
-                      />
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          className="px-2 py-1 border rounded"
+                          onClick={() => {
+                            if (!newProduct.image) {
+                              showError(language === 'ar' ? 'أدخل رابط الصورة أولاً' : 'Enter image URL first');
+                              return;
+                            }
+                            setCropSrc(newProduct.image);
+                            setCropTarget('new');
+                          }}
+                        >
+                          {language === 'ar' ? 'فتح محرر القص' : 'Open Cropper'}
+                        </button>
+                        <button
+                          type="button"
+                          className="px-2 py-1 border rounded"
+                          onClick={() => setNewProduct((prev) => ({ ...prev, image: '' }))}
+                        >
+                          {language === 'ar' ? 'إزالة' : 'Remove'}
+                        </button>
+                      </div>
 
                       <div className="mt-2">
                         {newProduct.image ? (
@@ -871,41 +877,6 @@ const AdminDashboard: React.FC = () => {
                             <img src={newProduct.image} className="w-full h-full object-cover" alt="preview" />
                           </div>
                         ) : null}
-                        <div className="flex gap-2 mt-2">
-                          <button
-                            type="button"
-                            className="px-2 py-1 border rounded"
-                            onClick={async () => {
-                              if (!newProduct.image) return;
-                              // crop center square
-                              const img = new Image();
-                              img.crossOrigin = "anonymous";
-                              img.src = newProduct.image;
-                              img.onload = () => {
-                                const s = Math.min(img.width, img.height);
-                                const cx = (img.width - s) / 2;
-                                const cy = (img.height - s) / 2;
-                                const c = document.createElement('canvas');
-                                c.width = s;
-                                c.height = s;
-                                const ctx = c.getContext('2d');
-                                if (!ctx) return;
-                                ctx.drawImage(img, cx, cy, s, s, 0, 0, s, s);
-                                const dataUrl = c.toDataURL('image/jpeg', 0.9);
-                                setNewProduct((prev) => ({ ...prev, image: dataUrl }));
-                              };
-                            }}
-                          >
-                            {language === 'ar' ? 'قص مربع' : 'Crop Square'}
-                          </button>
-                          <button
-                            type="button"
-                            className="px-2 py-1 border rounded"
-                            onClick={() => setNewProduct((prev) => ({ ...prev, image: '' }))}
-                          >
-                            {language === 'ar' ? 'إزالة' : 'Remove'}
-                          </button>
-                        </div>
                       </div>
                     </div>
                   </div>
