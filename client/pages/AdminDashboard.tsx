@@ -92,6 +92,43 @@ const AdminDashboard: React.FC = () => {
     slug: "",
   });
 
+  // Delivery fee setting (editable by admin)
+  const [deliveryFee, setDeliveryFee] = useState<number>(3); // default 3 JOD
+  const [editingDelivery, setEditingDelivery] = useState<boolean>(false);
+  const [deliveryInput, setDeliveryInput] = useState<string>(String(3));
+
+  // Load delivery fee from settings on mount
+  React.useEffect(() => {
+    let mounted = true;
+    import("../services/api").then(({ apiClient }) => {
+      apiClient.settings
+        .get("delivery_fee")
+        .then((res) => {
+          if (!mounted) return;
+          if (res.success) {
+            const val = res.data;
+            if (typeof val === "number") {
+              setDeliveryFee(val);
+              setDeliveryInput(String(val));
+            } else if (val && typeof val === "object" && val.amount) {
+              const n = parseFloat(String(val.amount)) || 0;
+              setDeliveryFee(n);
+              setDeliveryInput(String(n));
+            } else if (!isNaN(Number(val))) {
+              const n = Number(val);
+              setDeliveryFee(n);
+              setDeliveryInput(String(n));
+            }
+          }
+        })
+        .catch(() => {});
+    });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   // خروج الأدمن
   const handleLogout = () => {
     setConfirmDialog({
@@ -337,7 +374,7 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  // حذف فئة مع نافذة تأكيد مخصصة
+  // حذف فئة مع نافذة تأكي�� مخصصة
   const handleDeleteCategoryCustom = async (id: string) => {
     setConfirmDialog({
       isOpen: true,
@@ -1119,7 +1156,7 @@ const AdminDashboard: React.FC = () => {
                   <div>
                     <Label>
                       {language === "ar"
-                        ? "الوصف (إنجليزي)"
+                        ? "الوص�� (إنجليزي)"
                         : "Description (English)"}
                     </Label>
                     <Input
@@ -1154,7 +1191,7 @@ const AdminDashboard: React.FC = () => {
                           },
                         })
                       }
-                      placeholder="وصف الفئة بالعربية"
+                      placeholder="وصف الفئة بالعرب��ة"
                     />
                   </div>
                 </div>
