@@ -156,9 +156,10 @@ const ImageCropper: React.FC<Props> = ({ src, onCancel, onApply, aspect = 1 }) =
       if (!ctx) return;
       // draw portion from natural image
       ctx.drawImage(img, sx, sy, swN, shN, 0, 0, c.width, c.height);
-      const url = c.toDataURL("image/jpeg", 0.9);
-      setPreviewUrl(url);
-      setErrorMsg(null);
+      const preferPng = /(^data:image\/png)|\.png(\?|$)|image\/png/i.test(src);
+    const url = preferPng ? c.toDataURL("image/png") : c.toDataURL("image/jpeg", 0.9);
+    setPreviewUrl(url);
+    setErrorMsg(null);
     } catch (err: any) {
       console.warn('ImageCropper.preview.error', err);
       setPreviewUrl(null);
