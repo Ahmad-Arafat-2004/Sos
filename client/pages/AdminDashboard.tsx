@@ -211,7 +211,7 @@ const AdminDashboard: React.FC = () => {
       title: language === "ar" ? "حذف المنتج" : "Delete Product",
       description:
         language === "ar"
-          ? "هل أنت متأكد من حذف هذا المنتج؟ لا يمكن التراجع عن هذا الإجراء."
+          ? "هل أنت متأكد من حذف ��ذا المنتج؟ لا يمكن التراجع عن هذا الإجراء."
           : "Are you sure you want to delete this product? This action cannot be undone.",
       confirmText: language === "ar" ? "حذف المنتج" : "Delete Product",
       cancelText: language === "ar" ? "إلغاء" : "Cancel",
@@ -320,7 +320,7 @@ const AdminDashboard: React.FC = () => {
     if (
       confirm(
         language === "ar"
-          ? "هل أنت متأكد من حذف هذه الف��ة؟"
+          ? "هل أنت متأكد من حذف هذه الفئة؟"
           : "Are you sure you want to delete this category?",
       )
     ) {
@@ -354,7 +354,7 @@ const AdminDashboard: React.FC = () => {
           await deleteCategory(id);
           showNotification(
             language === "ar"
-              ? "��م حذف الفئة بنج��ح!"
+              ? "تم حذف الفئة بنج��ح!"
               : "Category deleted successfully!",
           );
         } catch (error) {
@@ -431,7 +431,7 @@ const AdminDashboard: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white p-6 rounded-lg shadow">
               <h3 className="text-lg font-semibold mb-2">
-                {language === "ar" ? "إجمالي المنتجات" : "Total Products"}
+                {language === "ar" ? "إجمالي المنتجا��" : "Total Products"}
               </h3>
               <p className="text-3xl font-bold text-olive-600">
                 {safeProducts.length}
@@ -623,6 +623,66 @@ const AdminDashboard: React.FC = () => {
                       }
                       placeholder="https://..."
                     />
+
+                    {/* File input + preview + crop for editing */}
+                    <div className="mt-2">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={async (e) => {
+                          const f = e.target.files && e.target.files[0];
+                          if (!f) return;
+                          const reader = new FileReader();
+                          reader.onload = () => {
+                            const src = String(reader.result || "");
+                            setEditingProduct((prev) => prev ? { ...prev, image: src } : prev);
+                          };
+                          reader.readAsDataURL(f);
+                        }}
+                      />
+
+                      <div className="mt-2">
+                        {editingProduct?.image ? (
+                          <div className="w-32 h-32 overflow-hidden rounded shadow">
+                            <img src={editingProduct.image} className="w-full h-full object-cover" alt="preview" />
+                          </div>
+                        ) : null}
+                        <div className="flex gap-2 mt-2">
+                          <button
+                            type="button"
+                            className="px-2 py-1 border rounded"
+                            onClick={async () => {
+                              if (!editingProduct?.image) return;
+                              const img = new Image();
+                              img.crossOrigin = "anonymous";
+                              img.src = editingProduct.image;
+                              img.onload = () => {
+                                const s = Math.min(img.width, img.height);
+                                const cx = (img.width - s) / 2;
+                                const cy = (img.height - s) / 2;
+                                const c = document.createElement('canvas');
+                                c.width = s;
+                                c.height = s;
+                                const ctx = c.getContext('2d');
+                                if (!ctx) return;
+                                ctx.drawImage(img, cx, cy, s, s, 0, 0, s, s);
+                                const dataUrl = c.toDataURL('image/jpeg', 0.9);
+                                setEditingProduct((prev) => prev ? { ...prev, image: dataUrl } : prev);
+                              };
+                            }}
+                          >
+                            {language === 'ar' ? 'قص مربع' : 'Crop Square'}
+                          </button>
+                          <button
+                            type="button"
+                            className="px-2 py-1 border rounded"
+                            onClick={() => setEditingProduct((prev) => prev ? { ...prev, image: '' } : prev)}
+                          >
+                            {language === 'ar' ? 'إزالة' : 'Remove'}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div>
                     <Label>{language === "ar" ? "الوزن" : "Weight"}</Label>
@@ -1026,7 +1086,7 @@ const AdminDashboard: React.FC = () => {
                   <div>
                     <Label>
                       {language === "ar"
-                        ? "اسم الفئة (عربي)"
+                        ? "اسم ال��ئة (عربي)"
                         : "Category Name (Arabic)"}{" "}
                       *
                     </Label>
