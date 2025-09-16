@@ -303,10 +303,11 @@ export class ProductService {
         data: product,
         message: "Product updated successfully",
       };
-    } catch (error) {
+    } catch (error:any) {
+      console.error('productService.updateProduct.error', error);
       return {
         success: false,
-        error: "Failed to update product",
+        error: error instanceof Error ? error.message : 'Failed to update product',
       };
     }
   }
