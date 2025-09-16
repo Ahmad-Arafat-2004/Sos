@@ -42,6 +42,9 @@ const AdminDashboard: React.FC = () => {
     "overview" | "products" | "categories"
   >("overview");
   const [showAddProduct, setShowAddProduct] = useState(false);
+  // Cropper state
+  const [cropSrc, setCropSrc] = useState<string | null>(null);
+  const [cropTarget, setCropTarget] = useState<"new" | "edit" | null>(null);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
@@ -176,7 +179,7 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  // تحدي�� منتج
+  // تحديث منتج
   const handleUpdateProduct = async () => {
     try {
       if (editingProduct && editingProduct.id) {
@@ -244,7 +247,7 @@ const AdminDashboard: React.FC = () => {
       if (!newCategory.name.ar) {
         showNotification(
           language === "ar"
-            ? "الرجاء إدخال اسم الفئة بالعربية"
+            ? "ا��رجاء إدخال اسم الفئة بالعربية"
             : "Please enter category name in Arabic",
         );
         return;
@@ -252,7 +255,7 @@ const AdminDashboard: React.FC = () => {
       if (!newCategory.slug) {
         showNotification(
           language === "ar"
-            ? "الرجاء إ��خال الرمز المختصر"
+            ? "الرجاء إدخال الرمز المختصر"
             : "Please enter category slug",
         );
         return;
@@ -1050,7 +1053,7 @@ const AdminDashboard: React.FC = () => {
             {/* Add Category Button */}
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">
-                {language === "ar" ? "إدارة الفئات" : "Manage Categories"}
+                {language === "ar" ? "إدارة الفئا��" : "Manage Categories"}
               </h2>
               <Button onClick={() => setShowAddCategory(true)}>
                 <Plus className="w-4 h-4 mr-2" />
