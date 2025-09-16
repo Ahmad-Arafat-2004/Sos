@@ -250,6 +250,17 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({
         if (found) payload.category = found.id;
       }
 
+      // If image is a data URL and large, attempt to downscale it to avoid server/db errors
+      if (payload.image && typeof payload.image === 'string' && payload.image.startsWith('data:')) {
+        if (payload.image.length > 50000) {
+          try {
+            payload.image = await shrinkDataUrl(payload.image, 800, 0.8);
+          } catch (e) {
+            console.warn('shrinkDataUrl.failed', e);
+          }
+        }
+      }
+
       const result = await apiClient.products.create(payload);
       if (result.success && result.data) {
         setProducts((prev) => [...prev, result.data!]);
@@ -306,7 +317,7 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({
         showNotification("تم حذف المنتج بنجاح!", "success");
         await refreshStats(); // Update stats
       } else {
-        showNotification(result.error || "خطأ في حذف المنتج", "error");
+        showNotification(result.error || "خطأ في حذف ا��منتج", "error");
       }
     } catch (error) {
       showNotification("خطأ في الاتصال. الرجاء المحاولة مرة أخرى", "error");
