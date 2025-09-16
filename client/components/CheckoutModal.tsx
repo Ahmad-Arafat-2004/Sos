@@ -42,21 +42,6 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const [country, setCountry] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [deliveryFee, setDeliveryFee] = useState<number>(0);
-
-  React.useEffect(() => {
-    let mounted = true;
-    apiClient.settings.get('delivery_fee').then(res => {
-      if (!mounted) return;
-      if (res.success) {
-        const val = res.data;
-        if (typeof val === 'number') setDeliveryFee(val);
-        else if (val && typeof val === 'object' && val.amount) setDeliveryFee(parseFloat(String(val.amount)) || 0);
-        else if (!isNaN(Number(val))) setDeliveryFee(Number(val));
-      }
-    }).catch(() => {});
-    return () => { mounted = false; };
-  }, []);
 
   if (!isOpen) return null;
 
