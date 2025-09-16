@@ -320,7 +320,7 @@ const AdminDashboard: React.FC = () => {
     if (
       confirm(
         language === "ar"
-          ? "هل أنت متأكد من حذف هذه الفئة؟"
+          ? "هل أنت متأكد من حذف هذه الف��ة؟"
           : "Are you sure you want to delete this category?",
       )
     ) {
@@ -354,7 +354,7 @@ const AdminDashboard: React.FC = () => {
           await deleteCategory(id);
           showNotification(
             language === "ar"
-              ? "تم حذف الفئة بنج��ح!"
+              ? "��م حذف الفئة بنج��ح!"
               : "Category deleted successfully!",
           );
         } catch (error) {
@@ -779,6 +779,68 @@ const AdminDashboard: React.FC = () => {
                       }
                       placeholder="https://..."
                     />
+
+                    {/* File input + preview + crop */}
+                    <div className="mt-2">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={async (e) => {
+                          const f = e.target.files && e.target.files[0];
+                          if (!f) return;
+                          const reader = new FileReader();
+                          reader.onload = () => {
+                            const src = String(reader.result || "");
+                            // set preview and also set as image URL (data URL)
+                            setNewProduct((prev) => ({ ...prev, image: src }));
+                          };
+                          reader.readAsDataURL(f);
+                        }}
+                      />
+
+                      <div className="mt-2">
+                        {newProduct.image ? (
+                          <div className="w-32 h-32 overflow-hidden rounded shadow">
+                            <img src={newProduct.image} className="w-full h-full object-cover" alt="preview" />
+                          </div>
+                        ) : null}
+                        <div className="flex gap-2 mt-2">
+                          <button
+                            type="button"
+                            className="px-2 py-1 border rounded"
+                            onClick={async () => {
+                              if (!newProduct.image) return;
+                              // crop center square
+                              const img = new Image();
+                              img.crossOrigin = "anonymous";
+                              img.src = newProduct.image;
+                              img.onload = () => {
+                                const s = Math.min(img.width, img.height);
+                                const cx = (img.width - s) / 2;
+                                const cy = (img.height - s) / 2;
+                                const c = document.createElement('canvas');
+                                c.width = s;
+                                c.height = s;
+                                const ctx = c.getContext('2d');
+                                if (!ctx) return;
+                                ctx.drawImage(img, cx, cy, s, s, 0, 0, s, s);
+                                const dataUrl = c.toDataURL('image/jpeg', 0.9);
+                                setNewProduct((prev) => ({ ...prev, image: dataUrl }));
+                              };
+                            }}
+                          >
+                            {language === 'ar' ? 'قص مربع' : 'Crop Square'}
+                          </button>
+                          <button
+                            type="button"
+                            className="px-2 py-1 border rounded"
+                            onClick={() => setNewProduct((prev) => ({ ...prev, image: '' }))}
+                          >
+                            {language === 'ar' ? 'إزالة' : 'Remove'}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   <div>
