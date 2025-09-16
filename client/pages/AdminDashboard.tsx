@@ -247,7 +247,7 @@ const AdminDashboard: React.FC = () => {
       if (!newCategory.name.ar) {
         showNotification(
           language === "ar"
-            ? "ا��رجاء إدخال اسم الفئة بالعربية"
+            ? "الرجاء إدخال اسم الفئة بالعربية"
             : "Please enter category name in Arabic",
         );
         return;
@@ -855,8 +855,9 @@ const AdminDashboard: React.FC = () => {
                           const reader = new FileReader();
                           reader.onload = () => {
                             const src = String(reader.result || "");
-                            // set preview and also set as image URL (data URL)
-                            setNewProduct((prev) => ({ ...prev, image: src }));
+                            // open cropper for this src
+                            setCropSrc(src);
+                            setCropTarget("new");
                           };
                           reader.readAsDataURL(f);
                         }}
@@ -1053,7 +1054,7 @@ const AdminDashboard: React.FC = () => {
             {/* Add Category Button */}
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">
-                {language === "ar" ? "إدارة الفئا��" : "Manage Categories"}
+                {language === "ar" ? "إدارة الفئات" : "Manage Categories"}
               </h2>
               <Button onClick={() => setShowAddCategory(true)}>
                 <Plus className="w-4 h-4 mr-2" />
