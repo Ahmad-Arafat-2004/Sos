@@ -22,8 +22,32 @@ export class OrderService {
     }
 
     try {
-      // Calculate total
-      const total = orderData.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      // Calculate items total
+      const itemsTotal = orderData.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+      // Fetch delivery fee from settings (if any)
+      let deliveryFee = 0;
+      try {
+        const { data: setting } = await (async () => {
+          const { data, error } = await supabase.from('settings').select('value').eq('key','delivery_fee').single();
+          if (error) return { data: null } as any;
+          return { data: data?.value } as any;
+        })();
+        if (setting !== null && setting !== undefined) {
+          // setting can be a number or object like { amount: 2.5 }
+          if (typeof setting === 'number') {
+            deliveryFee = setting;
+          } else if (typeof setting === 'object' && setting.amount) {
+            deliveryFee = parseFloat(String(setting.amount)) || 0;
+          } else {
+            deliveryFee = parseFloat(String(setting)) || 0;
+          }
+        }
+      } catch (e) {
+        deliveryFee = 0;
+      }
+
+      const total = itemsTotal + deliveryFee;
 
       // Create order
       const { data: orderResult, error: orderError } = await supabase

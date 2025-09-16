@@ -78,6 +78,9 @@ export function createServer() {
   app.get("/api/inspect-products", (req, res) =>
     import("./routes/inspect").then((m) => m.inspectProducts(req, res)),
   );
+
+  // Settings routes
+  import("./routes/settings").then((m) => m.default(app));
   app.post("/api/debug/delete-first-product", (req, res) =>
     import("./routes/debug-delete").then((m) =>
       m.debugDeleteFirstProduct(req, res),
