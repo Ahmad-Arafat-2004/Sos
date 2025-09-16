@@ -12,7 +12,6 @@ import {
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAdmin, Category } from "../contexts/AdminContext";
 import { Button } from "../components/ui/button";
-import { apiClient } from "../services/api";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Product } from "../contexts/CartContext";
@@ -130,7 +129,7 @@ const AdminDashboard: React.FC = () => {
     };
   }, []);
 
-  // خ��وج الأدمن
+  // خروج الأدمن
   const handleLogout = () => {
     setConfirmDialog({
       isOpen: true,
@@ -379,7 +378,7 @@ const AdminDashboard: React.FC = () => {
   const handleDeleteCategoryCustom = async (id: string) => {
     setConfirmDialog({
       isOpen: true,
-      title: language === "ar" ? "حذف ال��ئة" : "Delete Category",
+      title: language === "ar" ? "حذف الفئة" : "Delete Category",
       description:
         language === "ar"
           ? "هل أنت متأكد من حذف هذه الفئة؟ لا يمكن التراجع عن هذا الإجراء."
@@ -920,7 +919,7 @@ const AdminDashboard: React.FC = () => {
             <div className="bg-white rounded-lg shadow overflow-hidden">
               <div className="px-6 py-4 border-b">
                 <h3 className="text-lg font-semibold">
-                  {language === "ar" ? "قائم�� المنتجات" : "Products List"}
+                  {language === "ar" ? "قائمة المنتجات" : "Products List"}
                 </h3>
               </div>
               <div className="overflow-x-auto">
