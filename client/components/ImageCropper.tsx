@@ -175,14 +175,22 @@ const ImageCropper: React.FC<Props> = ({ src, onCancel, onApply, aspect = 1 }) =
     const sy = Math.round(((sel.y - imgTop) / sh) * natural.h);
     const swN = Math.round((sel.w / sw) * natural.w);
     const shN = Math.round((sel.h / sh) * natural.h);
-    const canvas = document.createElement("canvas");
-    canvas.width = swN;
-    canvas.height = shN;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    ctx.drawImage(img, sx, sy, swN, shN, 0, 0, swN, shN);
-    const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
-    onApply(dataUrl);
+    try {
+      const canvas = document.createElement("canvas");
+      canvas.width = swN;
+      canvas.height = shN;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      ctx.drawImage(img, sx, sy, swN, shN, 0, 0, swN, shN);
+      const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
+      onApply(dataUrl);
+      setErrorMsg(null);
+    } catch (err: any) {
+      console.warn('ImageCropper.apply.error', err);
+      setErrorMsg(
+        "Unable to export cropped image due to cross-origin restrictions. Use an image URL that allows CORS or provide an uploaded image.",
+      );
+    }
   };
 
   return (
