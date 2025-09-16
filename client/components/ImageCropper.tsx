@@ -204,8 +204,10 @@ const ImageCropper: React.FC<Props> = ({ src, onCancel, onApply, aspect = 1 }) =
             <img
               ref={imgRef}
               src={src}
+              crossOrigin="anonymous"
               alt="to-crop"
               onLoad={onImgLoad}
+              onError={() => setPreviewUrl(null)}
               style={{ position: 'absolute', left: getImgLayout().left, top: getImgLayout().top, width: getImgLayout().width, height: getImgLayout().height, userSelect: 'none', touchAction: 'none' }}
             />
 
