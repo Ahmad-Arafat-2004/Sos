@@ -639,7 +639,9 @@ const AdminDashboard: React.FC = () => {
                           const reader = new FileReader();
                           reader.onload = () => {
                             const src = String(reader.result || "");
-                            setEditingProduct((prev) => prev ? { ...prev, image: src } : prev);
+                            // open cropper for editing
+                            setCropSrc(src);
+                            setCropTarget("edit");
                           };
                           reader.readAsDataURL(f);
                         }}
