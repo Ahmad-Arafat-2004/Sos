@@ -320,6 +320,19 @@ class ApiClient {
     },
   };
 
+  // Settings API methods
+  settings = {
+    get: async (key: string): Promise<ApiResponse<any>> => {
+      return this.request<any>(`/settings/${encodeURIComponent(key)}`);
+    },
+    update: async (key: string, value: any): Promise<ApiResponse<any>> => {
+      return this.request<any>(`/settings/${encodeURIComponent(key)}`, {
+        method: "PUT",
+        body: JSON.stringify({ value }),
+      });
+    },
+  };
+
   // Utility methods
   isAuthenticated(): boolean {
     return !!this.token;
