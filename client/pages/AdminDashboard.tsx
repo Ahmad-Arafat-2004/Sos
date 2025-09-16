@@ -96,7 +96,6 @@ const AdminDashboard: React.FC = () => {
     slug: "",
   });
 
-
   // خروج الأدمن
   const handleLogout = () => {
     setConfirmDialog({
@@ -635,28 +634,40 @@ const AdminDashboard: React.FC = () => {
                           className="px-2 py-1 border rounded"
                           onClick={() => {
                             if (!editingProduct?.image) {
-                              showError(language === 'ar' ? 'أدخل رابط الصورة أولاً' : 'Enter image URL first');
+                              showError(
+                                language === "ar"
+                                  ? "أدخل رابط الصورة أولاً"
+                                  : "Enter image URL first",
+                              );
                               return;
                             }
                             setCropSrc(editingProduct.image || null);
-                            setCropTarget('edit');
+                            setCropTarget("edit");
                           }}
                         >
-                          {language === 'ar' ? 'فتح محرر القص' : 'Open Cropper'}
+                          {language === "ar" ? "فتح محرر القص" : "Open Cropper"}
                         </button>
                         <button
                           type="button"
                           className="px-2 py-1 border rounded"
-                          onClick={() => setEditingProduct((prev) => prev ? { ...prev, image: '' } : prev)}
+                          onClick={() =>
+                            setEditingProduct((prev) =>
+                              prev ? { ...prev, image: "" } : prev,
+                            )
+                          }
                         >
-                          {language === 'ar' ? 'إزالة' : 'Remove'}
+                          {language === "ar" ? "إزالة" : "Remove"}
                         </button>
                       </div>
 
                       <div className="mt-2">
                         {editingProduct?.image ? (
                           <div className="w-32 h-32 overflow-hidden rounded shadow">
-                            <img src={editingProduct.image} className="w-full h-full object-cover" alt="preview" />
+                            <img
+                              src={editingProduct.image}
+                              className="w-full h-full object-cover"
+                              alt="preview"
+                            />
                           </div>
                         ) : null}
                       </div>
@@ -825,28 +836,38 @@ const AdminDashboard: React.FC = () => {
                           className="px-2 py-1 border rounded"
                           onClick={() => {
                             if (!newProduct.image) {
-                              showError(language === 'ar' ? 'أدخل رابط الصورة أولاً' : 'Enter image URL first');
+                              showError(
+                                language === "ar"
+                                  ? "أدخل رابط الصورة أولاً"
+                                  : "Enter image URL first",
+                              );
                               return;
                             }
                             setCropSrc(newProduct.image);
-                            setCropTarget('new');
+                            setCropTarget("new");
                           }}
                         >
-                          {language === 'ar' ? 'فتح محرر القص' : 'Open Cropper'}
+                          {language === "ar" ? "فتح محرر القص" : "Open Cropper"}
                         </button>
                         <button
                           type="button"
                           className="px-2 py-1 border rounded"
-                          onClick={() => setNewProduct((prev) => ({ ...prev, image: '' }))}
+                          onClick={() =>
+                            setNewProduct((prev) => ({ ...prev, image: "" }))
+                          }
                         >
-                          {language === 'ar' ? 'إزالة' : 'Remove'}
+                          {language === "ar" ? "إزالة" : "Remove"}
                         </button>
                       </div>
 
                       <div className="mt-2">
                         {newProduct.image ? (
                           <div className="w-32 h-32 overflow-hidden rounded shadow">
-                            <img src={newProduct.image} className="w-full h-full object-cover" alt="preview" />
+                            <img
+                              src={newProduct.image}
+                              className="w-full h-full object-cover"
+                              alt="preview"
+                            />
                           </div>
                         ) : null}
                       </div>
@@ -902,7 +923,9 @@ const AdminDashboard: React.FC = () => {
                     if (cropTarget === "new") {
                       setNewProduct((prev) => ({ ...prev, image: dataUrl }));
                     } else if (cropTarget === "edit") {
-                      setEditingProduct((prev) => (prev ? { ...prev, image: dataUrl } : prev));
+                      setEditingProduct((prev) =>
+                        prev ? { ...prev, image: dataUrl } : prev,
+                      );
                     }
                     setCropSrc(null);
                     setCropTarget(null);

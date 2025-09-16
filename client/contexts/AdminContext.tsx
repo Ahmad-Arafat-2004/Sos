@@ -209,25 +209,29 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   // Product methods
-  const shrinkDataUrl = async (dataUrl: string, maxDim = 800, quality = 0.8): Promise<string> => {
+  const shrinkDataUrl = async (
+    dataUrl: string,
+    maxDim = 800,
+    quality = 0.8,
+  ): Promise<string> => {
     return new Promise((resolve, reject) => {
       try {
         const img = new Image();
-        img.crossOrigin = 'anonymous';
+        img.crossOrigin = "anonymous";
         img.onload = () => {
           const ratio = Math.min(1, maxDim / Math.max(img.width, img.height));
           const w = Math.round(img.width * ratio);
           const h = Math.round(img.height * ratio);
-          const c = document.createElement('canvas');
+          const c = document.createElement("canvas");
           c.width = w;
           c.height = h;
-          const ctx = c.getContext('2d');
+          const ctx = c.getContext("2d");
           if (!ctx) return resolve(dataUrl);
           ctx.drawImage(img, 0, 0, w, h);
-          const resized = c.toDataURL('image/jpeg', quality);
+          const resized = c.toDataURL("image/jpeg", quality);
           resolve(resized);
         };
-        img.onerror = () => reject(new Error('Failed to load image'));
+        img.onerror = () => reject(new Error("Failed to load image"));
         img.src = dataUrl;
       } catch (e) {
         resolve(dataUrl);
@@ -251,12 +255,16 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({
       }
 
       // If image is a data URL and large, attempt to downscale it to avoid server/db errors
-      if (payload.image && typeof payload.image === 'string' && payload.image.startsWith('data:')) {
+      if (
+        payload.image &&
+        typeof payload.image === "string" &&
+        payload.image.startsWith("data:")
+      ) {
         if (payload.image.length > 50000) {
           try {
             payload.image = await shrinkDataUrl(payload.image, 800, 0.8);
           } catch (e) {
-            console.warn('shrinkDataUrl.failed', e);
+            console.warn("shrinkDataUrl.failed", e);
           }
         }
       }
@@ -292,12 +300,16 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({
         if (found) payload.category = found.id;
       }
 
-      if (payload.image && typeof payload.image === 'string' && payload.image.startsWith('data:')) {
+      if (
+        payload.image &&
+        typeof payload.image === "string" &&
+        payload.image.startsWith("data:")
+      ) {
         if (payload.image.length > 50000) {
           try {
             payload.image = await shrinkDataUrl(payload.image, 800, 0.8);
           } catch (e) {
-            console.warn('shrinkDataUrl.failed', e);
+            console.warn("shrinkDataUrl.failed", e);
           }
         }
       }

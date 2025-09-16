@@ -8,7 +8,8 @@ export class ProductService {
 
   private async columnExists(table: string, column: string) {
     const cacheKey = `${table}.${column}`;
-    if (this.columnCache[cacheKey] !== undefined) return this.columnCache[cacheKey];
+    if (this.columnCache[cacheKey] !== undefined)
+      return this.columnCache[cacheKey];
 
     try {
       // Try selecting the column; if it doesn't exist, Supabase/PostgREST returns an error
@@ -217,11 +218,12 @@ export class ProductService {
         data: product,
         message: "Product created successfully",
       };
-    } catch (error:any) {
-      console.error('productService.createProduct.error', error);
+    } catch (error: any) {
+      console.error("productService.createProduct.error", error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Failed to create product',
+        error:
+          error instanceof Error ? error.message : "Failed to create product",
       };
     }
   }
@@ -260,8 +262,10 @@ export class ProductService {
       if (productData.price !== undefined) updateData.price = productData.price;
       if (productData.image !== undefined) updateData.image = productData.image;
       if (productData.category) updateData.category_id = productData.category;
-      if (productData.weight !== undefined) updateData.weight = productData.weight;
-      if (productData.origin !== undefined) updateData.origin = productData.origin;
+      if (productData.weight !== undefined)
+        updateData.weight = productData.weight;
+      if (productData.origin !== undefined)
+        updateData.origin = productData.origin;
       if (productData.store) updateData.store = productData.store;
 
       const { data, error } = await supabase
@@ -303,11 +307,12 @@ export class ProductService {
         data: product,
         message: "Product updated successfully",
       };
-    } catch (error:any) {
-      console.error('productService.updateProduct.error', error);
+    } catch (error: any) {
+      console.error("productService.updateProduct.error", error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Failed to update product',
+        error:
+          error instanceof Error ? error.message : "Failed to update product",
       };
     }
   }
@@ -410,12 +415,24 @@ export class ProductService {
         slug: categoryData.slug,
       };
 
-      if (categoryData.description && categoryData.description.en !== undefined) {
-        const hasDescEn = await this.columnExists("categories", "description_en");
+      if (
+        categoryData.description &&
+        categoryData.description.en !== undefined
+      ) {
+        const hasDescEn = await this.columnExists(
+          "categories",
+          "description_en",
+        );
         if (hasDescEn) insertData.description_en = categoryData.description.en;
       }
-      if (categoryData.description && categoryData.description.ar !== undefined) {
-        const hasDescAr = await this.columnExists("categories", "description_ar");
+      if (
+        categoryData.description &&
+        categoryData.description.ar !== undefined
+      ) {
+        const hasDescAr = await this.columnExists(
+          "categories",
+          "description_ar",
+        );
         if (hasDescAr) insertData.description_ar = categoryData.description.ar;
       }
 
@@ -484,8 +501,14 @@ export class ProductService {
         updateData.name_ar = categoryData.name.ar;
       }
       if (categoryData.description) {
-        const hasDescEn = await this.columnExists("categories", "description_en");
-        const hasDescAr = await this.columnExists("categories", "description_ar");
+        const hasDescEn = await this.columnExists(
+          "categories",
+          "description_en",
+        );
+        const hasDescAr = await this.columnExists(
+          "categories",
+          "description_ar",
+        );
         if (hasDescEn) updateData.description_en = categoryData.description.en;
         if (hasDescAr) updateData.description_ar = categoryData.description.ar;
       }

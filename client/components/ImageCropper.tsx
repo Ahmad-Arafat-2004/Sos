@@ -9,7 +9,12 @@ interface Props {
 
 const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
 
-const ImageCropper: React.FC<Props> = ({ src, onCancel, onApply, aspect = 1 }) => {
+const ImageCropper: React.FC<Props> = ({
+  src,
+  onCancel,
+  onApply,
+  aspect = 1,
+}) => {
   const imgRef = useRef<HTMLImageElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [natural, setNatural] = useState({ w: 0, h: 0 });
@@ -33,7 +38,11 @@ const ImageCropper: React.FC<Props> = ({ src, onCancel, onApply, aspect = 1 }) =
     const img = imgRef.current;
     const crect = containerRef.current.getBoundingClientRect();
     // compute display base to fit within container
-    const ratio = Math.min(crect.width / img.naturalWidth, crect.height / img.naturalHeight, 1);
+    const ratio = Math.min(
+      crect.width / img.naturalWidth,
+      crect.height / img.naturalHeight,
+      1,
+    );
     const baseW = img.naturalWidth * ratio;
     const baseH = img.naturalHeight * ratio;
     setNatural({ w: img.naturalWidth, h: img.naturalHeight });
@@ -97,7 +106,12 @@ const ImageCropper: React.FC<Props> = ({ src, onCancel, onApply, aspect = 1 }) =
       const crect = containerRef.current!.getBoundingClientRect();
       nw = clamp(nw, 20, crect.width - dragStart.current.sel.x);
       nh = clamp(nh, 20, crect.height - dragStart.current.sel.y);
-      setSel({ x: dragStart.current.sel.x, y: dragStart.current.sel.y, w: nw, h: nh });
+      setSel({
+        x: dragStart.current.sel.x,
+        y: dragStart.current.sel.y,
+        w: nw,
+        h: nh,
+      });
     } else if (mode === "pan") {
       // pan image by adjusting pan offsets
       const newPanX = dragStart.current.pan.x + dx;
@@ -111,7 +125,10 @@ const ImageCropper: React.FC<Props> = ({ src, onCancel, onApply, aspect = 1 }) =
       const minPanY = Math.min(0, crect.height - scaledH) / 2;
       const maxPanY = Math.max(0, (scaledH - crect.height) / 2);
       // use simpler clamp around newPanX/Y
-      setPan({ x: clamp(newPanX, -1000, 1000), y: clamp(newPanY, -1000, 1000) });
+      setPan({
+        x: clamp(newPanX, -1000, 1000),
+        y: clamp(newPanY, -1000, 1000),
+      });
     }
   };
 
@@ -125,7 +142,13 @@ const ImageCropper: React.FC<Props> = ({ src, onCancel, onApply, aspect = 1 }) =
   // compute image display position
   const getImgLayout = () => {
     const crect = containerRef.current?.getBoundingClientRect();
-    if (!crect) return { left: 0, top: 0, width: displayBase.w * scale, height: displayBase.h * scale };
+    if (!crect)
+      return {
+        left: 0,
+        top: 0,
+        width: displayBase.w * scale,
+        height: displayBase.h * scale,
+      };
     const sw = displayBase.w * scale;
     const sh = displayBase.h * scale;
     const left = (crect.width - sw) / 2 + pan.x;
@@ -138,7 +161,12 @@ const ImageCropper: React.FC<Props> = ({ src, onCancel, onApply, aspect = 1 }) =
     if (!loaded || !imgRef.current || !containerRef.current) return;
     const img = imgRef.current;
     const crect = containerRef.current.getBoundingClientRect();
-    const { left: imgLeft, top: imgTop, width: sw, height: sh } = getImgLayout();
+    const {
+      left: imgLeft,
+      top: imgTop,
+      width: sw,
+      height: sh,
+    } = getImgLayout();
     const sx = Math.round(((sel.x - imgLeft) / sw) * natural.w);
     const sy = Math.round(((sel.y - imgTop) / sh) * natural.h);
     const swN = Math.round((sel.w / sw) * natural.w);
@@ -157,11 +185,13 @@ const ImageCropper: React.FC<Props> = ({ src, onCancel, onApply, aspect = 1 }) =
       // draw portion from natural image
       ctx.drawImage(img, sx, sy, swN, shN, 0, 0, c.width, c.height);
       const preferPng = /(^data:image\/png)|\.png(\?|$)|image\/png/i.test(src);
-    const url = preferPng ? c.toDataURL("image/png") : c.toDataURL("image/jpeg", 0.9);
-    setPreviewUrl(url);
-    setErrorMsg(null);
+      const url = preferPng
+        ? c.toDataURL("image/png")
+        : c.toDataURL("image/jpeg", 0.9);
+      setPreviewUrl(url);
+      setErrorMsg(null);
     } catch (err: any) {
-      console.warn('ImageCropper.preview.error', err);
+      console.warn("ImageCropper.preview.error", err);
       setPreviewUrl(null);
       setErrorMsg(
         "This image cannot be previewed due to cross-origin restrictions. Use an image URL that allows CORS or upload the image to a CORS-enabled host.",
@@ -172,7 +202,12 @@ const ImageCropper: React.FC<Props> = ({ src, onCancel, onApply, aspect = 1 }) =
   const applyCrop = () => {
     if (!imgRef.current || !containerRef.current) return;
     const img = imgRef.current;
-    const { left: imgLeft, top: imgTop, width: sw, height: sh } = getImgLayout();
+    const {
+      left: imgLeft,
+      top: imgTop,
+      width: sw,
+      height: sh,
+    } = getImgLayout();
     const sx = Math.round(((sel.x - imgLeft) / sw) * natural.w);
     const sy = Math.round(((sel.y - imgTop) / sh) * natural.h);
     const swN = Math.round((sel.w / sw) * natural.w);
@@ -185,11 +220,13 @@ const ImageCropper: React.FC<Props> = ({ src, onCancel, onApply, aspect = 1 }) =
       if (!ctx) return;
       ctx.drawImage(img, sx, sy, swN, shN, 0, 0, swN, shN);
       const preferPng = /(^data:image\/png)|\.png(\?|$)|image\/png/i.test(src);
-      const dataUrl = preferPng ? canvas.toDataURL("image/png") : canvas.toDataURL("image/jpeg", 0.9);
+      const dataUrl = preferPng
+        ? canvas.toDataURL("image/png")
+        : canvas.toDataURL("image/jpeg", 0.9);
       onApply(dataUrl);
       setErrorMsg(null);
     } catch (err: any) {
-      console.warn('ImageCropper.apply.error', err);
+      console.warn("ImageCropper.apply.error", err);
       setErrorMsg(
         "Unable to export cropped image due to cross-origin restrictions. Use an image URL that allows CORS or provide an uploaded image.",
       );
@@ -204,11 +241,38 @@ const ImageCropper: React.FC<Props> = ({ src, onCancel, onApply, aspect = 1 }) =
           <h3 className="font-semibold">Crop image</h3>
           <div className="space-x-2 flex items-center">
             <label className="text-sm mr-4">Zoom</label>
-            <input type="range" min={1} max={3} step={0.01} value={scale} onChange={(e) => setScale(Number(e.target.value))} />
-            <button className="px-3 py-1 border rounded ml-3" onClick={() => setPan({ x: 0, y: 0 })}>Reset Pan</button>
-            <button className={`px-3 py-1 border rounded ml-3 ${panMode ? 'bg-gray-200' : ''}`} onClick={() => setPanMode(!panMode)}>{panMode ? 'Pan: On' : 'Pan: Off'}</button>
-            <button className="px-3 py-1 border rounded ml-3" onClick={onCancel}>Cancel</button>
-            <button className="px-3 py-1 bg-olive-600 text-white rounded ml-2" onClick={applyCrop}>Apply</button>
+            <input
+              type="range"
+              min={1}
+              max={3}
+              step={0.01}
+              value={scale}
+              onChange={(e) => setScale(Number(e.target.value))}
+            />
+            <button
+              className="px-3 py-1 border rounded ml-3"
+              onClick={() => setPan({ x: 0, y: 0 })}
+            >
+              Reset Pan
+            </button>
+            <button
+              className={`px-3 py-1 border rounded ml-3 ${panMode ? "bg-gray-200" : ""}`}
+              onClick={() => setPanMode(!panMode)}
+            >
+              {panMode ? "Pan: On" : "Pan: Off"}
+            </button>
+            <button
+              className="px-3 py-1 border rounded ml-3"
+              onClick={onCancel}
+            >
+              Cancel
+            </button>
+            <button
+              className="px-3 py-1 bg-olive-600 text-white rounded ml-2"
+              onClick={applyCrop}
+            >
+              Apply
+            </button>
           </div>
         </div>
 
@@ -228,19 +292,65 @@ const ImageCropper: React.FC<Props> = ({ src, onCancel, onApply, aspect = 1 }) =
               alt="to-crop"
               onLoad={onImgLoad}
               onError={() => setPreviewUrl(null)}
-              style={{ position: 'absolute', left: getImgLayout().left, top: getImgLayout().top, width: getImgLayout().width, height: getImgLayout().height, userSelect: 'none', touchAction: 'none' }}
+              style={{
+                position: "absolute",
+                left: getImgLayout().left,
+                top: getImgLayout().top,
+                width: getImgLayout().width,
+                height: getImgLayout().height,
+                userSelect: "none",
+                touchAction: "none",
+              }}
             />
 
             {loaded && (
               <>
                 <div
-                  style={{ position: 'absolute', left: sel.x, top: sel.y, width: sel.w, height: sel.h, border: '2px solid #fff', boxShadow: '0 0 0 9999px rgba(0,0,0,0.4)', cursor: 'move' }}
-                  onPointerDown={(e) => onPointerDown(e, 'move')}
+                  style={{
+                    position: "absolute",
+                    left: sel.x,
+                    top: sel.y,
+                    width: sel.w,
+                    height: sel.h,
+                    border: "2px solid #fff",
+                    boxShadow: "0 0 0 9999px rgba(0,0,0,0.4)",
+                    cursor: "move",
+                  }}
+                  onPointerDown={(e) => onPointerDown(e, "move")}
                 />
-                <div style={{ position: 'absolute', left: sel.x - 8, top: sel.y - 8, width: 16, height: 16, background: 'white', borderRadius: 4, cursor: 'nwse-resize' }} onPointerDown={(e) => onPointerDown(e, 'nw')} />
-                <div style={{ position: 'absolute', left: sel.x + sel.w - 8, top: sel.y + sel.h - 8, width: 16, height: 16, background: 'white', borderRadius: 4, cursor: 'nwse-resize' }} onPointerDown={(e) => onPointerDown(e, 'se')} />
+                <div
+                  style={{
+                    position: "absolute",
+                    left: sel.x - 8,
+                    top: sel.y - 8,
+                    width: 16,
+                    height: 16,
+                    background: "white",
+                    borderRadius: 4,
+                    cursor: "nwse-resize",
+                  }}
+                  onPointerDown={(e) => onPointerDown(e, "nw")}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    left: sel.x + sel.w - 8,
+                    top: sel.y + sel.h - 8,
+                    width: 16,
+                    height: 16,
+                    background: "white",
+                    borderRadius: 4,
+                    cursor: "nwse-resize",
+                  }}
+                  onPointerDown={(e) => onPointerDown(e, "se")}
+                />
                 {/* pan overlay */}
-                {panMode && <div style={{ position: 'absolute', inset: 0, cursor: 'grab' }} onPointerDown={(e) => onPointerDown(e, 'pan')} />}
+                {panMode && (
+                  <div
+                    style={{ position: "absolute", inset: 0, cursor: "grab" }}
+                    onPointerDown={(e) => onPointerDown(e, "pan")}
+                  />
+                )}
               </>
             )}
           </div>
@@ -248,13 +358,22 @@ const ImageCropper: React.FC<Props> = ({ src, onCancel, onApply, aspect = 1 }) =
           <div style={{ width: 240 }}>
             <div className="mb-2">Preview</div>
             <div className="w-48 h-48 bg-gray-50 rounded overflow-hidden shadow flex items-center justify-center">
-              {previewUrl ? <img src={previewUrl} alt="preview" className="w-full h-full object-cover" /> : <div className="text-sm text-gray-400">No preview</div>}
+              {previewUrl ? (
+                <img
+                  src={previewUrl}
+                  alt="preview"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="text-sm text-gray-400">No preview</div>
+              )}
             </div>
-            <div className="text-xs text-gray-500 mt-2">This shows how the cropped image will appear inside the product box.</div>
+            <div className="text-xs text-gray-500 mt-2">
+              This shows how the cropped image will appear inside the product
+              box.
+            </div>
             {errorMsg && (
-              <div className="mt-2 text-sm text-red-600">
-                {errorMsg}
-              </div>
+              <div className="mt-2 text-sm text-red-600">{errorMsg}</div>
             )}
           </div>
         </div>
