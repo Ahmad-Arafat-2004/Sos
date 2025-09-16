@@ -209,6 +209,32 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   // Product methods
+  const shrinkDataUrl = async (dataUrl: string, maxDim = 800, quality = 0.8): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      try {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          const ratio = Math.min(1, maxDim / Math.max(img.width, img.height));
+          const w = Math.round(img.width * ratio);
+          const h = Math.round(img.height * ratio);
+          const c = document.createElement('canvas');
+          c.width = w;
+          c.height = h;
+          const ctx = c.getContext('2d');
+          if (!ctx) return resolve(dataUrl);
+          ctx.drawImage(img, 0, 0, w, h);
+          const resized = c.toDataURL('image/jpeg', quality);
+          resolve(resized);
+        };
+        img.onerror = () => reject(new Error('Failed to load image'));
+        img.src = dataUrl;
+      } catch (e) {
+        resolve(dataUrl);
+      }
+    });
+  };
+
   const addProduct = async (
     productData: Omit<Product, "id" | "created_at" | "updated_at">,
   ): Promise<Product | null> => {
