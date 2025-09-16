@@ -184,7 +184,8 @@ const ImageCropper: React.FC<Props> = ({ src, onCancel, onApply, aspect = 1 }) =
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
       ctx.drawImage(img, sx, sy, swN, shN, 0, 0, swN, shN);
-      const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
+      const preferPng = /(^data:image\/png)|\.png(\?|$)|image\/png/i.test(src);
+      const dataUrl = preferPng ? canvas.toDataURL("image/png") : canvas.toDataURL("image/jpeg", 0.9);
       onApply(dataUrl);
       setErrorMsg(null);
     } catch (err: any) {
