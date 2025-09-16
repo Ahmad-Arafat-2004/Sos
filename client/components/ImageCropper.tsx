@@ -249,6 +249,11 @@ const ImageCropper: React.FC<Props> = ({ src, onCancel, onApply, aspect = 1 }) =
               {previewUrl ? <img src={previewUrl} alt="preview" className="w-full h-full object-cover" /> : <div className="text-sm text-gray-400">No preview</div>}
             </div>
             <div className="text-xs text-gray-500 mt-2">This shows how the cropped image will appear inside the product box.</div>
+            {errorMsg && (
+              <div className="mt-2 text-sm text-red-600">
+                {errorMsg}
+              </div>
+            )}
           </div>
         </div>
       </div>
