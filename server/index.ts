@@ -79,8 +79,13 @@ export function createServer() {
     import("./routes/inspect").then((m) => m.inspectProducts(req, res)),
   );
 
-  // Settings routes (lazy import)
-  import("./routes/settings").then((m) => m.default(app)).catch(() => {});
+  // Settings routes
+  import mountSettings from "./routes/settings";
+  try {
+    mountSettings(app);
+  } catch (e) {
+    console.error('Failed to mount settings routes', e);
+  }
   app.post("/api/debug/delete-first-product", (req, res) =>
     import("./routes/debug-delete").then((m) =>
       m.debugDeleteFirstProduct(req, res),
