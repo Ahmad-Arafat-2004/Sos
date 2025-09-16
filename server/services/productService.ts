@@ -217,10 +217,11 @@ export class ProductService {
         data: product,
         message: "Product created successfully",
       };
-    } catch (error) {
+    } catch (error:any) {
+      console.error('productService.createProduct.error', error);
       return {
         success: false,
-        error: "Failed to create product",
+        error: error instanceof Error ? error.message : 'Failed to create product',
       };
     }
   }
