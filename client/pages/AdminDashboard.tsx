@@ -12,6 +12,7 @@ import {
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAdmin, Category } from "../contexts/AdminContext";
 import { Button } from "../components/ui/button";
+import ImageCropper from "../components/ImageCropper";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Product } from "../contexts/CartContext";
@@ -175,7 +176,7 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  // تحديث منتج
+  // تحدي�� منتج
   const handleUpdateProduct = async () => {
     try {
       if (editingProduct && editingProduct.id) {
@@ -211,7 +212,7 @@ const AdminDashboard: React.FC = () => {
       title: language === "ar" ? "حذف المنتج" : "Delete Product",
       description:
         language === "ar"
-          ? "هل أنت متأكد من حذف ��ذا المنتج؟ لا يمكن التراجع عن هذا الإجراء."
+          ? "هل أنت متأكد من حذف هذا المنتج؟ لا يمكن التراجع عن هذا الإجراء."
           : "Are you sure you want to delete this product? This action cannot be undone.",
       confirmText: language === "ar" ? "حذف المنتج" : "Delete Product",
       cancelText: language === "ar" ? "إلغاء" : "Cancel",
@@ -251,7 +252,7 @@ const AdminDashboard: React.FC = () => {
       if (!newCategory.slug) {
         showNotification(
           language === "ar"
-            ? "الرجاء إدخال الرمز المختصر"
+            ? "الرجاء إ��خال الرمز المختصر"
             : "Please enter category slug",
         );
         return;
@@ -431,7 +432,7 @@ const AdminDashboard: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white p-6 rounded-lg shadow">
               <h3 className="text-lg font-semibold mb-2">
-                {language === "ar" ? "إجمالي المنتجا��" : "Total Products"}
+                {language === "ar" ? "إجمالي المنتجات" : "Total Products"}
               </h3>
               <p className="text-3xl font-bold text-olive-600">
                 {safeProducts.length}
@@ -1086,7 +1087,7 @@ const AdminDashboard: React.FC = () => {
                   <div>
                     <Label>
                       {language === "ar"
-                        ? "اسم ال��ئة (عربي)"
+                        ? "اسم الفئة (عربي)"
                         : "Category Name (Arabic)"}{" "}
                       *
                     </Label>
