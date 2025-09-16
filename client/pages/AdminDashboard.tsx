@@ -351,7 +351,7 @@ const AdminDashboard: React.FC = () => {
         language === "ar"
           ? "هل أنت متأكد من حذف هذه الفئة؟ لا يمكن التراجع عن هذا الإجراء."
           : "Are you sure you want to delete this category? This action cannot be undone.",
-      confirmText: language === "ar" ? "حذف الفئ��" : "Delete Category",
+      confirmText: language === "ar" ? "حذف ا��فئة" : "Delete Category",
       cancelText: language === "ar" ? "إلغاء" : "Cancel",
       onConfirm: async () => {
         try {
@@ -628,24 +628,30 @@ const AdminDashboard: React.FC = () => {
                       placeholder="https://..."
                     />
 
-                    {/* File input + preview + crop for editing */}
                     <div className="mt-2">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={async (e) => {
-                          const f = e.target.files && e.target.files[0];
-                          if (!f) return;
-                          const reader = new FileReader();
-                          reader.onload = () => {
-                            const src = String(reader.result || "");
-                            // open cropper for editing
-                            setCropSrc(src);
-                            setCropTarget("edit");
-                          };
-                          reader.readAsDataURL(f);
-                        }}
-                      />
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          className="px-2 py-1 border rounded"
+                          onClick={() => {
+                            if (!editingProduct?.image) {
+                              showError(language === 'ar' ? 'أدخل رابط الصورة أولاً' : 'Enter image URL first');
+                              return;
+                            }
+                            setCropSrc(editingProduct.image || null);
+                            setCropTarget('edit');
+                          }}
+                        >
+                          {language === 'ar' ? 'فتح محرر القص' : 'Open Cropper'}
+                        </button>
+                        <button
+                          type="button"
+                          className="px-2 py-1 border rounded"
+                          onClick={() => setEditingProduct((prev) => prev ? { ...prev, image: '' } : prev)}
+                        >
+                          {language === 'ar' ? 'إزالة' : 'Remove'}
+                        </button>
+                      </div>
 
                       <div className="mt-2">
                         {editingProduct?.image ? (
@@ -653,40 +659,6 @@ const AdminDashboard: React.FC = () => {
                             <img src={editingProduct.image} className="w-full h-full object-cover" alt="preview" />
                           </div>
                         ) : null}
-                        <div className="flex gap-2 mt-2">
-                          <button
-                            type="button"
-                            className="px-2 py-1 border rounded"
-                            onClick={async () => {
-                              if (!editingProduct?.image) return;
-                              const img = new Image();
-                              img.crossOrigin = "anonymous";
-                              img.src = editingProduct.image;
-                              img.onload = () => {
-                                const s = Math.min(img.width, img.height);
-                                const cx = (img.width - s) / 2;
-                                const cy = (img.height - s) / 2;
-                                const c = document.createElement('canvas');
-                                c.width = s;
-                                c.height = s;
-                                const ctx = c.getContext('2d');
-                                if (!ctx) return;
-                                ctx.drawImage(img, cx, cy, s, s, 0, 0, s, s);
-                                const dataUrl = c.toDataURL('image/jpeg', 0.9);
-                                setEditingProduct((prev) => prev ? { ...prev, image: dataUrl } : prev);
-                              };
-                            }}
-                          >
-                            {language === 'ar' ? 'قص مربع' : 'Crop Square'}
-                          </button>
-                          <button
-                            type="button"
-                            className="px-2 py-1 border rounded"
-                            onClick={() => setEditingProduct((prev) => prev ? { ...prev, image: '' } : prev)}
-                          >
-                            {language === 'ar' ? 'إزالة' : 'Remove'}
-                          </button>
-                        </div>
                       </div>
                     </div>
                   </div>
