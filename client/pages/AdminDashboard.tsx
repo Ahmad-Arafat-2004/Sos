@@ -266,7 +266,7 @@ const AdminDashboard: React.FC = () => {
       if (!slugRegex.test(newCategory.slug)) {
         showNotification(
           language === "ar"
-            ? "الرمز المختصر يجب أن يحتوي أحرف صغيرة، أرقام وشرطات فقط"
+            ? "الرمز المختصر ��جب أن يحتوي أحرف صغيرة، أرقام وشرطات فقط"
             : "Slug must contain only lowercase letters, numbers and hyphens",
         );
         return;
@@ -947,6 +947,25 @@ const AdminDashboard: React.FC = () => {
 
             {/* Products List */}
             <div className="bg-white rounded-lg shadow overflow-hidden">
+              {/* Image cropper modal */}
+              {cropSrc && (
+                <ImageCropper
+                  src={cropSrc}
+                  onCancel={() => {
+                    setCropSrc(null);
+                    setCropTarget(null);
+                  }}
+                  onApply={(dataUrl) => {
+                    if (cropTarget === "new") {
+                      setNewProduct((prev) => ({ ...prev, image: dataUrl }));
+                    } else if (cropTarget === "edit") {
+                      setEditingProduct((prev) => (prev ? { ...prev, image: dataUrl } : prev));
+                    }
+                    setCropSrc(null);
+                    setCropTarget(null);
+                  }}
+                />
+              )}
               <div className="px-6 py-4 border-b">
                 <h3 className="text-lg font-semibold">
                   {language === "ar" ? "قائمة المنتجات" : "Products List"}
