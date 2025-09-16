@@ -92,42 +92,6 @@ const AdminDashboard: React.FC = () => {
     slug: "",
   });
 
-  // Delivery fee setting (editable by admin)
-  const [deliveryFee, setDeliveryFee] = useState<number>(3); // default 3 JOD
-  const [editingDelivery, setEditingDelivery] = useState<boolean>(false);
-  const [deliveryInput, setDeliveryInput] = useState<string>(String(3));
-
-  // Load delivery fee from settings on mount
-  React.useEffect(() => {
-    let mounted = true;
-    import("../services/api").then(({ apiClient }) => {
-      apiClient.settings
-        .get("delivery_fee")
-        .then((res) => {
-          if (!mounted) return;
-          if (res.success) {
-            const val = res.data;
-            if (typeof val === "number") {
-              setDeliveryFee(val);
-              setDeliveryInput(String(val));
-            } else if (val && typeof val === "object" && val.amount) {
-              const n = parseFloat(String(val.amount)) || 0;
-              setDeliveryFee(n);
-              setDeliveryInput(String(n));
-            } else if (!isNaN(Number(val))) {
-              const n = Number(val);
-              setDeliveryFee(n);
-              setDeliveryInput(String(n));
-            }
-          }
-        })
-        .catch(() => {});
-    });
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
 
   // خروج الأدمن
   const handleLogout = () => {
@@ -136,7 +100,7 @@ const AdminDashboard: React.FC = () => {
       title: language === "ar" ? "تسجيل الخروج" : "Logout",
       description:
         language === "ar"
-          ? "هل أنت متأكد م�� تسجيل الخروج؟"
+          ? "هل أنت ��تأكد م�� تسجيل الخروج؟"
           : "Are you sure you want to logout?",
       confirmText: language === "ar" ? "تسجيل الخر��ج" : "Logout",
       cancelText: language === "ar" ? "إلغاء" : "Cancel",
@@ -1030,7 +994,7 @@ const AdminDashboard: React.FC = () => {
               </h2>
               <Button onClick={() => setShowAddCategory(true)}>
                 <Plus className="w-4 h-4 mr-2" />
-                {language === "ar" ? "إضافة فئة" : "Add Category"}
+                {language === "ar" ? "إض��فة فئة" : "Add Category"}
               </Button>
             </div>
 
