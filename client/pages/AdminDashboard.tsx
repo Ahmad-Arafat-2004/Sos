@@ -12,6 +12,7 @@ import {
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAdmin, Category } from "../contexts/AdminContext";
 import { Button } from "../components/ui/button";
+import { apiClient } from "../services/api";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Product } from "../contexts/CartContext";
