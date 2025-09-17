@@ -80,8 +80,17 @@ export function createServer() {
     import("./routes/inspect").then((m) => m.inspectProducts(req, res)),
   );
 
-  // Settings routes (lazy import)
-  import("./routes/settings").then((m) => m.default(app)).catch(() => {});
+  // Settings routes (load directly)
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const registerSettings = (await import("./routes/settings")).default;
+    if (typeof registerSettings === "function") {
+      registerSettings(app);
+      console.log("Settings routes registered");
+    }
+  } catch (err) {
+    console.warn("Failed to register settings routes", err);
+  }
   app.post("/api/debug/delete-first-product", (req, res) =>
     import("./routes/debug-delete").then((m) =>
       m.debugDeleteFirstProduct(req, res),
