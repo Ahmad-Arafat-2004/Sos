@@ -40,9 +40,33 @@ export class ProductService {
 
     try {
       // Select only required columns to reduce payload and joins
-      let query = supabase.from("products").select(
-        `id, name_en, name_ar, description_en, description_ar, price, image, category_id, weight, origin, store, created_at, updated_at, categories(id, name_en, name_ar, slug)`,
-      );
+      const cols: string[] = [
+        "id",
+        "name_en",
+        "name_ar",
+        "price",
+        "image",
+        "category_id",
+        "weight",
+        "origin",
+        "store",
+        "created_at",
+        "updated_at",
+      ];
+
+      // Conditionally include description columns if they exist in the DB
+      try {
+        const hasDescEn = await this.columnExists("products", "description_en");
+        const hasDescAr = await this.columnExists("products", "description_ar");
+        if (hasDescEn) cols.push("description_en");
+        if (hasDescAr) cols.push("description_ar");
+      } catch (e) {
+        // ignore, continue without description columns
+      }
+
+      // Include categories relation
+      const selectStr = `${cols.join(", ")}, categories(id, name_en, name_ar, slug)`;
+      let query = supabase.from("products").select(selectStr);
 
       if (store) {
         query = query.eq("store", store);
