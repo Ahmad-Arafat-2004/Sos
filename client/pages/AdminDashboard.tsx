@@ -229,7 +229,7 @@ const AdminDashboard: React.FC = () => {
           // deleteProduct in context handles notifications
         } catch (error) {
           console.error("Error deleting product:", error);
-          showNotification("خطأ في حذف المنتج");
+          showNotification("��طأ في حذف المنتج");
         }
         setConfirmDialog({ ...confirmDialog, isOpen: false });
       },
@@ -238,6 +238,27 @@ const AdminDashboard: React.FC = () => {
   };
 
   // إضافة فئة جديدة
+
+  // Load delivery fee
+  React.useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        setDeliveryLoading(true);
+        const res = await apiClient.settings.getDeliveryFee();
+        if (mounted && res && res.success && res.data) {
+          setDeliveryFee(res.data.delivery_fee ?? 0);
+        }
+      } catch (err) {
+        console.warn("Failed to load delivery fee", err);
+      } finally {
+        if (mounted) setDeliveryLoading(false);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
   const handleAddCategory = async () => {
     try {
       if (!newCategory.name.en) {
@@ -603,7 +624,7 @@ const AdminDashboard: React.FC = () => {
                           },
                         })
                       }
-                      placeholder="وصف ال��نتج بالعربية"
+                      placeholder="وصف المنتج بالعربية"
                     />
                   </div>
                   <div>
