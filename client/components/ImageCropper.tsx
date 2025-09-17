@@ -180,14 +180,12 @@ const ImageCropper: React.FC<Props> = ({
       const target = 200; // preview size
       c.width = target;
       c.height = Math.round((shN / swN) * target);
-      const ctx = c.getContext("2d");
+      const ctx = c.getContext("2d", { alpha: true });
       if (!ctx) return;
       // draw portion from natural image
       ctx.drawImage(img, sx, sy, swN, shN, 0, 0, c.width, c.height);
-      const preferPng = /(^data:image\/png)|\.png(\?|$)|image\/png/i.test(src);
-      const url = preferPng
-        ? c.toDataURL("image/png")
-        : c.toDataURL("image/jpeg", 0.9);
+      // Always export preview as PNG to preserve transparency
+      const url = c.toDataURL("image/png");
       setPreviewUrl(url);
       setErrorMsg(null);
     } catch (err: any) {
@@ -216,13 +214,11 @@ const ImageCropper: React.FC<Props> = ({
       const canvas = document.createElement("canvas");
       canvas.width = swN;
       canvas.height = shN;
-      const ctx = canvas.getContext("2d");
+      const ctx = canvas.getContext("2d", { alpha: true });
       if (!ctx) return;
       ctx.drawImage(img, sx, sy, swN, shN, 0, 0, swN, shN);
-      const preferPng = /(^data:image\/png)|\.png(\?|$)|image\/png/i.test(src);
-      const dataUrl = preferPng
-        ? canvas.toDataURL("image/png")
-        : canvas.toDataURL("image/jpeg", 0.9);
+      // Always export as PNG to preserve transparency
+      const dataUrl = canvas.toDataURL("image/png");
       onApply(dataUrl);
       setErrorMsg(null);
     } catch (err: any) {
@@ -357,7 +353,7 @@ const ImageCropper: React.FC<Props> = ({
 
           <div style={{ width: 240 }}>
             <div className="mb-2">Preview</div>
-            <div className="w-48 h-48 bg-gray-50 rounded overflow-hidden shadow flex items-center justify-center">
+            <div className="w-48 h-48 bg-transparent rounded overflow-hidden shadow flex items-center justify-center">
               {previewUrl ? (
                 <img
                   src={previewUrl}
