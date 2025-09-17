@@ -151,7 +151,13 @@ class ApiClient {
     console.error("ApiClient.request.failedAllCandidates", lastError);
 
     // Graceful fallback for common list endpoints to avoid crashing the UI when network fails
-    const listEndpoints = ["/products", "/categories", "/orders", "/admin", "/settings"];
+    const listEndpoints = [
+      "/products",
+      "/categories",
+      "/orders",
+      "/admin",
+      "/settings",
+    ];
     try {
       if (listEndpoints.some((p) => endpoint.startsWith(p))) {
         return { success: true, data: [] as any };
