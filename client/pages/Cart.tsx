@@ -58,6 +58,26 @@ const Cart: React.FC = () => {
     return favorites.some((fav) => fav.id === productId);
   };
 
+  React.useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        setDeliveryLoading(true);
+        const res = await apiClient.settings.getDeliveryFee();
+        if (mounted && res && res.success && res.data) {
+          setDeliveryFee(res.data.delivery_fee ?? 0);
+        }
+      } catch (err) {
+        console.warn("Failed to load delivery fee", err);
+      } finally {
+        if (mounted) setDeliveryLoading(false);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   const handleCheckout = () => {
     if (!user) {
       setAuthModalOpen(true);
