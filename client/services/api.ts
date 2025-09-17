@@ -9,7 +9,7 @@ import type {
   RegisterRequest,
 } from "../../shared/types";
 
-const API_BASE_URL = "/api";
+const API_BASE_URLS = ["/api", "/.netlify/functions/api"];
 
 // API Client class
 class ApiClient {
