@@ -28,7 +28,14 @@ const updateProductSchema = createProductSchema.partial();
 export const getProducts = async (req: Request, res: Response) => {
   try {
     const { store } = req.query;
-    const result = await productService.getAllProducts(store as string);
+    const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : undefined;
+    const offset = req.query.offset ? parseInt(req.query.offset as string, 10) : undefined;
+
+    const result = await productService.getAllProducts(
+      store as string | undefined,
+      typeof limit === "number" && !Number.isNaN(limit) ? limit : undefined,
+      typeof offset === "number" && !Number.isNaN(offset) ? offset : undefined,
+    );
 
     if (result.success) {
       res.json(result);
