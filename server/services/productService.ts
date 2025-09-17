@@ -47,21 +47,28 @@ export class ProductService {
         "price",
         "image",
         "category_id",
-        "weight",
-        "origin",
+        // optional fields (added conditionally below)
         "store",
         "created_at",
         "updated_at",
       ];
 
-      // Conditionally include description columns if they exist in the DB
+      // Conditionally include optional columns if they exist in the DB
       try {
-        const hasDescEn = await this.columnExists("products", "description_en");
-        const hasDescAr = await this.columnExists("products", "description_ar");
+        const optionalChecks = await Promise.all([
+          this.columnExists("products", "description_en"),
+          this.columnExists("products", "description_ar"),
+          this.columnExists("products", "weight"),
+          this.columnExists("products", "origin"),
+        ]);
+
+        const [hasDescEn, hasDescAr, hasWeight, hasOrigin] = optionalChecks;
         if (hasDescEn) cols.push("description_en");
         if (hasDescAr) cols.push("description_ar");
+        if (hasWeight) cols.push("weight");
+        if (hasOrigin) cols.push("origin");
       } catch (e) {
-        // ignore, continue without description columns
+        // ignore, continue without optional columns
       }
 
       // Include categories relation
