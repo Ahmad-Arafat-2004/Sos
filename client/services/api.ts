@@ -180,8 +180,12 @@ class ApiClient {
 
   // Products API methods
   products = {
-    getAll: async (store?: string): Promise<ApiResponse<Product[]>> => {
-      const query = store ? `?store=${store}` : "";
+    getAll: async (store?: string, limit?: number, offset?: number): Promise<ApiResponse<Product[]>> => {
+      const params: string[] = [];
+      if (store) params.push(`store=${encodeURIComponent(store)}`);
+      if (typeof limit === "number") params.push(`limit=${limit}`);
+      if (typeof offset === "number") params.push(`offset=${offset}`);
+      const query = params.length ? `?${params.join("&")}` : "";
       return this.request<Product[]>(`/products${query}`);
     },
 
