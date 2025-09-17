@@ -248,7 +248,9 @@ export function createServer() {
       app.get("*", (req, res) => {
         // Ensure API routes are not intercepted
         if (req.path.startsWith("/api/")) {
-          return res.status(404).json({ success: false, error: "API endpoint not found" });
+          return res
+            .status(404)
+            .json({ success: false, error: "API endpoint not found" });
         }
         res.sendFile(path.join(spaDir, "index.html"));
       });
