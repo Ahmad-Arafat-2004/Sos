@@ -16,10 +16,13 @@ export class ProductService {
       return this.columnCache[cacheKey];
 
     try {
+      const debug = process.env.DEBUG_PRODUCTS === '1';
+      const start = Date.now();
       // Try selecting the column; if it doesn't exist, Supabase/PostgREST returns an error
       const { error } = await supabase.from(table).select(column).limit(1);
       const exists = !error;
       this.columnCache[cacheKey] = exists;
+      if (debug) console.log(`columnExists ${cacheKey} => ${exists} (${Date.now()-start}ms)`);
       return exists;
     } catch (err) {
       this.columnCache[cacheKey] = false;
