@@ -424,8 +424,8 @@ const Products: React.FC = () => {
                 ? "جاري التحميل..."
                 : "Loading..."
               : language === "ar"
-              ? "تحميل المزيد"
-              : "Load More"}
+                ? "تحميل المزيد"
+                : "Load More"}
           </Button>
         </div>
       )}
