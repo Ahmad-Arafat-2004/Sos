@@ -16,6 +16,7 @@ import { useCart } from "../contexts/CartContext";
 import { useAuth } from "../contexts/AuthContext";
 import { useFavorites } from "../contexts/FavoritesContext";
 import { Button } from "../components/ui/button";
+import { apiClient } from "../services/api";
 import { Input } from "../components/ui/input";
 import { Separator } from "../components/ui/separator";
 import AuthModal from "../components/AuthModal";
