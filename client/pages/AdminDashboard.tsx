@@ -496,28 +496,50 @@ const AdminDashboard: React.FC = () => {
                   value={deliveryFee}
                   onChange={(e) => setDeliveryFee(Number(e.target.value))}
                 />
-                <span className="text-sm">{language === "ar" ? "دينار" : "JD"}</span>
+                <span className="text-sm">
+                  {language === "ar" ? "دينار" : "JD"}
+                </span>
                 <button
                   className="px-3 py-1 bg-olive-600 text-white rounded ml-2"
                   onClick={async () => {
                     try {
                       setSavingDelivery(true);
-                      const res = await apiClient.settings.updateDeliveryFee(deliveryFee);
+                      const res =
+                        await apiClient.settings.updateDeliveryFee(deliveryFee);
                       if (res && res.success) {
-                        showSuccess(language === "ar" ? "تم تحديث رسوم التوصيل" : "Delivery fee updated");
+                        showSuccess(
+                          language === "ar"
+                            ? "تم تحديث رسوم التوصيل"
+                            : "Delivery fee updated",
+                        );
                       } else {
-                        showError((res && (res as any).error) || (language === "ar" ? "فشل التحديث" : "Failed to update"));
+                        showError(
+                          (res && (res as any).error) ||
+                            (language === "ar"
+                              ? "فشل التحديث"
+                              : "Failed to update"),
+                        );
                       }
                     } catch (err) {
                       console.error(err);
-                      showError(language === "ar" ? "خطأ في التحديث" : "Error updating delivery fee");
+                      showError(
+                        language === "ar"
+                          ? "خطأ في التحديث"
+                          : "Error updating delivery fee",
+                      );
                     } finally {
                       setSavingDelivery(false);
                     }
                   }}
                   disabled={savingDelivery}
                 >
-                  {savingDelivery ? (language === "ar" ? "حفظ..." : "Saving...") : (language === "ar" ? "حفظ" : "Save")}
+                  {savingDelivery
+                    ? language === "ar"
+                      ? "حفظ..."
+                      : "Saving..."
+                    : language === "ar"
+                      ? "حفظ"
+                      : "Save"}
                 </button>
               </div>
               <div className="text-xs text-gray-500 mt-2">

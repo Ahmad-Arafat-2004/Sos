@@ -230,7 +230,9 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({
           // Preserve PNG transparency when source is PNG
           const preferPng = /^data:image\/png/i.test(dataUrl);
           ctx.drawImage(img, 0, 0, w, h);
-          const resized = preferPng ? c.toDataURL("image/png") : c.toDataURL("image/jpeg", quality);
+          const resized = preferPng
+            ? c.toDataURL("image/png")
+            : c.toDataURL("image/jpeg", quality);
           resolve(resized);
         };
         img.onerror = () => reject(new Error("Failed to load image"));

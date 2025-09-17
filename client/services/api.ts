@@ -249,11 +249,15 @@ class ApiClient {
 
   // Settings API methods
   settings = {
-    getDeliveryFee: async (): Promise<ApiResponse<{ delivery_fee: number }>> => {
+    getDeliveryFee: async (): Promise<
+      ApiResponse<{ delivery_fee: number }>
+    > => {
       return this.request<{ delivery_fee: number }>("/settings/delivery_fee");
     },
 
-    updateDeliveryFee: async (amount: number): Promise<ApiResponse<{ delivery_fee: number }>> => {
+    updateDeliveryFee: async (
+      amount: number,
+    ): Promise<ApiResponse<{ delivery_fee: number }>> => {
       return this.request<{ delivery_fee: number }>("/settings/delivery_fee", {
         method: "PUT",
         body: JSON.stringify({ amount }),

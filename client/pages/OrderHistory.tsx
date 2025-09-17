@@ -270,7 +270,8 @@ const OrderHistory: React.FC = () => {
                     </div>
                     <div className="text-left rtl:text-right">
                       <div className="text-2xl font-bold text-olive-600">
-                        {order.total.toFixed(2)} {language === "ar" ? "د.أ" : "JD"}
+                        {order.total.toFixed(2)}{" "}
+                        {language === "ar" ? "د.أ" : "JD"}
                       </div>
                       <div className="text-sm text-gray-500">
                         {order.items.length}{" "}
@@ -302,7 +303,8 @@ const OrderHistory: React.FC = () => {
                             </p>
                           </div>
                           <div className="text-right rtl:text-left font-medium">
-                            {item.price.toFixed(2)} {language === "ar" ? "د.أ" : "JD"}
+                            {item.price.toFixed(2)}{" "}
+                            {language === "ar" ? "د.أ" : "JD"}
                           </div>
                         </div>
                       ))}

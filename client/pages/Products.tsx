@@ -81,10 +81,9 @@ const Products: React.FC = () => {
 
   const filteredProducts = products
     .filter((product) => {
-      const matchesSearch =
-        product.name[language]
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase());
+      const matchesSearch = product.name[language]
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
       const matchesCategory =
         selectedCategory === "all" ||
         product.category === selectedCategory ||
@@ -320,7 +319,8 @@ const Products: React.FC = () => {
                         {product.name[language]}
                       </h3>
                       <span className="text-2xl font-bold text-olive-600">
-                        {product.price.toFixed(2)} {language === "ar" ? "د.أ" : "JD"}
+                        {product.price.toFixed(2)}{" "}
+                        {language === "ar" ? "د.أ" : "JD"}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">

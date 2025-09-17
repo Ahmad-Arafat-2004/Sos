@@ -62,7 +62,13 @@ export function createServer() {
   app.use(cors());
   // Increase body parser limits to allow data URLs for image uploads
   app.use(express.json({ limit: "10mb" }));
-  app.use(express.urlencoded({ extended: true, limit: "10mb", parameterLimit: 100000 }));
+  app.use(
+    express.urlencoded({
+      extended: true,
+      limit: "10mb",
+      parameterLimit: 100000,
+    }),
+  );
 
   // Basic API routes
   app.get("/api/ping", (_req, res) => {
@@ -120,7 +126,9 @@ export function createServer() {
 
       if (error && error.code !== "PGRST116") {
         console.error("settings.get.error", error);
-        return res.status(500).json({ success: false, error: "Failed to fetch settings" });
+        return res
+          .status(500)
+          .json({ success: false, error: "Failed to fetch settings" });
       }
 
       const value = data?.value ?? null;
@@ -129,7 +137,9 @@ export function createServer() {
       return res.json({ success: true, data: { delivery_fee: amount ?? 0 } });
     } catch (err) {
       console.error("settings.get.exception", err);
-      return res.status(500).json({ success: false, error: "Internal server error" });
+      return res
+        .status(500)
+        .json({ success: false, error: "Internal server error" });
     }
   });
 
@@ -141,7 +151,9 @@ export function createServer() {
       try {
         const { amount } = req.body as { amount?: number };
         if (typeof amount !== "number" || Number.isNaN(amount) || amount < 0) {
-          return res.status(400).json({ success: false, error: "Invalid amount" });
+          return res
+            .status(400)
+            .json({ success: false, error: "Invalid amount" });
         }
 
         const payload = { key: "delivery_fee", value: { amount } };
@@ -160,7 +172,9 @@ export function createServer() {
         return res.json({ success: true, data: { delivery_fee: amount } });
       } catch (err) {
         console.error("settings.update.exception", err);
-        return res.status(500).json({ success: false, error: "Internal server error" });
+        return res
+          .status(500)
+          .json({ success: false, error: "Internal server error" });
       }
     },
   );
