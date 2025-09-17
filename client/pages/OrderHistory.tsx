@@ -270,7 +270,7 @@ const OrderHistory: React.FC = () => {
                     </div>
                     <div className="text-left rtl:text-right">
                       <div className="text-2xl font-bold text-olive-600">
-                        ${order.total.toFixed(2)}
+                        {order.total.toFixed(2)} {language === "ar" ? "د.أ" : "JD"}
                       </div>
                       <div className="text-sm text-gray-500">
                         {order.items.length}{" "}
