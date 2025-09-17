@@ -10,6 +10,7 @@ import {
   Tags,
 } from "lucide-react";
 import { useLanguage } from "../contexts/LanguageContext";
+import { apiClient } from "../services/api";
 import { useAdmin, Category } from "../contexts/AdminContext";
 import { Button } from "../components/ui/button";
 import ImageCropper from "../components/ImageCropper";
@@ -1045,7 +1046,7 @@ const AdminDashboard: React.FC = () => {
               </h2>
               <Button onClick={() => setShowAddCategory(true)}>
                 <Plus className="w-4 h-4 mr-2" />
-                {language === "ar" ? "إض��فة فئة" : "Add Category"}
+                {language === "ar" ? "إض���فة فئة" : "Add Category"}
               </Button>
             </div>
 
