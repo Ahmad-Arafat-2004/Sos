@@ -6,6 +6,10 @@ export class ProductService {
   // Simple in-memory cache for table column existence checks
   private columnCache: Record<string, boolean> = {};
 
+  // Simple in-memory cache for product list responses to reduce DB load
+  private responseCache: Map<string, { ts: number; data: any }> = new Map();
+  private CACHE_TTL = 15 * 1000; // 15 seconds
+
   private async columnExists(table: string, column: string) {
     const cacheKey = `${table}.${column}`;
     if (this.columnCache[cacheKey] !== undefined)
