@@ -39,7 +39,10 @@ const Cart: React.FC = () => {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
 
-  const finalTotal = totalPrice;
+  const [deliveryFee, setDeliveryFee] = useState<number>(0);
+  const [deliveryLoading, setDeliveryLoading] = useState(false);
+
+  const finalTotal = totalPrice + (deliveryFee || 0);
 
   const handleQuantityChange = (productId: string, newQuantity: number) => {
     if (newQuantity < 1) return;
