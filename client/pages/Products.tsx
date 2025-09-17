@@ -51,7 +51,7 @@ const Products: React.FC = () => {
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  // جلب البيانات من API (تعمل محل��ًا بدون DB) — الآن بتحميل صفحات
+  // جلب البيانات من API (تعمل محليً�� بدون DB) — الآن بتحميل صفحات
   useEffect(() => {
     // Reset pagination when store changes
     setProducts([]);
@@ -410,14 +410,22 @@ const Products: React.FC = () => {
       )}
 
       {/* Load More Button */}
-      {filteredProducts.length > 0 && (
+      {filteredProducts.length > 0 && hasMore && (
         <div className="text-center mt-12">
           <Button
             variant="outline"
             size="lg"
             className="border-olive-600 text-olive-600 hover:bg-olive-50"
+            onClick={loadMore}
+            disabled={loadingMore}
           >
-            {language === "ar" ? "تحميل المزيد" : "Load More"}
+            {loadingMore
+              ? language === "ar"
+                ? "جاري التحميل..."
+                : "Loading..."
+              : language === "ar"
+              ? "تحميل المزيد"
+              : "Load More"}
           </Button>
         </div>
       )}
