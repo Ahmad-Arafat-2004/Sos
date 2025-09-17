@@ -50,10 +50,13 @@ class ApiClient {
     endpoint: string,
     options: RequestInit = {},
   ): Promise<ApiResponse<T>> {
-    const url = `${this.baseURL}${endpoint}`;
+    const candidates = [
+      // prefer relative API path
+      ...API_BASE_URLS,
+    ];
 
     // Build fetch options
-    const fetchOptions: RequestInit = {
+    const fetchOptionsBase: RequestInit = {
       ...options,
       headers: {
         ...this.getHeaders(),
@@ -61,69 +64,86 @@ class ApiClient {
       },
     };
 
-    try {
-      let response: Response;
+    // helper: fetch with timeout
+    const fetchWithTimeout = async (url: string, options: RequestInit, timeout = 10000) => {
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), timeout);
       try {
-        response = await fetch(url, fetchOptions);
-      } catch (fetchErr) {
-        console.error("ApiClient.fetch.error", fetchErr, { url, fetchOptions });
-        return {
-          success: false,
-          error:
-            fetchErr instanceof Error
-              ? fetchErr.message
-              : "Network error: failed to reach API",
-        };
+        const res = await fetch(url, { ...options, signal: controller.signal });
+        clearTimeout(id);
+        return res;
+      } catch (err) {
+        clearTimeout(id);
+        throw err;
       }
+    };
 
-      // Safely read response body once and parse JSON if possible
-      let text: string | null = null;
-      let data: any = null;
+    // Try candidates sequentially
+    let lastError: any = null;
+    for (const base of candidates) {
+      const url = `${base}${endpoint}`;
       try {
-        text = await response.text();
+        let response: Response;
         try {
-          data = text ? JSON.parse(text) : null;
-        } catch (e) {
-          data = null;
+          response = await fetchWithTimeout(url, fetchOptionsBase, 10000);
+        } catch (fetchErr) {
+          console.error("ApiClient.fetch.error", fetchErr, { url, fetchOptions: fetchOptionsBase });
+          lastError = fetchErr;
+          continue; // try next candidate
         }
-      } catch (e) {
-        console.warn("ApiClient.readBody.failed", e);
-        data = null;
-      }
 
-      if (!response.ok) {
-        let errMsg =
-          data && data.error
-            ? data.error
-            : `HTTP ${response.status}: ${response.statusText}`;
-
-        // If server provided validation details, include them
+        // Safely read response body once and parse JSON if possible
+        let text: string | null = null;
+        let data: any = null;
         try {
-          if (data && Array.isArray(data.details)) {
-            const detailMsgs = data.details
-              .map((d: any) => (d && d.message ? d.message : JSON.stringify(d)))
-              .filter(Boolean);
-            if (detailMsgs.length)
-              errMsg = `${errMsg}: ${detailMsgs.join("; ")}`;
+          text = await response.text();
+          try {
+            data = text ? JSON.parse(text) : null;
+          } catch (e) {
+            data = null;
           }
         } catch (e) {
-          // ignore
+          console.warn("ApiClient.readBody.failed", e);
+          data = null;
         }
 
-        return {
-          success: false,
-          error: errMsg,
-        };
-      }
+        if (!response.ok) {
+          let errMsg =
+            data && data.error
+              ? data.error
+              : `HTTP ${response.status}: ${response.statusText}`;
 
-      return data !== null ? data : { success: true, data: null };
-    } catch (error) {
-      console.error("ApiClient.request.unexpected", error);
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : "Unknown network error",
-      };
+          // If server provided validation details, include them
+          try {
+            if (data && Array.isArray(data.details)) {
+              const detailMsgs = data.details
+                .map((d: any) => (d && d.message ? d.message : JSON.stringify(d)))
+                .filter(Boolean);
+              if (detailMsgs.length)
+                errMsg = `${errMsg}: ${detailMsgs.join("; ")}`;
+            }
+          } catch (e) {
+            // ignore
+          }
+
+          return {
+            success: false,
+            error: errMsg,
+          };
+        }
+
+        return data !== null ? data : { success: true, data: null };
+      } catch (error) {
+        lastError = error;
+        // try next base
+      }
     }
+
+    console.error("ApiClient.request.failedAllCandidates", lastError);
+    return {
+      success: false,
+      error: lastError instanceof Error ? lastError.message : "Network error: failed to reach API",
+    };
   }
 
   // Auth API methods
