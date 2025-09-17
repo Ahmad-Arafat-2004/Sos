@@ -100,7 +100,11 @@ export class ProductService {
         return { success: true, data: cached.data };
       }
 
+      const debug = process.env.DEBUG_PRODUCTS === '1';
+      const qStart = Date.now();
       const { data, error } = await query;
+      const qTime = Date.now() - qStart;
+      if (debug) console.log(`product query ${cacheKey} took ${qTime}ms`);
 
       if (error) {
         return {
