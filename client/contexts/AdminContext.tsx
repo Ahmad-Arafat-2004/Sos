@@ -116,7 +116,8 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({
 
     try {
       setProductsLoading(true);
-      const result = await apiClient.products.getAll();
+      // Limit admin product fetch to first 200 items to avoid heavy load in UI
+      const result = await apiClient.products.getAll(undefined, 200, 0);
       if (result.success && result.data) {
         setProducts(result.data);
       }
@@ -453,7 +454,7 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({
         showNotification(result.error || "خطأ في تحديث دور المستخدم", "error");
       }
     } catch (error) {
-      showNotification("خطأ في الاتصال. الرجاء المحاولة مرة أخرى", "error");
+      showNotification("خطأ ف�� الاتصال. الرجاء المحاولة مرة أخرى", "error");
     }
   };
 
