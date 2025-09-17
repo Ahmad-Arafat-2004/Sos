@@ -423,7 +423,7 @@ const AdminDashboard: React.FC = () => {
             style={{ marginLeft: "17px" }}
           >
             <Package className="w-4 h-4 mr-2" />
-            {language === "ar" ? "المن��جات" : "Products"}
+            {language === "ar" ? "المنتجات" : "Products"}
           </Button>
           <Button
             variant={activeTab === "categories" ? "default" : "outline"}
@@ -462,6 +462,48 @@ const AdminDashboard: React.FC = () => {
               <p className="text-3xl font-bold text-blue-600">
                 {safeProducts.filter((p) => p.store === "cilka").length}
               </p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow">
+              <h3 className="text-lg font-semibold mb-2">
+                {language === "ar" ? "رسوم التوصيل" : "Delivery Fee"}
+              </h3>
+              <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                <input
+                  type="number"
+                  step="0.01"
+                  className="border px-2 py-1 rounded w-28"
+                  value={deliveryFee}
+                  onChange={(e) => setDeliveryFee(Number(e.target.value))}
+                />
+                <span className="text-sm">{language === "ar" ? "دينار" : "JD"}</span>
+                <button
+                  className="px-3 py-1 bg-olive-600 text-white rounded ml-2"
+                  onClick={async () => {
+                    try {
+                      setSavingDelivery(true);
+                      const res = await apiClient.settings.updateDeliveryFee(deliveryFee);
+                      if (res && res.success) {
+                        showSuccess(language === "ar" ? "تم تحديث رسوم التوصيل" : "Delivery fee updated");
+                      } else {
+                        showError((res && (res as any).error) || (language === "ar" ? "فشل التحديث" : "Failed to update"));
+                      }
+                    } catch (err) {
+                      console.error(err);
+                      showError(language === "ar" ? "خطأ في التحديث" : "Error updating delivery fee");
+                    } finally {
+                      setSavingDelivery(false);
+                    }
+                  }}
+                  disabled={savingDelivery}
+                >
+                  {savingDelivery ? (language === "ar" ? "حفظ..." : "Saving...") : (language === "ar" ? "حفظ" : "Save")}
+                </button>
+              </div>
+              <div className="text-xs text-gray-500 mt-2">
+                {language === "ar"
+                  ? "قم بتعيين مبلغ التوصيل الذي سيتم إضافته عند إنشاء الطلبات"
+                  : "Set the delivery amount added to orders at checkout."}
+              </div>
             </div>
           </div>
         )}
@@ -561,7 +603,7 @@ const AdminDashboard: React.FC = () => {
                           },
                         })
                       }
-                      placeholder="وصف المنتج بالعربية"
+                      placeholder="وصف ال��نتج بالعربية"
                     />
                   </div>
                   <div>
