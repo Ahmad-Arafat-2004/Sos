@@ -225,10 +225,12 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({
           const c = document.createElement("canvas");
           c.width = w;
           c.height = h;
-          const ctx = c.getContext("2d");
+          const ctx = c.getContext("2d", { alpha: true });
           if (!ctx) return resolve(dataUrl);
+          // Preserve PNG transparency when source is PNG
+          const preferPng = /^data:image\/png/i.test(dataUrl);
           ctx.drawImage(img, 0, 0, w, h);
-          const resized = c.toDataURL("image/jpeg", quality);
+          const resized = preferPng ? c.toDataURL("image/png") : c.toDataURL("image/jpeg", quality);
           resolve(resized);
         };
         img.onerror = () => reject(new Error("Failed to load image"));
@@ -377,7 +379,7 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({
         setCategories((prev) =>
           prev.map((c) => (c.id === id ? result.data! : c)),
         );
-        showNotification("تم تحديث الفئة بنجاح!", "success");
+        showNotification("تم تحديث الف��ة بنجاح!", "success");
         return result.data;
       } else {
         showNotification(result.error || "��طأ في تحديث الفئة", "error");
