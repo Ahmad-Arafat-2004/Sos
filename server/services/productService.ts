@@ -89,6 +89,14 @@ export class ProductService {
         query = (query as any).range(start, end);
       }
 
+      // Try cache first (keyed by store+offset+limit)
+      const cacheKey = `${store || 'all'}:${offset ?? 'na'}:${limit ?? 'na'}`;
+      const cached = this.responseCache.get(cacheKey);
+      const now = Date.now();
+      if (cached && now - cached.ts < this.CACHE_TTL) {
+        return { success: true, data: cached.data };
+      }
+
       const { data, error } = await query;
 
       if (error) {
@@ -97,6 +105,9 @@ export class ProductService {
           error: error.message,
         };
       }
+
+      // Cache result
+      this.responseCache.set(cacheKey, { ts: Date.now(), data });
 
       // Transform database format to API format
       const products: Product[] =
