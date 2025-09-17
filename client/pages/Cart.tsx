@@ -306,6 +306,12 @@ const Cart: React.FC = () => {
                   {totalPrice.toFixed(2)} {language === "ar" ? "د.أ" : "JD"}
                 </span>
               </div>
+              <div className="flex justify-between text-gray-600">
+                <span>{language === "ar" ? "رسوم التوصيل" : "Delivery Fee"}</span>
+                <span>
+                  {deliveryLoading ? "..." : (deliveryFee || 0).toFixed(2)} {language === "ar" ? "د.أ" : "JD"}
+                </span>
+              </div>
             </div>
 
             <Separator className="my-4" />
