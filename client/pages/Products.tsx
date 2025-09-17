@@ -320,7 +320,7 @@ const Products: React.FC = () => {
                         {product.name[language]}
                       </h3>
                       <span className="text-2xl font-bold text-olive-600">
-                        ${product.price.toFixed(2)}
+                        {product.price.toFixed(2)} {language === "ar" ? "د.أ" : "JD"}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
