@@ -423,7 +423,7 @@ const AdminDashboard: React.FC = () => {
             style={{ marginLeft: "17px" }}
           >
             <Package className="w-4 h-4 mr-2" />
-            {language === "ar" ? "المنتجات" : "Products"}
+            {language === "ar" ? "المن��جات" : "Products"}
           </Button>
           <Button
             variant={activeTab === "categories" ? "default" : "outline"}
@@ -436,7 +436,7 @@ const AdminDashboard: React.FC = () => {
 
         {/* Overview Tab */}
         {activeTab === "overview" && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="bg-white p-6 rounded-lg shadow">
               <h3 className="text-lg font-semibold mb-2">
                 {language === "ar" ? "إجمالي المنتجات" : "Total Products"}
@@ -490,7 +490,7 @@ const AdminDashboard: React.FC = () => {
                   <div>
                     <Label>
                       {language === "ar"
-                        ? "��لاسم (إن��ليزي)"
+                        ? "الاسم (إن��ليزي)"
                         : "Name (English)"}{" "}
                       *
                     </Label>
