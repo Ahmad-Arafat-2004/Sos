@@ -242,7 +242,7 @@ const Header: React.FC = () => {
               {totalItems > 0 && (
                 <div className="hidden sm:block absolute top-full mt-1 end-0 bg-white border rounded-lg shadow-lg p-2 whitespace-nowrap">
                   <span className="text-sm text-gray-600">
-                    ${totalPrice.toFixed(2)}
+                    {totalPrice.toFixed(2)} {language === "ar" ? "د.أ" : "JD"}
                   </span>
                 </div>
               )}
