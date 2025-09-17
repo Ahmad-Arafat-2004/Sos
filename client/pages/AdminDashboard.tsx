@@ -42,6 +42,10 @@ const AdminDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<
     "overview" | "products" | "categories"
   >("overview");
+  // Delivery fee state (admin configurable)
+  const [deliveryFee, setDeliveryFee] = useState<number>(0);
+  const [deliveryLoading, setDeliveryLoading] = useState(false);
+  const [savingDelivery, setSavingDelivery] = useState(false);
   const [showAddProduct, setShowAddProduct] = useState(false);
   // Cropper state
   const [cropSrc, setCropSrc] = useState<string | null>(null);
@@ -486,7 +490,7 @@ const AdminDashboard: React.FC = () => {
                   <div>
                     <Label>
                       {language === "ar"
-                        ? "الاسم (إن��ليزي)"
+                        ? "��لاسم (إن��ليزي)"
                         : "Name (English)"}{" "}
                       *
                     </Label>
@@ -1046,7 +1050,7 @@ const AdminDashboard: React.FC = () => {
               </h2>
               <Button onClick={() => setShowAddCategory(true)}>
                 <Plus className="w-4 h-4 mr-2" />
-                {language === "ar" ? "إض���فة فئة" : "Add Category"}
+                {language === "ar" ? "إض��فة فئة" : "Add Category"}
               </Button>
             </div>
 
