@@ -45,22 +45,69 @@ const Products: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showFilters, setShowFilters] = useState(false);
 
-  // جلب البيانات من API (تعمل محليًا بدون DB)
+  // Pagination state
+  const PER_PAGE = 20;
+  const [page, setPage] = useState(0);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+
+  // جلب البيانات من API (تعمل محل��ًا بدون DB) — الآن بتحميل صفحات
   useEffect(() => {
-    const load = async () => {
+    // Reset pagination when store changes
+    setProducts([]);
+    setPage(0);
+    setHasMore(true);
+
+    const loadFirst = async () => {
       try {
         const prodRes = await apiClient.products.getAll(
           selectedStore || undefined,
+          PER_PAGE,
+          0,
         );
-        if (prodRes.success && prodRes.data) setProducts(prodRes.data as any);
+        if (prodRes.success && prodRes.data) {
+          setProducts(prodRes.data as any);
+          setHasMore((prodRes.data as any).length === PER_PAGE);
+        } else {
+          setProducts([]);
+          setHasMore(false);
+        }
         const catRes = await apiClient.categories.getAll();
         if (catRes.success && catRes.data) setCategories(catRes.data as any);
       } catch (e) {
         // ignore
+        setProducts([]);
+        setHasMore(false);
       }
     };
-    load();
+
+    loadFirst();
   }, [selectedStore]);
+
+  const loadMore = async () => {
+    if (loadingMore || !hasMore) return;
+    setLoadingMore(true);
+    const nextOffset = (page + 1) * PER_PAGE;
+    try {
+      const res = await apiClient.products.getAll(
+        selectedStore || undefined,
+        PER_PAGE,
+        nextOffset,
+      );
+      if (res.success && res.data) {
+        const newItems = res.data as Product[];
+        setProducts((prev) => [...prev, ...newItems]);
+        setPage((p) => p + 1);
+        if (newItems.length < PER_PAGE) setHasMore(false);
+      } else {
+        setHasMore(false);
+      }
+    } catch (e) {
+      setHasMore(false);
+    } finally {
+      setLoadingMore(false);
+    }
+  };
 
   // قراءة الفئة من URL parameters
   useEffect(() => {
