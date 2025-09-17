@@ -23,22 +23,35 @@ export class ProductService {
     }
   }
 
-  // Get all products
-  async getAllProducts(store?: string): Promise<ApiResponse<Product[]>> {
+  // Get all products with optional pagination
+  async getAllProducts(
+    store?: string,
+    limit?: number,
+    offset?: number,
+  ): Promise<ApiResponse<Product[]>> {
     if (shouldSkipSupabase()) {
       const all = localStore.getProducts();
       const filtered = store ? all.filter((p) => p.store === store) : all;
+      if (typeof offset === "number" && typeof limit === "number") {
+        return { success: true, data: filtered.slice(offset, offset + limit) };
+      }
       return { success: true, data: filtered };
     }
 
     try {
-      let query = supabase.from("products").select(`
-          *,
-          categories(*)
-        `);
+      // Select only required columns to reduce payload and joins
+      let query = supabase.from("products").select(
+        `id, name_en, name_ar, description_en, description_ar, price, image, category_id, weight, origin, store, created_at, updated_at, categories(id, name_en, name_ar, slug)`,
+      );
 
       if (store) {
         query = query.eq("store", store);
+      }
+
+      if (typeof offset === "number" && typeof limit === "number") {
+        const start = offset;
+        const end = offset + limit - 1;
+        query = (query as any).range(start, end);
       }
 
       const { data, error } = await query;
