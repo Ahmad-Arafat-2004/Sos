@@ -59,8 +59,9 @@ export function createServer() {
 
   // Middleware
   app.use(cors());
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
+  // Increase body parser limits to allow data URLs for image uploads
+  app.use(express.json({ limit: "10mb" }));
+  app.use(express.urlencoded({ extended: true, limit: "10mb", parameterLimit: 100000 }));
 
   // Basic API routes
   app.get("/api/ping", (_req, res) => {
