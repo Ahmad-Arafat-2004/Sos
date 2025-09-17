@@ -124,12 +124,15 @@ export class ProductService {
           price: product.price,
           image: product.image,
           category: product.category_id,
-          weight: product.weight,
-          origin: product.origin,
+          weight: product.weight ?? undefined,
+          origin: product.origin ?? undefined,
           store: product.store,
           created_at: product.created_at,
           updated_at: product.updated_at,
         })) || [];
+
+      // Also update cache with transformed items (store transformed data)
+      this.responseCache.set(cacheKey, { ts: Date.now(), data: products });
 
       return {
         success: true,
