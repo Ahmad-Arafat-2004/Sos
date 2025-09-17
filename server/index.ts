@@ -53,6 +53,7 @@ import {
 
 // Import middleware
 import { authenticate, requireAdmin, optionalAuth } from "./middleware/auth";
+import { supabase } from "./lib/supabase";
 
 export function createServer() {
   const app = express();
