@@ -242,24 +242,38 @@ export function createServer() {
 
   // Serve client SPA for non-API routes if a build exists
   try {
-    const spaDir = path.join(__dirname, "../dist/spa");
-    if (fs.existsSync(spaDir)) {
-      app.use(express.static(spaDir));
-      app.get("*", (req, res) => {
-        // Ensure API routes are not intercepted
-        if (req.path.startsWith("/api/")) {
-          return res
-            .status(404)
-            .json({ success: false, error: "API endpoint not found" });
+    // Detect serverless environment (Netlify functions/AWS Lambda)
+    const isServerless = !!(
+      process.env.NETLIFY ||
+      process.env.LAMBDA_TASK_ROOT ||
+      process.env.AWS_LAMBDA_FUNCTION_NAME ||
+      process.env.FUNCTION_NAME
+    );
+
+    // Only enable static SPA serving when NOT running inside a Netlify/AWS Lambda function
+    if (!isServerless) {
+      const spaDir = path.join(__dirname, "../dist/spa");
+      if (fs.existsSync(spaDir)) {
+        app.use(express.static(spaDir));
+        app.get("*", (req, res) => {
+          // Ensure API routes are not intercepted
+          if (req.path.startsWith("/api/")) {
+            return res
+              .status(404)
+              .json({ success: false, error: "API endpoint not found" });
+          }
+          res.sendFile(path.join(spaDir, "index.html"));
+        });
+      } else {
+        // Fallback to project root index.html if present (useful for local setups)
+        const rootIndex = path.join(__dirname, "../index.html");
+        if (fs.existsSync(rootIndex)) {
+          app.get("*", (_req, res) => res.sendFile(rootIndex));
         }
-        res.sendFile(path.join(spaDir, "index.html"));
-      });
-    } else {
-      // Fallback to project root index.html if present (useful for local setups)
-      const rootIndex = path.join(__dirname, "../index.html");
-      if (fs.existsSync(rootIndex)) {
-        app.get("*", (_req, res) => res.sendFile(rootIndex));
       }
+    } else {
+      // When running as a Netlify/AWS Lambda function, do NOT serve static SPA files from the function
+      // Static assets should be served by Netlify's publish directory. This avoids large function responses.
     }
   } catch (e) {
     console.warn("SPA static serving not configured:", e);
