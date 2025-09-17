@@ -90,7 +90,7 @@ export class ProductService {
       }
 
       // Try cache first (keyed by store+offset+limit)
-      const cacheKey = `${store || 'all'}:${offset ?? 'na'}:${limit ?? 'na'}`;
+      const cacheKey = `${store || "all"}:${offset ?? "na"}:${limit ?? "na"}`;
       const cached = this.responseCache.get(cacheKey);
       const now = Date.now();
       if (cached && now - cached.ts < this.CACHE_TTL) {

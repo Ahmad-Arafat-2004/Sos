@@ -65,7 +65,11 @@ class ApiClient {
     };
 
     // helper: fetch with timeout
-    const fetchWithTimeout = async (url: string, options: RequestInit, timeout = 10000) => {
+    const fetchWithTimeout = async (
+      url: string,
+      options: RequestInit,
+      timeout = 10000,
+    ) => {
       const controller = new AbortController();
       const id = setTimeout(() => controller.abort(), timeout);
       try {
@@ -87,7 +91,10 @@ class ApiClient {
         try {
           response = await fetchWithTimeout(url, fetchOptionsBase, 10000);
         } catch (fetchErr) {
-          console.error("ApiClient.fetch.error", fetchErr, { url, fetchOptions: fetchOptionsBase });
+          console.error("ApiClient.fetch.error", fetchErr, {
+            url,
+            fetchOptions: fetchOptionsBase,
+          });
           lastError = fetchErr;
           continue; // try next candidate
         }
@@ -117,7 +124,9 @@ class ApiClient {
           try {
             if (data && Array.isArray(data.details)) {
               const detailMsgs = data.details
-                .map((d: any) => (d && d.message ? d.message : JSON.stringify(d)))
+                .map((d: any) =>
+                  d && d.message ? d.message : JSON.stringify(d),
+                )
                 .filter(Boolean);
               if (detailMsgs.length)
                 errMsg = `${errMsg}: ${detailMsgs.join("; ")}`;
@@ -142,7 +151,10 @@ class ApiClient {
     console.error("ApiClient.request.failedAllCandidates", lastError);
     return {
       success: false,
-      error: lastError instanceof Error ? lastError.message : "Network error: failed to reach API",
+      error:
+        lastError instanceof Error
+          ? lastError.message
+          : "Network error: failed to reach API",
     };
   }
 
