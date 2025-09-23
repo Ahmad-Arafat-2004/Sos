@@ -79,8 +79,8 @@ const Contact: React.FC = () => {
       icon: Mail,
       titleAr: "البريد الإلكتروني",
       titleEn: "Email",
-      valueAr: "cilkamt@gmail.com",
-      valueEn: "cilkamt@gmail.com",
+      valueAr: "irthbiladi@gmail.com",
+      valueEn: "irthbiladi@gmail.com",
       linkPrefix: "mailto:",
     },
     {
