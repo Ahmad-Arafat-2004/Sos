@@ -176,7 +176,7 @@ const Contact: React.FC = () => {
 
             <p className="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
               {language === "ar"
-                ? "نحن هنا للإج��بة على استفساراتكم ومساعدتكم في الحصول على أفضل المنتجات التراثية الطبيعية"
+                ? "نحن هنا للإجابة على استفساراتكم ومساعدتكم في الحصول على أفضل المنتجات التراثية الطبيعية"
                 : "We're here to answer your questions and help you get the best natural heritage products"}
             </p>
           </div>
@@ -264,7 +264,7 @@ const Contact: React.FC = () => {
                   <span className="text-olive-200">•</span>
                   <span className="text-sm">
                     {language === "ar"
-                      ? "للطلبات العاجلة، تواصل مع��ا عبر الواتساب"
+                      ? "للطلبات العاجلة، تواصل معنا عبر الواتساب"
                       : "For urgent orders, contact us via WhatsApp"}
                   </span>
                 </li>
