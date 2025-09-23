@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\.builder",
+    "\\client",
+    "\\client\\pages",
+    "\\public",
+    "\\public\\photo"
+  ],
+  "SelectedNode": "\\client\\pages\\AdminDashboard.tsx",
+  "PreviewInSolutionExplorer": false
+}
