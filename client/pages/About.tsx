@@ -70,7 +70,7 @@ const About: React.FC = () => {
     },
     {
       icon: "🍯",
-      titleAr: "ال��سل الطبيعي",
+      titleAr: "العسل الطبيعي",
       titleEn: "Natural Honey",
       itemsAr: "عسل السدر، الطلح، وعسل الطاقة",
       itemsEn: "Sidr honey, Acacia honey, and Energy honey",
@@ -104,7 +104,7 @@ const About: React.FC = () => {
       icon: Users,
       titleAr: "للعائلة العربية",
       titleEn: "For Arab Families",
-      descAr: "نحافظ على الهوية الغذائية ��لتي تربينا عليها",
+      descAr: "نحافظ على الهوية الغذائية التي تربينا عليها",
       descEn: "We preserve the food identity we grew up with",
     },
   ];
@@ -168,7 +168,7 @@ const About: React.FC = () => {
                 </h3>
                 <p className="text-gray-700 leading-relaxed">
                   {language === "ar"
-                    ? "هدفنا هو أن نوصل منتجات صحية، طبيعية، وآمنة إلى كل بيت أر��ني وعربي، وأن نحافظ على الهوية الغذائية التي تربينا عليها. نؤمن أن الطعام ليس مجرد منتج استهلاكي، بل تجربة وهوية وثقافة، لذلك نحرص على توفير كل منتج بأعلى جودة وضمن معايير نظافة صارمة."
+                    ? "هدفنا هو أن نوصل منتجات صحية، طبيعية، وآمنة إلى كل بيت أردني وعربي، وأن نحافظ على الهوية الغذائية التي تربينا عليها. نؤمن أن الطعام ليس مجرد منتج استهلاكي، بل تجربة وهوية وثقافة، لذلك نحرص على توفير كل منتج بأعلى جودة وضمن معايير نظافة صارمة."
                     : "Our goal is to deliver healthy, natural, and safe products to every Jordanian and Arab home, and to preserve the food identity we grew up with. We believe that food is not just a consumer product, but an experience, identity, and culture, so we ensure that every product is provided with the highest quality and strict hygiene standards."}
                 </p>
               </div>
