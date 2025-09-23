@@ -332,7 +332,7 @@ const Index: React.FC = () => {
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               {language === "ar"
-                ? "منتجاتنا الأكثر شعبية وطلباً م�� عملائنا"
+                ? "منتجاتنا الأكثر شعبية وطلباً من عملائنا"
                 : "Our most popular and sought-after products by our customers"}
             </p>
           </div>
